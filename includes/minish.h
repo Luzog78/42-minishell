@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 07:41:24 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/15 07:55:18 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct s_subshell
 	struct s_subshell	*next; //NULL
 }	t_subshell;
 
-int		ft_parse(t_subshell *subshell, char *str);
+void	ft_parse(t_subshell *subshell, char *str);
 void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env);
 t_bool	ft_check_parenthesis_and_quotes(char *str);
 
