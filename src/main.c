@@ -6,11 +6,49 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 01:32:51 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/15 03:08:26 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minish.h"
+
+char	*ft_strdup(char *str)
+{
+	int		i;
+	char	*new_str;
+
+	i = 0;
+	while (str[i])
+		i++;
+	new_str = malloc(sizeof(char) * (i + 1));
+	i = 0;
+	while (str[i])
+	{
+		new_str[i] = str[i];
+		i++;
+	}
+	new_str[i] = 0;
+	return (new_str);
+}
+
+char	**ft_env_cpy(char **env)
+{
+	int		i;
+	char	**new_env;
+
+	i = 0;
+	while (env[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]);
+		i++;
+	}
+	new_env[i] = NULL;
+	return (new_env);
+}
 
 void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 {
@@ -31,9 +69,19 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 int	main(int argc, char **argv, char **env)
 {
 	t_subshell	*subshell;
+	char		*line;
 
+	(void)argc;
+	(void)argv;
 	subshell = malloc(sizeof(t_subshell));
 	ft_subshell_init(subshell, SUBSHELL, env);
-
+	(void)subshell;
+	(void)line;
+	while (1)
+	{
+		line = readline("minishell $> ");
+		//parse(readline)
+		//exec commands
+	}
 	return (0);
 }

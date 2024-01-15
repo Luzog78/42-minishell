@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 01:21:12 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/15 02:36:14 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
