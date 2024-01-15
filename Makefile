@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/15 03:32:20 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/15 06:55:46 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC					= clang
-CFLAGS				= -Werror -Wall -Wextra -g
-CFLAGS_NAME			= -Werror -Wall -Wextra -g -lreadline
+CC					= cc
+CFLAGS				= -Werror -Wall -Wextra -g -lreadline
 NAME				= minishell
+BUILD_DIR			= ./build
 INCLUDES			= ./includes
 SRC_FILES			= \
 						src/parsing/parse.c \
@@ -34,15 +34,16 @@ C_CYAN				= \033[36m
 C_WHITE				= \033[37m
 
 OBJ_FILES			= $(SRC_FILES:.c=.o)
+BUILD_FILES			= $(SRC_FILES:%.c=$(BUILD_DIR)/%.o)
 
 TO_COMPILE			= 0
 
 all : $(NAME)
 
-$(NAME) : $(OBJ_FILES)
+$(NAME) : $(BUILD_FILES)
 	@echo ""
 	@echo -n "  > $(C_YELLOW)$(C_BOLD)./$(NAME)$(C_RESET):  $(C_DIM)"
-	$(CC) $(CFLAGS_NAME) -o $(NAME) $(OBJ_FILES) -I $(INCLUDES)
+	$(CC) -o $(NAME) $(BUILD_FILES) -I $(INCLUDES) $(CFLAGS)
 	@echo "$(C_RESET)"
 	@echo ""
 	@echo -n "$(C_BOLD)$(C_MAGENTA)>$(C_BLUE)>$(C_CYAN)>$(C_GREEN)"
@@ -56,7 +57,7 @@ m_line_break :
 bonus:
 	@echo "$(C_RED)$(C_BOLD)There is no bonus for this project.$(C_RESET)"
 
-.c.o :
+$(BUILD_DIR)/%.o : %.c
 	@if [ $(TO_COMPILE) -eq 0 ] ; then \
 		echo -n "$(C_CYAN)$(C_BOLD)$(C_UNDERLINE)" ; \
 		echo "Compiling $(C_YELLOW)./$(NAME)$(C_CYAN)... :$(C_RESET)" ; \
@@ -64,7 +65,9 @@ bonus:
 	fi
 	@$(eval TO_COMPILE := 1)
 	@echo -n "  - $(C_GREEN)$<$(C_RESET):  $(C_DIM)"
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(INCLUDES)
+	@mkdir -p $(BUILD_DIR)/._
+	@mkdir -p $(@D)
+	$(CC) -c $< -o $@ -I $(INCLUDES) $(CFLAGS)
 	@echo -n "$(C_RESET)"
 
 define del =
@@ -101,12 +104,12 @@ define del =
 endef
 
 clean :
-	$(call del, $(OBJ_FILES))
-	@rm -rf $(OBJ_FILES)
+	$(call del, $(BUILD_DIR) $(BUILD_FILES))
+	@rm -rf $(BUILD_FILES) $(BUILD_DIR) $(BUILD_DIR)/._
 
 fclean :
-	$(call del, "./$(NAME)" $(OBJ_FILES))
-	@rm -rf $(NAME) $(OBJ_FILES)
+	$(call del, "./$(NAME)" $(BUILD_DIR) $(BUILD_FILES))
+	@rm -rf $(NAME) $(BUILD_FILES) $(BUILD_DIR) $(BUILD_DIR)/._
 
 re : fclean m_line_break all
 

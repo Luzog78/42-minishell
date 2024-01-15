@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 02:36:14 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/15 07:41:24 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@
 # include <curses.h>
 # include <termcap.h>
 
+# undef FALSE
+# undef TRUE
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}	t_bool;
+
 typedef enum e_link
 {
 	PIPE,
@@ -47,6 +56,7 @@ typedef enum e_cmd_type
 
 typedef enum e_out_type
 {
+	NO_OUT,
 	REPLACE,
 	APPEND
 }	t_out_type;
@@ -59,17 +69,23 @@ typedef struct s_out
 	struct s_out		*next;
 }	t_out;
 
+typedef struct s_argv
+{
+	char				*arg;
+	struct s_argv		*next;
+}	t_argv;
+
 typedef struct s_subshell
 {
 	t_cmd_type			type; // 1
+	int					exit_status;
 
 	// SUBSHELL
 	char				**env;
-	int					exit_status;
 	struct s_subshell	*cmds; // NULL
 
 	// COMMAND
-	char				**argv;
+	t_argv				*argv;
 	char				*infile;
 	t_out				*outfiles;
 	char				*heredoc;
@@ -77,5 +93,9 @@ typedef struct s_subshell
 	t_link				link; // NONE
 	struct s_subshell	*next; //NULL
 }	t_subshell;
+
+int		ft_parse(t_subshell *subshell, char *str);
+void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env);
+t_bool	ft_check_parenthesis_and_quotes(char *str);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 03:08:26 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/15 07:49:52 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,17 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		line = readline("minishell $> ");
-		//parse(readline)
+		if (!ft_check_parenthesis_and_quotes(line))
+		{
+			printf("error: parenthesis or quotes\n");
+			continue ;
+		}
+		ft_parse(subshell, line);
+		if (subshell->exit_status)
+		{
+			printf("error: parse\n");
+			continue ;
+		}
 		//exec commands
 	}
 	return (0);
