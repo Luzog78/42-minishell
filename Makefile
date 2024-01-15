@@ -3,15 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/15 06:55:46 by ysabik           ###   ########.fr        #
+#    Updated: 2024/01/15 20:44:11 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC					= cc
-CFLAGS				= -Werror -Wall -Wextra -g -lreadline
+CFLAGS				= -Werror -Wall -Wextra -g
+CLIBS				= -lreadline
 NAME				= minishell
 BUILD_DIR			= ./build
 INCLUDES			= ./includes
@@ -41,9 +42,8 @@ TO_COMPILE			= 0
 all : $(NAME)
 
 $(NAME) : $(BUILD_FILES)
-	@echo ""
 	@echo -n "  > $(C_YELLOW)$(C_BOLD)./$(NAME)$(C_RESET):  $(C_DIM)"
-	$(CC) -o $(NAME) $(BUILD_FILES) -I $(INCLUDES) $(CFLAGS)
+	$(CC) -o $(NAME) $(BUILD_FILES) -I $(INCLUDES) $(CFLAGS) $(CLIBS)
 	@echo "$(C_RESET)"
 	@echo ""
 	@echo -n "$(C_BOLD)$(C_MAGENTA)>$(C_BLUE)>$(C_CYAN)>$(C_GREEN)"

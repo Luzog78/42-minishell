@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 07:49:52 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/15 20:32:28 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	subshell = malloc(sizeof(t_subshell));
 	ft_subshell_init(subshell, SUBSHELL, env);
-	(void)subshell;
-	(void)line;
 	while (1)
 	{
 		line = readline("minishell $> ");
