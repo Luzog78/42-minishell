@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 01:18:21 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/16 04:24:08 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->exit_status = 0;
 	subshell->cmds = NULL;
 	subshell->argv = NULL;
-	subshell->infile = NULL;
+	subshell->infiles = NULL;
 	subshell->outfiles = NULL;
-	subshell->heredoc_limiter = NULL;
+	subshell->heredocs = NULL;
 	subshell->link = NONE;
 	subshell->next = NULL;
 }

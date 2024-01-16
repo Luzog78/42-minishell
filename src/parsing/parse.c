@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 00:57:54 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/16 04:39:20 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "parsing.h"
 
 t_subshell	*ft_subshell_add(t_subshell **subshell, t_cmd_type type, char **env)
 {
@@ -178,22 +178,22 @@ t_out	*ft_out_add(t_out **out, int from, char *to, t_out_type type)
 	return (new_out);
 }
 
-t_argv	*ft_argv_add(t_argv **argv, char *arg)
+t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str)
 {
-	t_argv	*new_argv;
-	t_argv	*tmp;
+	t_str_lst	*new_argv;
+	t_str_lst	*tmp;
 
-	new_argv = calloc(1, sizeof(t_argv));
+	new_argv = calloc(1, sizeof(t_str_lst));
 	if (!new_argv)
 		return (NULL);
-	new_argv->arg = arg;
+	new_argv->value = str;
 	new_argv->next = NULL;
-	if (!*argv)
+	if (!*lst)
 	{
-		*argv = new_argv;
+		*lst = new_argv;
 		return (new_argv);
 	}
-	tmp = *argv;
+	tmp = *lst;
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new_argv;
@@ -236,7 +236,7 @@ void	ft_parse_cmd(t_subshell *subshell, char **str)
 		{
 			cursor++;
 			tmp = ft_get_next_word(&cursor);
-			subshell->infile = tmp;
+			ft_str_lst_add(&subshell->infiles, tmp);
 		}
 		else if (ft_get_out_redirection(cursor) != NO_OUT)
 		{
@@ -250,7 +250,7 @@ void	ft_parse_cmd(t_subshell *subshell, char **str)
 			tmp = ft_get_next_word(&cursor);
 			if (!*tmp)
 				subshell->exit_status = 1;
-			subshell->heredoc_limiter = tmp;
+			ft_str_lst_add(&subshell->heredocs, tmp);
 			if (parsing_state == 1)
 				parsing_state = 2;
 		}
@@ -285,7 +285,7 @@ void	ft_parse_cmd(t_subshell *subshell, char **str)
 			if (parsing_state == 2)
 				subshell->exit_status = 1;
 			tmp = ft_get_next_word(&cursor);
-			ft_argv_add(&subshell->argv, tmp);
+			ft_str_lst_add(&subshell->argv, tmp);
 		}
 	}
 	*str = cursor;
