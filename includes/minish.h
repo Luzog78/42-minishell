@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 07:55:18 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/16 01:17:39 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,25 +77,31 @@ typedef struct s_argv
 
 typedef struct s_subshell
 {
-	t_cmd_type			type; // 1
+	t_cmd_type			type;
 	int					exit_status;
 
 	// SUBSHELL
 	char				**env;
-	struct s_subshell	*cmds; // NULL
+	struct s_subshell	*cmds;
 
 	// COMMAND
 	t_argv				*argv;
 	char				*infile;
 	t_out				*outfiles;
-	char				*heredoc;
+	char				*heredoc_limiter;
 
-	t_link				link; // NONE
-	struct s_subshell	*next; //NULL
+	t_link				link;
+	struct s_subshell	*next;
 }	t_subshell;
 
 void	ft_parse(t_subshell *subshell, char *str);
 void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env);
 t_bool	ft_check_parenthesis_and_quotes(char *str);
+void	ft_exec(t_subshell *subshell);
+void	ft_exec_subshell(t_subshell *subshell);
+void	ft_exec_cmd(t_subshell *cmds);
+char	*ft_strdup(char *str);
+size_t	ft_strlen(const char *str);
+int		ft_strcmp(char *s1, char *s2);
 
 #endif

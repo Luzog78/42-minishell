@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/15 20:44:11 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/16 03:16:54 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,10 @@ BUILD_DIR			= ./build
 INCLUDES			= ./includes
 SRC_FILES			= \
 						src/parsing/parse.c \
+						src/execution/exec.c \
+						src/utils/ft_strdup.c \
+						src/utils/ft_strlen.c \
+						src/utils/ft_strcmp.c \
 						src/main.c
 
 C_RESET				= \033[0m
@@ -65,7 +69,6 @@ $(BUILD_DIR)/%.o : %.c
 	fi
 	@$(eval TO_COMPILE := 1)
 	@echo -n "  - $(C_GREEN)$<$(C_RESET):  $(C_DIM)"
-	@mkdir -p $(BUILD_DIR)/._
 	@mkdir -p $(@D)
 	$(CC) -c $< -o $@ -I $(INCLUDES) $(CFLAGS)
 	@echo -n "$(C_RESET)"
@@ -105,11 +108,11 @@ endef
 
 clean :
 	$(call del, $(BUILD_DIR) $(BUILD_FILES))
-	@rm -rf $(BUILD_FILES) $(BUILD_DIR) $(BUILD_DIR)/._
+	@rm -rf $(BUILD_FILES) $(BUILD_DIR)
 
 fclean :
 	$(call del, "./$(NAME)" $(BUILD_DIR) $(BUILD_FILES))
-	@rm -rf $(NAME) $(BUILD_FILES) $(BUILD_DIR) $(BUILD_DIR)/._
+	@rm -rf $(NAME) $(BUILD_FILES) $(BUILD_DIR)
 
 re : fclean m_line_break all
 

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/15 20:22:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/16 00:57:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ void	ft_parse_cmd(t_subshell *subshell, char **str)
 			tmp = ft_get_next_word(&cursor);
 			if (!*tmp)
 				subshell->exit_status = 1;
-			subshell->heredoc = tmp;
+			subshell->heredoc_limiter = tmp;
 			if (parsing_state == 1)
 				parsing_state = 2;
 		}
