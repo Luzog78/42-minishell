@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 04:34:29 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/16 05:09:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,13 @@ typedef enum e_out_type
 	APPEND
 }	t_out_type;
 
+typedef enum e_stdin_type
+{
+	NO_IN,
+	HEREDOC,
+	INFILE
+}	t_stdin_type;
+
 typedef struct s_out
 {
 	int					from;
@@ -68,6 +75,13 @@ typedef struct s_out
 	t_out_type			type;
 	struct s_out		*next;
 }	t_out;
+
+typedef struct s_stdin_lst
+{
+	char				*value;
+	t_stdin_type		type;
+	struct s_stdin_lst	*next;
+}	t_stdin_lst;
 
 typedef struct s_str_lst
 {
@@ -86,9 +100,8 @@ typedef struct s_subshell
 
 	// COMMAND
 	t_str_lst			*argv;
-	t_str_lst			*infiles;
+	t_stdin_lst			*stdin;
 	t_out				*outfiles;
-	t_str_lst			*heredocs;
 
 	t_link				link;
 	struct s_subshell	*next;

@@ -6,19 +6,22 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 03:38:33 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/16 05:14:21 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "exec.h"
 
-int	ft_dup_infile(char *infile)
+int	ft_dup_infiles(char *infile)
 {
 	int	fd;
 
 	fd = open(infile, O_RDONLY);
 	if (fd == -1)
+	{
+		perror("minishell");
 		return (1);
+	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (0);
@@ -28,15 +31,22 @@ int	ft_dup_outfiles(t_out *outfiles)
 {
 	int	fd;
 
-	fd = -1;
-	if (outfiles->type == REPLACE)
-		fd = open(outfiles->to, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (outfiles->type == APPEND)
-		fd = open(outfiles->to, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		return (1);
-	dup2(fd, outfiles->from);
-	close(fd);
+	while (outfiles)
+	{
+		fd = -1;
+		if (outfiles->type == REPLACE)
+			fd = open(outfiles->to, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (outfiles->type == APPEND)
+			fd = open(outfiles->to, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (fd == -1)
+		{
+			perror("minishell");
+			return (1);
+		}
+		dup2(fd, outfiles->from);
+		close(fd);
+		outfiles = outfiles->next;
+	}
 	return (0);
 }
 
@@ -56,7 +66,10 @@ int	ft_heredoc(char *limiter)
 	temp_filename = ft_get_temp_filename();
 	temp_fd = open(temp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (temp_fd == -1)
+	{
+		perror("minishell");
 		return (1);
+	}
 	while (ft_strcmp(line, limiter))
 	{
 		line = readline("> ");
@@ -69,12 +82,23 @@ int	ft_heredoc(char *limiter)
 	return (0);
 }
 
+int	ft_stdin(t_stdin_lst *stdin)
+{
+	while (stdin)
+	{
+		if (stdin->type == HEREDOC)
+			ft_heredoc(stdin->value);
+		else if (stdin->type == INFILE)
+			ft_dup_infiles(stdin->value);
+		stdin = stdin->next;
+	}
+	return (0);
+}
+
 void	ft_exec_cmd(t_subshell *cmds)
 {
-	if (!cmds->exit_status && cmds->heredoc_limiter)
-		cmds->exit_status = ft_heredoc(cmds->heredoc_limiter);
-	if (!cmds->exit_status && cmds->infile)
-		cmds->exit_status = ft_dup_infile(cmds->infile);
+	if (!cmds->exit_status && cmds->stdin)
+		cmds->exit_status = ft_stdin(cmds->stdin);
 	if (!cmds->exit_status && cmds->outfiles)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles);
 	if (!cmds->next)
