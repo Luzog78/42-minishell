@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 04:23:20 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/16 04:29:26 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,11 @@ typedef struct s_out
 	struct s_out		*next;
 }	t_out;
 
-typedef struct s_argv
+typedef struct s_str_lst
 {
-	char				*arg;
-	struct s_argv		*next;
-}	t_argv;
-
-typedef struct s_heredoc
-{
-	char				*limiter;
-	struct s_heredoc	*next;
-}	t_heredoc;
-
-typedef struct s_infile
-{
-	char				*file;
-	struct s_infile		*next;
-}	t_infile;
+	char				*value;
+	struct t_str_lst	*next;
+}	t_str_lst;
 
 typedef struct s_subshell
 {
@@ -97,10 +85,10 @@ typedef struct s_subshell
 	struct s_subshell	*cmds;
 
 	// COMMAND
-	t_argv				*argv;
-	t_infile			*infiles;
+	t_str_lst			*argv;
+	t_str_lst			*infiles;
 	t_out				*outfiles;
-	t_heredoc			*heredocs;
+	t_str_lst			*heredocs;
 
 	t_link				link;
 	struct s_subshell	*next;
