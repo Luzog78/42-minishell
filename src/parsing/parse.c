@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 04:39:20 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/16 07:57:33 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,27 +95,108 @@ char	*ft_substr(char *str, int start, int len)
 	return (substr);
 }
 
+t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str)
+{
+	t_str_lst	*new_argv;
+	t_str_lst	*tmp;
+
+	new_argv = calloc(1, sizeof(t_str_lst));
+	if (!new_argv)
+		return (NULL);
+	new_argv->value = str;
+	new_argv->next = NULL;
+	if (!*lst)
+	{
+		*lst = new_argv;
+		return (new_argv);
+	}
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new_argv;
+	return (new_argv);
+}
+
+void	ft_strcat(char *dest, char *str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (dest[i])
+		i++;
+	j = 0;
+	while (str[j])
+	{
+		dest[i + j] = str[j];
+		j++;
+	}
+	dest[i + j] = 0;
+}
+
+char	*ft_concat_lst(t_str_lst *lst)
+{
+	char		*str;
+	t_str_lst	*tmp;
+	int			len;
+
+	len = 0;
+	tmp = lst;
+	while (lst)
+	{
+		len += ft_strlen(lst->value);
+		lst = lst->next;
+	}
+	str = calloc(len + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	lst = tmp;
+	while (lst)
+	{
+		ft_strcat(str, lst->value);
+		lst = lst->next;
+	}
+	return (str);
+}
+
 char	*ft_get_next_word(char **str)
 {
-	char	*tmp;
-	char	*word;
-	char	quote;
+	t_str_lst	*lst;
+	char		quote;
+	char		*word;
+	int			i;
+	int			start_idx;
 
 	ft_skip_whitespace(str);
-	tmp = *str;
-	while (*tmp && (!ft_is_whitespace(*tmp) || quote))
+	quote = 0;
+	lst = NULL;
+	i = 0;
+	start_idx = 0;
+	while ((*str)[i] && (!ft_is_whitespace((*str)[i]) || quote))
 	{
-		if (*tmp == '\'' || *tmp == '"')
+		if (((*str)[i] == '\'' || (*str)[i] == '"') && !quote)
 		{
-			if (!quote)
-				quote = *tmp;
-			else if (quote == *tmp)
-				quote = 0;
+			if (i - start_idx > 0)
+				ft_str_lst_add(&lst, ft_substr(*str, start_idx, i - start_idx));
+			quote = (*str)[i];
+			start_idx = i + 1;
 		}
-		tmp++;
+		else if (((*str)[i] == '\'' || (*str)[i] == '"') && quote == (*str)[i])
+		{
+			quote = 0;
+			ft_str_lst_add(&lst, ft_substr(*str, start_idx, i - start_idx));
+			start_idx = i + 1;
+		}
+		else if (!quote && ((*str)[i] == '<' || (*str)[i] == '>'
+			|| (*str)[i] == '|' || (*str)[i] == '&' || (*str)[i] == ';'
+			|| (*str)[i] == '(' || (*str)[i] == ')'))
+			break ;
+		i++;
 	}
-	word = ft_substr(*str, 0, tmp - *str);
-	*str = tmp;
+	if (i - start_idx > 0)
+		ft_str_lst_add(&lst, ft_substr(*str, start_idx, i - start_idx));
+	word = ft_concat_lst(lst);
+	(*str) += i;
 	return (word);
 }
 
@@ -178,26 +259,26 @@ t_out	*ft_out_add(t_out **out, int from, char *to, t_out_type type)
 	return (new_out);
 }
 
-t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str)
+t_stdin_lst	*ft_stdin_add(t_stdin_lst **stdin, char *value, t_stdin_type type)
 {
-	t_str_lst	*new_argv;
-	t_str_lst	*tmp;
+	t_stdin_lst	*new_stdin;
+	t_stdin_lst	*tmp;
 
-	new_argv = calloc(1, sizeof(t_str_lst));
-	if (!new_argv)
+	new_stdin = calloc(1, sizeof(t_stdin_lst));
+	if (!new_stdin)
 		return (NULL);
-	new_argv->value = str;
-	new_argv->next = NULL;
-	if (!*lst)
+	new_stdin->value = value;
+	new_stdin->type = type;
+	if (!*stdin)
 	{
-		*lst = new_argv;
-		return (new_argv);
+		*stdin = new_stdin;
+		return (new_stdin);
 	}
-	tmp = *lst;
+	tmp = *stdin;
 	while (tmp->next)
 		tmp = tmp->next;
-	tmp->next = new_argv;
-	return (new_argv);
+	tmp->next = new_stdin;
+	return (new_stdin);
 }
 
 void	ft_parse_redirection(t_subshell *subshell, char **str)
@@ -221,22 +302,35 @@ void	ft_parse_redirection(t_subshell *subshell, char **str)
 		subshell->exit_status = 1;
 }
 
-void	ft_parse_cmd(t_subshell *subshell, char **str)
+t_link	ft_parse_cmd(t_subshell *subshell, char **str)
 {
 	char	*cursor;
 	char	*tmp;
 	int		parsing_state; // 0: start, 1: argv, 2: redirections
+	t_bool	quit_parenthesis;
+	t_link	ret;
 
+	quit_parenthesis = FALSE;
 	parsing_state = 0;
 	cursor = *str;
 	while (*cursor)
 	{
 		ft_skip_whitespace(&cursor);
-		if (ft_starts_with(cursor, "<"))
+		if (ft_starts_with(cursor, ")"))
+		{
+			if (quit_parenthesis)
+				break ;
+			cursor++;
+			quit_parenthesis = TRUE;
+			parsing_state = 2;
+		}
+		else if (ft_starts_with(cursor, "<"))
 		{
 			cursor++;
 			tmp = ft_get_next_word(&cursor);
-			ft_str_lst_add(&subshell->infiles, tmp);
+			ft_stdin_add(&subshell->stdin, tmp, INFILE);
+			if (parsing_state == 1)
+				parsing_state = 2;
 		}
 		else if (ft_get_out_redirection(cursor) != NO_OUT)
 		{
@@ -250,7 +344,7 @@ void	ft_parse_cmd(t_subshell *subshell, char **str)
 			tmp = ft_get_next_word(&cursor);
 			if (!*tmp)
 				subshell->exit_status = 1;
-			ft_str_lst_add(&subshell->heredocs, tmp);
+			ft_stdin_add(&subshell->stdin, tmp, HEREDOC);
 			if (parsing_state == 1)
 				parsing_state = 2;
 		}
@@ -289,6 +383,13 @@ void	ft_parse_cmd(t_subshell *subshell, char **str)
 		}
 	}
 	*str = cursor;
+	if (quit_parenthesis)
+	{
+		ret = subshell->link;
+		subshell->link = NONE;
+		return (ret);
+	}
+	return (NONE);
 }
 
 t_bool	ft_check_parenthesis_and_quotes(char *str)
@@ -322,10 +423,45 @@ t_bool	ft_check_parenthesis_and_quotes(char *str)
 	return (TRUE);
 }
 
+void	ft_skip_parenthesis(char **cursor)
+{
+	char	quote;
+	int		parenthesis;
+
+	quote = 0;
+	parenthesis = 1;
+	while (**cursor)
+	{
+		if (**cursor == '\'' || **cursor == '"')
+		{
+			if (!quote)
+				quote = **cursor;
+			else if (quote == **cursor)
+				quote = 0;
+		}
+		else if (**cursor == '(' && !quote)
+			parenthesis++;
+		else if (**cursor == ')' && !quote)
+			parenthesis--;
+		if (parenthesis <= 0)
+			break ;
+		(*cursor)++;
+	}
+	(*cursor)++;
+	ft_skip_whitespace(cursor);
+	if (ft_starts_with(*cursor, "&&")
+		|| ft_starts_with(*cursor, "||")
+		|| ft_starts_with(*cursor, "|&"))
+		*cursor += 2;
+	else if (ft_starts_with(*cursor, "|"))
+		(*cursor)++;
+}
+
 void	ft_parse(t_subshell *subshell, char *str)
 {
 	t_subshell	*curr_cmd;
 	char		*cursor;
+	t_link		ret;
 
 	curr_cmd = subshell->cmds;
 	cursor = str;
@@ -336,23 +472,20 @@ void	ft_parse(t_subshell *subshell, char *str)
 		ft_skip_whitespace(&cursor);
 		if (*cursor == '(')
 		{
-			curr_cmd = ft_subshell_add(&subshell->cmds, SUBSHELL, subshell->env);
-			ft_parse(curr_cmd, cursor + 1);
-			while (*cursor && *cursor != ')')
-				cursor++;
-			if (*cursor != ')')
-				subshell->exit_status = 1;
 			cursor++;
-		}
-		else if (*cursor == ')')
-		{
-			break ;
+			curr_cmd = ft_subshell_add(&subshell->cmds, SUBSHELL, subshell->env);
+			ft_parse(curr_cmd, cursor);
+			ft_skip_parenthesis(&cursor);
 		}
 		else
 		{
 			curr_cmd = ft_subshell_add(&subshell->cmds, COMMAND, subshell->env);
-			ft_parse_cmd(curr_cmd, &cursor);
+			ret = ft_parse_cmd(curr_cmd, &cursor);
+			if (ret != NONE)
+			{
+				subshell->link = ret;
+				break ;
+			}
 		}
 	}
-	free(str);
 }

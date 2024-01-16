@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 04:24:08 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/16 07:04:40 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,8 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->exit_status = 0;
 	subshell->cmds = NULL;
 	subshell->argv = NULL;
-	subshell->infiles = NULL;
+	subshell->stdin = NULL;
 	subshell->outfiles = NULL;
-	subshell->heredocs = NULL;
 	subshell->link = NONE;
 	subshell->next = NULL;
 }
@@ -70,7 +69,7 @@ int	main(int argc, char **argv, char **env)
 			printf("error: parse\n");
 			continue ;
 		}
-		ft_exec(subshell);
+		// ft_exec(subshell);
 		add_history(line);
 	}
 	return (0);
