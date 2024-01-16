@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 01:17:39 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/16 04:23:20 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,18 @@ typedef struct s_argv
 	struct s_argv		*next;
 }	t_argv;
 
+typedef struct s_heredoc
+{
+	char				*limiter;
+	struct s_heredoc	*next;
+}	t_heredoc;
+
+typedef struct s_infile
+{
+	char				*file;
+	struct s_infile		*next;
+}	t_infile;
+
 typedef struct s_subshell
 {
 	t_cmd_type			type;
@@ -86,9 +98,9 @@ typedef struct s_subshell
 
 	// COMMAND
 	t_argv				*argv;
-	char				*infile;
+	t_infile			*infiles;
 	t_out				*outfiles;
-	char				*heredoc_limiter;
+	t_heredoc			*heredocs;
 
 	t_link				link;
 	struct s_subshell	*next;
