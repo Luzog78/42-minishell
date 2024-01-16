@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 04:29:26 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/16 04:34:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_out
 typedef struct s_str_lst
 {
 	char				*value;
-	struct t_str_lst	*next;
+	struct s_str_lst	*next;
 }	t_str_lst;
 
 typedef struct s_subshell
