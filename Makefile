@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/16 03:16:54 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/17 18:27:32 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,14 @@ INCLUDES			= ./includes
 SRC_FILES			= \
 						src/parsing/parse.c \
 						src/execution/exec.c \
+						src/execution/redirection.c \
+						src/builtins/cd.c \
+						src/builtins/echo.c \
+						src/builtins/env.c \
+						src/builtins/exit.c \
+						src/builtins/export.c \
+						src/builtins/pwd.c \
+						src/builtins/unset.c \
 						src/utils/ft_strdup.c \
 						src/utils/ft_strlen.c \
 						src/utils/ft_strcmp.c \

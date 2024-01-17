@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 03:39:13 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/17 18:26:17 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/01/17 18:29:17 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
+#include "builtins.h"
 
-# include "minish.h"
-# include "builtins.h"
-
-int	ft_dup_infiles(char *infile);
-int	ft_dup_outfiles(t_out *outfiles);
-int	ft_heredoc(char *limiter);
-int	ft_stdin(t_stdin_lst *stdin);
-
-#endif
+int	ft_export(char **argv, char **env)
+{
+	(void)argv;
+	(void)env;
+	return (0);
+}

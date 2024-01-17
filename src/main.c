@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 07:04:40 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/17 17:24:09 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **env)
 			printf("error: parse\n");
 			continue ;
 		}
-		// ft_exec(subshell);
+		ft_exec(subshell);
 		add_history(line);
 	}
 	return (0);
