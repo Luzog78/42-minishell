@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 07:57:33 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/18 14:03:35 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,96 +302,6 @@ void	ft_parse_redirection(t_subshell *subshell, char **str)
 		subshell->exit_status = 1;
 }
 
-t_link	ft_parse_cmd(t_subshell *subshell, char **str)
-{
-	char	*cursor;
-	char	*tmp;
-	int		parsing_state; // 0: start, 1: argv, 2: redirections
-	t_bool	quit_parenthesis;
-	t_link	ret;
-
-	quit_parenthesis = FALSE;
-	parsing_state = 0;
-	cursor = *str;
-	while (*cursor)
-	{
-		ft_skip_whitespace(&cursor);
-		if (ft_starts_with(cursor, ")"))
-		{
-			if (quit_parenthesis)
-				break ;
-			cursor++;
-			quit_parenthesis = TRUE;
-			parsing_state = 2;
-		}
-		else if (ft_starts_with(cursor, "<"))
-		{
-			cursor++;
-			tmp = ft_get_next_word(&cursor);
-			ft_stdin_add(&subshell->stdin, tmp, INFILE);
-			if (parsing_state == 1)
-				parsing_state = 2;
-		}
-		else if (ft_get_out_redirection(cursor) != NO_OUT)
-		{
-			ft_parse_redirection(subshell, &cursor);
-			if (parsing_state == 1)
-				parsing_state = 2;
-		}
-		else if (ft_starts_with(cursor, "<<"))
-		{
-			cursor += 2;
-			tmp = ft_get_next_word(&cursor);
-			if (!*tmp)
-				subshell->exit_status = 1;
-			ft_stdin_add(&subshell->stdin, tmp, HEREDOC);
-			if (parsing_state == 1)
-				parsing_state = 2;
-		}
-		else if (ft_starts_with(cursor, "&&"))
-		{
-			subshell->link = AND;
-			cursor += 2;
-			break ;
-		}
-		else if (ft_starts_with(cursor, "||"))
-		{
-			subshell->link = OR;
-			cursor += 2;
-			break ;
-		}
-		else if (ft_starts_with(cursor, "|&"))
-		{
-			subshell->link = PIPE_AND;
-			cursor += 2;
-			break ;
-		}
-		else if (ft_starts_with(cursor, "|"))
-		{
-			subshell->link = PIPE;
-			cursor++;
-			break ;
-		}
-		else
-		{
-			if (parsing_state == 0)
-				parsing_state = 1;
-			if (parsing_state == 2)
-				subshell->exit_status = 1;
-			tmp = ft_get_next_word(&cursor);
-			ft_str_lst_add(&subshell->argv, tmp);
-		}
-	}
-	*str = cursor;
-	if (quit_parenthesis)
-	{
-		ret = subshell->link;
-		subshell->link = NONE;
-		return (ret);
-	}
-	return (NONE);
-}
-
 t_bool	ft_check_parenthesis_and_quotes(char *str)
 {
 	int		i;
@@ -457,27 +367,44 @@ void	ft_skip_parenthesis(char **cursor)
 		(*cursor)++;
 }
 
-void	ft_parse(t_subshell *subshell, char *str)
+t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 {
 	t_subshell	*curr_cmd;
 	char		*cursor;
 	t_link		ret;
 
+	char	*tmp;
+	int		parsing_state; // 0: start, 1: argv, 2: redirections
+	t_bool	quit_parenthesis;
+
 	curr_cmd = subshell->cmds;
-	cursor = str;
+	cursor = *str;
+
+	quit_parenthesis = FALSE;
+	parsing_state = 0;
+	
 	if (!*cursor || ft_is_empty(cursor))
 		subshell->exit_status = 1;
+
 	while (*cursor && !ft_is_empty(cursor))
 	{
 		ft_skip_whitespace(&cursor);
-		if (*cursor == '(')
+		if (ft_starts_with(cursor, "("))
 		{
+			if (quit_parenthesis || parsing_state == 1 || subshell->type != UNDEFINED)
+				break ; // Syntax error
+			subshell->type = SUBSHELL;
 			cursor++;
-			curr_cmd = ft_subshell_add(&subshell->cmds, SUBSHELL, subshell->env);
-			ft_parse(curr_cmd, cursor);
-			ft_skip_parenthesis(&cursor);
+			ret = NONE;
+			while (ret == NONE && *cursor && !ft_is_empty(cursor))
+			{
+				curr_cmd = ft_subshell_add(&subshell->cmds, UNDEFINED, subshell->env);
+				ret = ft_parse_subshell(curr_cmd, &cursor);
+				if (ret != NONE)
+					subshell->link = ret;
+			}
 		}
-		else
+		/*else
 		{
 			curr_cmd = ft_subshell_add(&subshell->cmds, COMMAND, subshell->env);
 			ret = ft_parse_cmd(curr_cmd, &cursor);
@@ -486,6 +413,99 @@ void	ft_parse(t_subshell *subshell, char *str)
 				subshell->link = ret;
 				break ;
 			}
+		}*/
+		else if (ft_starts_with(cursor, ")"))
+		{
+			if (quit_parenthesis)
+				break ;
+			cursor++;
+			quit_parenthesis = TRUE;
+			parsing_state = 2;
 		}
+		else if (ft_starts_with(cursor, "<"))
+		{
+			cursor++;
+			tmp = ft_get_next_word(&cursor);
+			ft_stdin_add(&subshell->stdin, tmp, INFILE);
+			if (parsing_state == 1)
+				parsing_state = 2;
+		}
+		else if (ft_get_out_redirection(cursor) != NO_OUT)
+		{
+			ft_parse_redirection(subshell, &cursor);
+			if (parsing_state == 1)
+				parsing_state = 2;
+		}
+		else if (ft_starts_with(cursor, "<<"))
+		{
+			cursor += 2;
+			tmp = ft_get_next_word(&cursor);
+			if (!*tmp)
+				subshell->exit_status = 1;
+			ft_stdin_add(&subshell->stdin, tmp, HEREDOC);
+			if (parsing_state == 1)
+				parsing_state = 2;
+		}
+		else if (ft_starts_with(cursor, "&&"))
+		{
+			subshell->link = AND;
+			cursor += 2;
+			break ;
+		}
+		else if (ft_starts_with(cursor, "||"))
+		{
+			subshell->link = OR;
+			cursor += 2;
+			break ;
+		}
+		else if (ft_starts_with(cursor, "|&"))
+		{
+			subshell->link = PIPE_AND;
+			cursor += 2;
+			break ;
+		}
+		else if (ft_starts_with(cursor, "|"))
+		{
+			subshell->link = PIPE;
+			cursor++;
+			break ;
+		}
+		else
+		{
+			if (subshell->type == SUBSHELL)
+				break ; // Syntax error
+			subshell->type = COMMAND;
+			if (parsing_state == 0)
+				parsing_state = 1;
+			if (parsing_state == 2)
+				subshell->exit_status = 1;
+			tmp = ft_get_next_word(&cursor);
+			ft_str_lst_add(&subshell->argv, tmp);
+		}
+	}
+	*str = cursor;
+	if (quit_parenthesis)
+	{
+		ret = subshell->link;
+		subshell->link = NONE;
+		return (ret);
+	}
+	return (NONE);
+}
+
+void	ft_parse(t_subshell *subshell, char *str)
+{
+	t_link		ret;
+	char		*cursor;
+	t_subshell	*curr_cmd;
+
+	ret = NONE;
+	cursor = str;
+	while (ret == NONE && *cursor && !ft_is_empty(cursor))
+	{
+		curr_cmd = ft_subshell_add(&subshell->cmds, UNDEFINED, subshell->env);
+		ret = ft_parse_subshell(curr_cmd, &cursor);
+		if (ret != NONE)
+			subshell->link = ret;
 	}
 }
