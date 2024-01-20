@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/18 14:03:45 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/20 16:11:56 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,6 @@ void	ft_exec_cmd(t_subshell *cmds);
 char	*ft_strdup(char *str);
 size_t	ft_strlen(const char *str);
 int		ft_strcmp(char *s1, char *s2);
+char	**ft_env_cpy(char **env);
 
 #endif

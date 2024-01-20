@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/17 18:30:52 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/20 16:13:03 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**ft_lststr_to_char_array(t_str_lst *lst)
 
 int	ft_execve_bin(char **argv, char **env)
 {
-	
+
 	if (execve(argv[0], argv, env) == -1)
 	{
 		perror("minishell");
@@ -90,6 +90,7 @@ void	ft_exec_cmd(t_subshell *cmds)
 		cmds->exit_status = ft_execve(cmds);
 	if (!cmds->next)
 		return ;
+	cmds->next->env = ft_env_cpy(cmds->env);
 	if (cmds->next->type == COMMAND)
 		ft_exec_cmd(cmds->next);
 	else if (cmds->next->type == SUBSHELL)
@@ -108,6 +109,9 @@ void	ft_exec_subshell(t_subshell *subshell)
 
 void	ft_exec(t_subshell *subshell)
 {
-	ft_exec_cmd(subshell->cmds);
-	ft_subshell_init(subshell, SUBSHELL, subshell->env);
+	subshell->cmds->env = ft_env_cpy(subshell->env);
+	if (subshell->next->type == COMMAND)
+		ft_exec_cmd(subshell->cmds);
+	else
+		ft_exec_subshell(subshell->cmds);
 }

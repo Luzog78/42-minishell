@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/17 18:27:32 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/20 16:10:52 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC_FILES			= \
 						src/utils/ft_strdup.c \
 						src/utils/ft_strlen.c \
 						src/utils/ft_strcmp.c \
+						src/utils/ft_envcpy.c \
 						src/main.c
 
 C_RESET				= \033[0m

@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/18 14:07:00 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/20 16:13:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minish.h"
-
-char	**ft_env_cpy(char **env)
-{
-	int		i;
-	char	**new_env;
-
-	i = 0;
-	while (env[i])
-		i++;
-	new_env = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (env[i])
-	{
-		new_env[i] = ft_strdup(env[i]);
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
 
 void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 {
