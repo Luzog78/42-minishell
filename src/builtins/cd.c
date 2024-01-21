@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/20 16:12:33 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/21 15:20:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static t_bool	ft_is_home(char **argv, char **env)
 	char	*pwd;
 
 	pwd = ft_get_pwd(env);
+	(void)pwd;
 	(void)argv;
 	return (true);
 }
@@ -109,13 +110,35 @@ static char	*ft_get_path(char **argv, char **env)
 	return (NULL);
 }
 
+void	ft_path_update(char *path, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strstr("PWD=", env[i]))
+		{
+			env[i] = path; /home/bcarolle
+		}
+		i++;
+	}
+}
+
 int	ft_cd(char **argv, char **env)
 {
 	char	*path;
-
-	path = ft_get_path(argv, env);
+	
+	if (!argv[1])
+		path = ft_get_home(env);
+	else if (argv[1][0] == '.')
+		path = qqch;
+	else if (argv[1][0] == '/')
+		path = qqchdautres;
+	else
+		path = encoreqqchdautres;
 	if (!path)
 		return (1);
-	// ft_update_path(path, env);
+	ft_path_update(path, env);
 	return (0);
 }
