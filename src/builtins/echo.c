@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/17 18:28:59 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:57:19 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 int	ft_echo(char **argv)
 {
-	(void)argv;
+	int	i;
+
+	i = 1;
+	while (argv[i])
+	{
+		printf("%s", argv[i]);
+		if (argv[i + 1])
+			printf(" ");
+		i++;
+	}
 	return (0);
 }

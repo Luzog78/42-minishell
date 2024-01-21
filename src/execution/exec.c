@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/20 16:13:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/21 18:05:15 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_execve(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		exit_status = ft_cd(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
-		exit_status = ft_pwd(argv, cmds->env);
+		exit_status = ft_pwd(cmds->env);
 	else if (ft_strcmp(argv[0], "export") == 0)
 		exit_status = ft_export(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "unset") == 0)
@@ -110,7 +110,7 @@ void	ft_exec_subshell(t_subshell *subshell)
 void	ft_exec(t_subshell *subshell)
 {
 	subshell->cmds->env = ft_env_cpy(subshell->env);
-	if (subshell->next->type == COMMAND)
+	if (subshell->cmds && subshell->cmds->type == COMMAND)
 		ft_exec_cmd(subshell->cmds);
 	else
 		ft_exec_subshell(subshell->cmds);

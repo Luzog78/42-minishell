@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 17:59:49 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:57:46 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/01/21 16:09:34 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/01/21 16:11:19 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "minish.h"
 
-int	ft_env(char **env)
+void	ft_strcat(char *dest, char *str)
 {
 	int	i;
+	int	j;
 
 	i = 0;
-	while (env[i])
-	{
-		printf("%s\n", env[i]);
+	while (dest[i])
 		i++;
+	j = 0;
+	while (str[j])
+	{
+		dest[i + j] = str[j];
+		j++;
 	}
-	return (0);
+	dest[i + j] = 0;
 }

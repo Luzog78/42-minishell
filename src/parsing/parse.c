@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/18 14:03:35 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/21 16:11:09 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,23 +115,6 @@ t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str)
 		tmp = tmp->next;
 	tmp->next = new_argv;
 	return (new_argv);
-}
-
-void	ft_strcat(char *dest, char *str)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (dest[i])
-		i++;
-	j = 0;
-	while (str[j])
-	{
-		dest[i + j] = str[j];
-		j++;
-	}
-	dest[i + j] = 0;
 }
 
 char	*ft_concat_lst(t_str_lst *lst)
@@ -382,7 +365,7 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 
 	quit_parenthesis = FALSE;
 	parsing_state = 0;
-	
+
 	if (!*cursor || ft_is_empty(cursor))
 		subshell->exit_status = 1;
 

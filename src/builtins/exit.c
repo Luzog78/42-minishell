@@ -6,14 +6,15 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/17 18:29:10 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/21 18:05:32 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_exit(char **argv)
+int	ft_exit(void)
 {
-	(void)argv;
+	//free all
+	exit(0);
 	return (0);
 }

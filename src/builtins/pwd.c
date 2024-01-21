@@ -6,15 +6,25 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:58:25 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/17 18:29:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:58:26 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_pwd(char **argv, char **env)
+int	ft_pwd(char **env)
 {
-	(void)	argv;
-	(void)	env;
-	return (0);
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strstr(env[i], "PWD="))
+		{
+			printf("%s\n", env[i] + 4);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }

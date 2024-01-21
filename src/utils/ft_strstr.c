@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 17:59:49 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:57:46 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/01/21 16:27:49 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/01/21 16:28:05 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "minish.h"
 
-int	ft_env(char **env)
+char	*ft_strstr(const char *haystack, const char *needle)
 {
-	int	i;
+	int		i;
+	int		j;
+	int		k;
 
 	i = 0;
-	while (env[i])
+	j = 0;
+	k = 0;
+	if (needle[0] == '\0')
+		return ((char *)haystack);
+	while (haystack[i])
 	{
-		printf("%s\n", env[i]);
+		k = i;
+		while (haystack[k] == needle[j])
+		{
+			k++;
+			j++;
+			if (needle[j] == '\0')
+				return ((char *)haystack + i);
+		}
+		j = 0;
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

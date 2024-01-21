@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:16:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/17 18:26:12 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/21 18:05:41 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 int		ft_echo(char **argv);
 int		ft_cd(char **argv, char **env);
 int		ft_env(char **env);
-int		ft_exit(char **argv);
+int		ft_exit(void);
 int		ft_export(char **argv, char **env);
-int		ft_pwd(char **argv, char **env);
+int		ft_pwd(char **env);
 int		ft_unset(char **argv, char **env);
 #endif

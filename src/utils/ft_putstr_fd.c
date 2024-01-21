@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 17:59:49 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:57:46 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/01/21 16:22:42 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/01/21 16:22:51 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "minish.h"
 
-int	ft_env(char **env)
+void	ft_putstr_fd(char *str, int fd)
 {
 	int	i;
 
 	i = 0;
-	while (env[i])
-	{
-		printf("%s\n", env[i]);
+	while (str[i])
 		i++;
-	}
-	return (0);
+	write(fd, str, i);
 }

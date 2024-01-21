@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/20 16:11:56 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/21 16:28:18 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,9 @@ char	*ft_strdup(char *str);
 size_t	ft_strlen(const char *str);
 int		ft_strcmp(char *s1, char *s2);
 char	**ft_env_cpy(char **env);
+char	*ft_strcpy(char *dst, const char *src);
+void	ft_strcat(char *dest, char *str);
+void	ft_putstr_fd(char *str, int fd);
+char	*ft_strstr(const char *haystack, const char *needle);
 
 #endif

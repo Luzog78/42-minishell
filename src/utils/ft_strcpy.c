@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 17:59:49 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:57:46 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/01/21 16:08:00 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/01/21 16:08:16 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "minish.h"
 
-int	ft_env(char **env)
+char	*ft_strcpy(char *dst, const char *src)
 {
-	int	i;
+	int		i;
+	char	*str;
 
 	i = 0;
-	while (env[i])
+	str = (char *)src;
+	while (str[i])
 	{
-		printf("%s\n", env[i]);
+		dst[i] = str[i];
 		i++;
 	}
-	return (0);
+	dst[i] = '\0';
+	return (dst);
 }
