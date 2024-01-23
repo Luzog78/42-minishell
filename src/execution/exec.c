@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 20:21:37 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/23 21:11:55 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@ void	ft_exec_cmd(t_subshell *cmds)
 {
 	if (!cmds->exit_status && cmds->stdin)
 		cmds->exit_status = ft_stdin(cmds->stdin);
-	if (!cmds->exit_status && cmds->link == PIPE)
-		cmds->exit_status = ft_pipe(cmds);
 	if (!cmds->exit_status && cmds->outfiles)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles);
+	if (!cmds->exit_status && cmds->link == PIPE)
+		cmds->exit_status = ft_pipe(cmds);
 	if (!cmds->exit_status && cmds->argv)
 		cmds->exit_status = ft_execve(cmds);
 	if (cmds->next == NULL)
