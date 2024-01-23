@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/21 16:28:39 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/23 20:06:51 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC_FILES			= \
 						src/parsing/parse.c \
 						src/execution/exec.c \
 						src/execution/redirection.c \
+						src/execution/pipe.c \
 						src/builtins/cd.c \
 						src/builtins/echo.c \
 						src/builtins/env.c \
@@ -35,6 +36,9 @@ SRC_FILES			= \
 						src/utils/ft_strcat.c \
 						src/utils/ft_putstr_fd.c \
 						src/utils/ft_strstr.c \
+						src/utils/ft_strjoin.c \
+						src/utils/ft_strncmp.c \
+						src/utils/ft_free.c \
 						src/main.c
 
 C_RESET				= \033[0m

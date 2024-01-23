@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/17 18:25:00 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:30:48 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,12 @@ int	ft_dup_outfiles(t_out *outfiles)
 
 char	*ft_get_temp_filename(void)
 {
-	//FAIRE UN truc AVEC UN ACCESS(FILENAME, F_OK) POUR VERIFIER SI LE FICHIER EXISTE
-	return (ft_strdup(".temp"));
+	//do a function that returns a random string
+	char	*random;
+
+	random = ft_strdup("/tmp/minishell_XXXXXX");
+	
+	return (random);
 }
 
 int	ft_heredoc(char *limiter)

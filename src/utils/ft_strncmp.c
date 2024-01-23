@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/22 16:53:18 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/01/23 18:52:53 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/01/23 18:53:01 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "minish.h"
 
-int	ft_exit(void)
+int	ft_strncmp(char *s1, char *s2, int n)
 {
-	//free all
-	printf("exit\n");
-	exit(0);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (s1[i] && (s1[i] == s2[i]) && i < n)
+		i++;
+	if (i == n)
+		return (0);
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

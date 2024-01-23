@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:58:25 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:58:26 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:54:14 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 int	ft_pwd(char **env)
 {
-	int	i;
+	char	*pwd;
 
-	i = 0;
-	while (env[i])
+	(void)env;
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
 	{
-		if (ft_strstr(env[i], "PWD="))
-		{
-			printf("%s\n", env[i] + 4);
-			return (0);
-		}
-		i++;
+		perror("minishell");
+		return (1);
 	}
+	ft_putstr_fd(pwd, STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	free(pwd);
 	return (1);
 }

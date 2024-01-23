@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 18:05:15 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/23 20:21:37 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,18 @@ char	**ft_lststr_to_char_array(t_str_lst *lst)
 
 int	ft_execve_bin(char **argv, char **env)
 {
+	pid_t	pid;
 
-	if (execve(argv[0], argv, env) == -1)
+	pid = fork();
+	if (!pid)
 	{
-		perror("minishell");
-		return (1);
+		if (execve(argv[0], argv, env) == -1)
+		{
+			perror("minishell");
+			exit (1);
+		}
+		// free_all();
+		exit (0);
 	}
 	return (0);
 }
@@ -63,7 +70,7 @@ int	ft_execve(t_subshell *cmds)
 	if (ft_strcmp(argv[0], "echo") == 0)
 		exit_status = ft_echo(argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
-		exit_status = ft_cd(argv, cmds->env);
+		exit_status = ft_cd(argv);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		exit_status = ft_pwd(cmds->env);
 	else if (ft_strcmp(argv[0], "export") == 0)
@@ -73,10 +80,11 @@ int	ft_execve(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "env") == 0)
 		exit_status = ft_env(cmds->env);
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		exit_status = ft_exit(argv);
+		exit_status = ft_exit();
 	else
 		exit_status = ft_execve_bin(argv, cmds->env);
-	//ft_free_char_array(argv);
+	waitpid(-1, NULL, 0);
+	ft_free_char_array(argv);
 	return (exit_status);
 }
 
@@ -84,11 +92,13 @@ void	ft_exec_cmd(t_subshell *cmds)
 {
 	if (!cmds->exit_status && cmds->stdin)
 		cmds->exit_status = ft_stdin(cmds->stdin);
+	if (!cmds->exit_status && cmds->link == PIPE)
+		cmds->exit_status = ft_pipe(cmds);
 	if (!cmds->exit_status && cmds->outfiles)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles);
 	if (!cmds->exit_status && cmds->argv)
 		cmds->exit_status = ft_execve(cmds);
-	if (!cmds->next)
+	if (cmds->next == NULL)
 		return ;
 	cmds->next->env = ft_env_cpy(cmds->env);
 	if (cmds->next->type == COMMAND)
@@ -114,4 +124,5 @@ void	ft_exec(t_subshell *subshell)
 		ft_exec_cmd(subshell->cmds);
 	else
 		ft_exec_subshell(subshell->cmds);
+	free_all(subshell, 0);
 }

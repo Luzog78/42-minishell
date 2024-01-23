@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/22 16:53:18 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/01/22 16:56:52 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/01/23 15:41:13 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "exec.h"
 
-int	ft_exit(void)
+int	ft_pipe(t_subshell *cmds)
 {
-	//free all
-	printf("exit\n");
-	exit(0);
+	(void)cmds;
 	return (0);
 }

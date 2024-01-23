@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:28:18 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/23 20:08:01 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_subshell
 	t_out				*outfiles;
 
 	t_link				link;
+	int					pipe[2];
 	struct s_subshell	*next;
 }	t_subshell;
 
@@ -122,5 +123,9 @@ char	*ft_strcpy(char *dst, const char *src);
 void	ft_strcat(char *dest, char *str);
 void	ft_putstr_fd(char *str, int fd);
 char	*ft_strstr(const char *haystack, const char *needle);
+char	*ft_strjoin(char *s1, char *s2);
+int		ft_strncmp(char *s1, char *s2, int n);
+void	free_all(t_subshell *subshell, int mode);
+void	ft_free_char_array(char **array);
 
 #endif
