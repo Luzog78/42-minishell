@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 21:01:06 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/23 23:17:17 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	subshell = malloc(sizeof(t_subshell));
+	if (!subshell)
+		return (1);
 	ft_subshell_init(subshell, SUBSHELL, env);
 	while (1)
 	{
@@ -54,6 +56,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		ft_exec(subshell);
 		add_history(line);
+		free(line);
 	}
 	return (0);
 }

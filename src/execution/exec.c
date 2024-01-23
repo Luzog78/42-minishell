@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 21:11:55 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/23 23:12:49 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	**ft_lststr_to_char_array(t_str_lst *lst)
 
 	i = 0;
 	array = malloc(sizeof(char *) * (ft_lstsize(lst) + 1));
+	if (!array)
+		return (NULL);
 	while (lst)
 	{
 		array[i] = ft_strdup(lst->value);
