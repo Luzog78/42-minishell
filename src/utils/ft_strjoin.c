@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 18:33:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 18:34:51 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:32:29 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	j = 0;
 	while (s2[j])
 		new_str[i++] = s2[j++];
-	free(s1);
-	free(s2);
 	new_str[i] = '\0';
 	return (new_str);
 }
