@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 23:12:49 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:05:06 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_execve(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		exit_status = ft_pwd(cmds->env);
 	else if (ft_strcmp(argv[0], "export") == 0)
-		exit_status = ft_export(argv, cmds->env);
+		exit_status = ft_export(argv, cmds);
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		exit_status = ft_unset(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "env") == 0)
@@ -113,18 +113,44 @@ void	ft_exec_subshell(t_subshell *subshell)
 {
 	if (!subshell)
 		return ;
-	if (subshell->next->type == COMMAND)
+	if (subshell->cmds && subshell->cmds->type == COMMAND)
+	{
+		subshell->cmds->env = ft_env_cpy(subshell->env);
+		ft_exec_cmd(subshell->cmds);
+	}
+	else if (subshell->cmds && subshell->cmds->type == SUBSHELL)
+	{
+		subshell->cmds->env = ft_env_cpy(subshell->env);
+		ft_exec_subshell(subshell->cmds);
+	}
+	else
+		return ;
+	if (subshell->next && subshell->next->type == COMMAND)
+	{
+		subshell->next->env = ft_env_cpy(subshell->env);
 		ft_exec_cmd(subshell->next);
-	else if (subshell->next->type == SUBSHELL)
+	}
+	else if (subshell->next && subshell->next->type == SUBSHELL)
+	{
+		subshell->next->env = ft_env_cpy(subshell->env);
 		ft_exec_subshell(subshell->next);
+	}
 }
 
 void	ft_exec(t_subshell *subshell)
 {
-	subshell->cmds->env = ft_env_cpy(subshell->env);
 	if (subshell->cmds && subshell->cmds->type == COMMAND)
+	{
+		subshell->cmds->env = ft_env_cpy(subshell->env);
 		ft_exec_cmd(subshell->cmds);
-	else
+		subshell->env = ft_env_cpy(subshell->cmds->env);
+	}
+	else if (subshell->cmds && subshell->cmds->type == SUBSHELL)
+	{
+		subshell->cmds->env = ft_env_cpy(subshell->env);
 		ft_exec_subshell(subshell->cmds);
+	}
+	else
+		return ;
 	free_all(subshell, 0);
 }

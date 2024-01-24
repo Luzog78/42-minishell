@@ -1,0 +1,9 @@
+# Ignore output files
+outfile
+outfile2
+
+# Ignore test file
+main_test.c
+
+# Ignore compiled executable
+a.out

@@ -59,6 +59,7 @@
 "files.associations": {
 	"minish.h": "c",
 	"exec.h": "c",
-	"builtins.h": "c"
+	"builtins.h": "c",
+	"stdlib.h": "c"
 }
 }

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 18:10:26 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:00:36 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,23 @@ char	**ft_add_env(char *new_var, char **env)
 	new_env[i] = ft_strdup(new_var);
 	new_env[i + 1] = NULL;
 	i = 0;
-	while (env[i])
-	{
-		free(env[i]);
-		i++;
-	}
-	free(env);
+	// while (env[i])
+	// {
+	// 	free(env[i]);
+	// 	i++;
+	// }
+	// free(env);
 	return (new_env);
 }
 
-int	ft_export(char **argv, char **env)
+int	ft_export(char **argv, t_subshell *cmds)
 {
 	if (!argv[1])
-		ft_printenv(env);
+		ft_printenv(cmds->env);
 	else
 	{
-		env = ft_add_env(argv[1], env);
-		if (env == NULL)
+		cmds->env = ft_add_env(argv[1], cmds->env);
+		if (cmds->env == NULL)
 			return (1);
 	}
 	return (0);
