@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 22:53:29 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/24 20:00:13 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	free_all(t_subshell *subshell, int mode)
 			subshell->outfiles = ft_free_out_lst(subshell->outfiles);
 		if (subshell->env && mode == 1)
 			subshell->env = ft_free_char_array(subshell->env);
-		if (subshell->cmds && subshell->cmds->type == COMMAND)
+		if (subshell->cmds)
 		{
 			free_all(subshell->cmds, 1);
 			subshell->cmds = NULL;

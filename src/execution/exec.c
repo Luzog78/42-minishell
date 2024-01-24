@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 18:44:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:46:51 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_execve(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "export") == 0)
 		exit_status = ft_export(argv[1], cmds);
 	else if (ft_strcmp(argv[0], "unset") == 0)
-		exit_status = ft_unset(argv, cmds->env);
+		exit_status = ft_unset(argv, cmds);
 	else if (ft_strcmp(argv[0], "env") == 0)
 		exit_status = ft_env(cmds->env);
 	else if (ft_strcmp(argv[0], "exit") == 0)

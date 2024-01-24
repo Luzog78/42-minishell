@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 18:44:07 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/24 19:50:42 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ char	**ft_add_env(char *new_var, char **env)
 	new_env[i] = ft_strdup(new_var);
 	new_env[i + 1] = NULL;
 	i = 0;
+	while (env[i])
+	{
+		free(env[i]);
+		i++;
+	}
+	free(env);
 	return (new_env);
 }
 
