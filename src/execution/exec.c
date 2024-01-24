@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 18:05:06 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:44:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ int	ft_execve(t_subshell *cmds)
 	if (ft_strcmp(argv[0], "echo") == 0)
 		exit_status = ft_echo(argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
-		exit_status = ft_cd(argv);
+		exit_status = ft_cd(argv, cmds);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		exit_status = ft_pwd(cmds->env);
 	else if (ft_strcmp(argv[0], "export") == 0)
-		exit_status = ft_export(argv, cmds);
+		exit_status = ft_export(argv[1], cmds);
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		exit_status = ft_unset(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "env") == 0)
@@ -129,6 +129,7 @@ void	ft_exec_subshell(t_subshell *subshell)
 	{
 		subshell->next->env = ft_env_cpy(subshell->env);
 		ft_exec_cmd(subshell->next);
+		subshell->env = ft_env_cpy(subshell->next->env);
 	}
 	else if (subshell->next && subshell->next->type == SUBSHELL)
 	{
