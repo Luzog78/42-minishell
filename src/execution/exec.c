@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 19:46:51 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:13:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	ft_exec(t_subshell *subshell)
 	{
 		subshell->cmds->env = ft_env_cpy(subshell->env);
 		ft_exec_cmd(subshell->cmds);
-		subshell->env = ft_env_cpy(subshell->cmds->env);
+		subshell->env = ft_env_owrite(subshell->cmds->env, subshell->env);
 	}
 	else if (subshell->cmds && subshell->cmds->type == SUBSHELL)
 	{

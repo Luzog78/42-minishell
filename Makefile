@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/23 20:06:51 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/24 20:10:16 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRC_FILES			= \
 						src/utils/ft_strlen.c \
 						src/utils/ft_strcmp.c \
 						src/utils/ft_envcpy.c \
+						src/utils/ft_env_overwrite.c \
 						src/utils/ft_strcpy.c \
 						src/utils/ft_strcat.c \
 						src/utils/ft_putstr_fd.c \

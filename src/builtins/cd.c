@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 19:35:11 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:21:33 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_home_cd(t_subshell *cmds)
 	char	*oldpwd_save;
 
 	home = getenv("HOME");
-	oldpwd = ft_strjoin("OLDPWD=", getenv("PWD"));
+	oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
 	if (!home)
 	{
 		printf("minishell: cd: HOME not set\n");
@@ -57,7 +57,7 @@ int	ft_cd(char **argv, t_subshell *cmds)
 
 	if (argv[1] == NULL)
 		return (ft_home_cd(cmds));
-	oldpwd = ft_strjoin("OLDPWD=", getenv("PWD"));
+	oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
 	oldpwd_save = ft_strdup(oldpwd);
 	ft_export(oldpwd, cmds);
 	free(oldpwd);

@@ -1,6 +1,9 @@
 # Ignore output files
+.gitignore
+infile
 outfile
 outfile2
+vsupp
 
 # Ignore test file
 main_test.c
