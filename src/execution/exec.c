@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/25 11:13:07 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:30:25 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,6 @@ char	**ft_lststr_to_char_array(t_str_lst *lst)
 	}
 	array[i] = NULL;
 	return (array);
-}
-
-int	ft_execve_bin(char **argv, char **env)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (!pid)
-	{
-		if (execve(argv[0], argv, env) == -1)
-		{
-			perror("minishell");
-			exit (1);
-		}
-		// free_all();
-		exit (0);
-	}
-	return (0);
 }
 
 int	ft_execve(t_subshell *cmds)

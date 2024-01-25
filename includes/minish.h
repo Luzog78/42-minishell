@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/25 11:15:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:34:11 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,6 @@ int		ft_strncmp(char *s1, char *s2, int n);
 void	free_all(t_subshell *subshell, int mode);
 char	**ft_free_char_array(char **array);
 char	**ft_env_owrite(char **env, char **new_env);
+char	**ft_split(char *str, char c);
 
 #endif
