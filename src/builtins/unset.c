@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 20:04:38 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:18:06 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	**ft_unset_var(char *target, char **env)
 	if (!new_env)
 		return (NULL);
 	new_env = ft_new_env(target, env, new_env);
-	new_env[i] = NULL;
+	new_env[i - 1] = NULL;
 	i = 0;
 	return (new_env);
 }

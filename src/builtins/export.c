@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 19:50:42 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:14:47 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,19 @@ static int	ft_printenv(char **env)
 	return (0);
 }
 
+void	ft_arr_char_cpy(char **src, char **dst)
+{
+	int	i;
+
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = ft_strdup(src[i]);
+		i++;
+	}
+	dst[i] = NULL;
+}
+
 char	**ft_add_env(char *new_var, char **env)
 {
 	char	**new_env;
@@ -36,7 +49,7 @@ char	**ft_add_env(char *new_var, char **env)
 	new_env = malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
 		return (NULL);
-	new_env = ft_env_cpy(env);
+	ft_arr_char_cpy(env, new_env);
 	new_env[i] = ft_strdup(new_var);
 	new_env[i + 1] = NULL;
 	i = 0;
