@@ -6,21 +6,22 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 14:16:45 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/27 22:24:29 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	update_path(char *path, t_subshell *cmds)
+void	update_path(t_subshell *cmds)
 {
 	char	*pwd;
-	(void) path;
+	char	*cwd;
 
-	pwd = getcwd(NULL, 0);
-	pwd = ft_strjoin("PWD=", pwd);
+	cwd = getcwd(NULL, 0);
+	pwd = ft_strjoin("PWD=", cwd);
 	ft_export(pwd, cmds);
 	free(pwd);
+	free(cwd);
 }
 
 int	ft_home_cd(t_subshell *cmds)
@@ -46,7 +47,7 @@ int	ft_home_cd(t_subshell *cmds)
 		perror("minishell");
 		return (1);
 	}
-	update_path(home, cmds);
+	update_path(cmds);
 	return (0);
 }
 
@@ -54,10 +55,13 @@ int	ft_cd(char **argv, t_subshell *cmds)
 {
 	char	*oldpwd;
 	char	*oldpwd_save;
+	char	*cwd;
 
 	if (argv[1] == NULL)
 		return (ft_home_cd(cmds));
-	oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
+	cwd = getcwd(NULL, 0);
+	oldpwd = ft_strjoin("OLDPWD=", cwd);
+	free(cwd);
 	oldpwd_save = ft_strdup(oldpwd);
 	ft_export(oldpwd, cmds);
 	free(oldpwd);
@@ -68,6 +72,7 @@ int	ft_cd(char **argv, t_subshell *cmds)
 		perror("minishell");
 		return (1);
 	}
-	update_path(argv[1], cmds);
+	free(oldpwd_save);
+	update_path(cmds);
 	return (0);
 }

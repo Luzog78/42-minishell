@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 20:16:12 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/27 21:55:15 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	allow_next(t_subshell *cmds)
 		return (1);
 	if (cmds->link == AND && cmds->exit_status == 0)
 		return (1);
-	if (cmds->link == OR)
+	if (cmds->link == OR && cmds->exit_status != 0)
 		return (1);
 return (0);
 }
