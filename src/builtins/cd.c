@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/25 11:21:33 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:16:45 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	update_path(char *path, t_subshell *cmds)
 {
 	char	*pwd;
-	(void)path;
+	(void) path;
 
 	pwd = getcwd(NULL, 0);
 	pwd = ft_strjoin("PWD=", pwd);
