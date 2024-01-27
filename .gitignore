@@ -14,4 +14,4 @@ a.out
 *.o
 
 # Ignore IDE files
-.vscode
+.vscode/

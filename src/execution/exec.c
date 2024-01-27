@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 18:00:26 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/27 20:16:12 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,17 @@ char	**ft_lststr_to_char_array(t_str_lst *lst)
 	}
 	array[i] = NULL;
 	return (array);
+}
+
+int	allow_next(t_subshell *cmds)
+{
+	if (cmds->link == PIPE || cmds->link == PIPE_AND)
+		return (1);
+	if (cmds->link == AND && cmds->exit_status == 0)
+		return (1);
+	if (cmds->link == OR)
+		return (1);
+return (0);
 }
 
 int	ft_execve(t_subshell *cmds)
@@ -85,9 +96,9 @@ void	ft_exec_cmd(t_subshell *cmds)
 	if (cmds->next == NULL)
 		return ;
 	cmds->next->env = ft_env_cpy(cmds->env);
-	if (cmds->next->type == COMMAND)
+	if (cmds->next->type == COMMAND && allow_next(cmds))
 		ft_exec_cmd(cmds->next);
-	if (cmds->next->type == SUBSHELL)
+	if (cmds->next->type == SUBSHELL && allow_next(cmds))
 		ft_exec_subshell(cmds->next);
 }
 
@@ -115,12 +126,14 @@ void	ft_exec_subshell(t_subshell *subshell)
 	}
 	else
 		waitpid(pid, NULL, 0);
-	if (subshell->next && subshell->next->type == COMMAND)
+	if (subshell->next && subshell->next->type == COMMAND
+		&& allow_next(subshell))
 	{
 		subshell->next->env = ft_env_cpy(subshell->env);
 		ft_exec_cmd(subshell->next);
 	}
-	else if (subshell->next && subshell->next->type == SUBSHELL)
+	else if (subshell->next && subshell->next->type == SUBSHELL
+		&& allow_next(subshell))
 	{
 		subshell->next->env = ft_env_cpy(subshell->env);
 		ft_exec_subshell(subshell->next);
