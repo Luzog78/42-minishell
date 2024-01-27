@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 14:36:20 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:54:04 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,9 @@ void	ft_exec_subshell(t_subshell *subshell)
 	}
 	else
 		return ;
+
+	// NORMALEMENT ON DOIT PAS NEXT CA DOIT PAS ETRE DANS LE MEME FORK
+	// CEST FAUX 
 	if (subshell->next && subshell->next->type == COMMAND)
 	{
 		subshell->next->env = ft_env_cpy(subshell->env);
@@ -122,6 +125,8 @@ void	ft_exec_subshell(t_subshell *subshell)
 
 void	ft_exec(t_subshell *subshell)
 {
+	pid_t	pid;
+
 	if (subshell->cmds && subshell->cmds->type == COMMAND)
 	{
 		subshell->cmds->env = ft_env_cpy(subshell->env);
@@ -130,8 +135,16 @@ void	ft_exec(t_subshell *subshell)
 	}
 	else if (subshell->cmds && subshell->cmds->type == SUBSHELL)
 	{
-		subshell->cmds->env = ft_env_cpy(subshell->env);
-		ft_exec_subshell(subshell->cmds);
+		pid = fork();
+		if (pid == 0)
+		{
+			subshell->cmds->env = ft_env_cpy(subshell->env);
+			ft_exec_subshell(subshell->cmds);
+			free_all(subshell, 0);
+			exit(0);
+		}
+		else
+			waitpid(-1, NULL, 0);
 	}
 	else
 		return ;
