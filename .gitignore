@@ -8,5 +8,10 @@ vsupp
 # Ignore test file
 main_test.c
 
-# Ignore compiled executable
+# Ignore compiled executable & object files
+minishell
 a.out
+*.o
+
+# Ignore IDE files
+.vscode
