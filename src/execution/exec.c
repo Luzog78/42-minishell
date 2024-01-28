@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 21:55:15 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/28 21:40:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_execve(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		exit_status = ft_exit();
 	else
-		exit_status = ft_execve_bin(argv, cmds->env);
+		exit_status = ft_execve_bin(argv, cmds);
 	waitpid(-1, NULL, 0);
 	ft_free_char_array(argv);
 	return (exit_status);
@@ -142,6 +142,11 @@ void	ft_exec_subshell(t_subshell *subshell)
 
 void	ft_exec(t_subshell *subshell)
 {
+	int	old_stdin;
+	int old_stdout;
+
+	old_stdin = dup(0);
+	old_stdout = dup(1);
 	if (subshell->cmds && subshell->cmds->type == COMMAND)
 	{
 		subshell->cmds->env = ft_env_cpy(subshell->env);
@@ -153,5 +158,8 @@ void	ft_exec(t_subshell *subshell)
 		subshell->cmds->env = ft_env_cpy(subshell->env);
 		ft_exec_subshell(subshell->cmds);
 	}
+	waitpid(-1, NULL, 0);
+	dup2(old_stdin, 0);
+	dup2(old_stdout, 1);
 	free_all(subshell, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/25 12:18:06 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/28 16:45:10 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,22 @@ static int	var_is_here(char *var, char **env)
 int	ft_unset(char **argv, t_subshell *cmds)
 {
 	char	*target;
+	pid_t	pid;
 
-	if (argv[1] && var_is_here(argv[1], cmds->env))
+	pid = fork();
+	if (pid == 0)
 	{
-		target = ft_get_env(argv[1], cmds->env);
-		cmds->env = ft_unset_var(target, cmds->env);
-		free(target);
-		if (cmds->env == NULL)
-			return (1);
+		if (argv[1] && var_is_here(argv[1], cmds->env))
+		{
+			target = ft_get_env(argv[1], cmds->env);
+			cmds->env = ft_unset_var(target, cmds->env);
+			free(target);
+			if (cmds->env == NULL)
+				exit(1);
+		}
+		exit(0);
 	}
+	else
+		waitpid(pid, NULL, 0);
 	return (0);
 }

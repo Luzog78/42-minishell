@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 17:47:14 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/28 21:43:33 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ int	main(int argc, char **argv, char **env)
 		line = readline("minishell $> ");
 		if (!ft_check_parenthesis_and_quotes(line))
 		{
-			printf("error: parenthesis or quotes\n");
+			printf("error: parenthesis or quotes\n"); //Print error inside ft_check_parenthesis_and_quotes
 			continue ;
 		}
 		ft_parse(subshell, line);
 		if (subshell->exit_status)
 		{
-			printf("error: parse\n");
+			printf("error: parse\n"); //same here
 			continue ;
 		}
 		ft_exec(subshell);
