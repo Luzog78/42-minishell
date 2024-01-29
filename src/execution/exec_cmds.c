@@ -6,31 +6,13 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 19:57:50 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/29 21:50:08 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	ft_write_in_pipe(int pipe, char **env)
-{
-	int	i;
-	int	stdin;
-
-	i = 0;
-	stdin = dup(0);
-	dup2(pipe, 1);
-	close(pipe);
-	while (env[i])
-	{
-		printf("%s\n", env[i]);
-		i++;
-	}
-	dup2(stdin, 0);
-	close(stdin);
-}
-
-int	get_right_cmds(t_subshell *cmds, int pipe)
+int	get_right_cmds(t_subshell *cmds)
 {
 	char	**argv;
 	int		exit_status;
@@ -54,45 +36,57 @@ int	get_right_cmds(t_subshell *cmds, int pipe)
 	else
 		exit_status = ft_execve_bin(argv, cmds);
 	ft_free_char_array(argv);
-	// ft_write_in_pipe(pipe, cmds->env);
 	return (exit_status);
+}
+
+int	is_pipable(t_subshell *cmds)
+{
+	if (ft_strcmp(cmds->argv->value, "cd") == 0)
+		return (0);
+	else if (ft_strcmp(cmds->argv->value, "export") == 0)
+		return (0);
+	else if (ft_strcmp(cmds->argv->value, "unset") == 0)
+		return (0);
+	else if (ft_strcmp(cmds->argv->value, "exit") == 0)
+		return (0);
+	return (1);
 }
 
 int	ft_execve(t_subshell *cmds)
 {
 
 	pid_t	pid;
-	int		pipe_env[2];
 
-	pipe(pipe_env);
-	pid = fork();
-	if (pid == -1)
+	if (!is_pipable(cmds))
 	{
-		perror("minishell");
-		return (1);
-	}
-	if (!pid)
-	{
-		if (cmds->pipe[1] != 0)
-		{
-			dup2(cmds->pipe[1], 1);
-			close(cmds->pipe[1]);
-		}
-		get_right_cmds(cmds, pipe_env[1]);
-		close(pipe_env[0]);
-		close(pipe_env[1]);
-		exit(0);
-	}
-	else if (cmds->next && cmds->next->pipe[0] != 0)
-	{
-		close(cmds->pipe[1]);
-		dup2(cmds->next->pipe[0], 0);
-		close(cmds->next->pipe[0]);
+		get_right_cmds(cmds);
 	}
 	else
 	{
-		waitpid(-1, NULL, 0);
-		// cmds->env = get_env_from_pipe(pipe_env[0], cmds->env);
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("minishell");
+			return (1);
+		}
+		if (!pid)
+		{
+			if (cmds->pipe[1] != 0)
+			{
+				dup2(cmds->pipe[1], 1);
+				close(cmds->pipe[1]);
+			}
+			get_right_cmds(cmds);
+			exit(0);
+		}
+		else if (cmds->next && cmds->next->pipe[0] != 0)
+		{
+			close(cmds->pipe[1]);
+			dup2(cmds->next->pipe[0], 0);
+			close(cmds->next->pipe[0]);
+		}
+		else
+			waitpid(-1, NULL, 0);
 	}
 	return (0);
 }
