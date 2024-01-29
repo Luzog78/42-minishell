@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 15:30:08 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:34:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,12 @@ int	ft_execve(t_subshell *cmds)
 	}
 	else if (cmds->next && cmds->next->pipe[0] != 0)
 	{
-		waitpid(pid, NULL, 0);
 		close(cmds->pipe[1]);
 		dup2(cmds->next->pipe[0], 0);
 		close(cmds->next->pipe[0]);
 	}
 	else
-		waitpid(pid, NULL, 0);
+		waitpid(-1, NULL, 0);
 	return (0);
 }
 
@@ -164,13 +163,12 @@ void	ft_exec_subshell(t_subshell *subshell)
 	}
 	else if (subshell->next && subshell->next->pipe[0] != 0)
 	{
-		waitpid(pid, NULL, 0);
 		close(subshell->pipe[1]);
 		dup2(subshell->next->pipe[0], 0);
 		close(subshell->next->pipe[0]);
 	}
 	else
-		waitpid(pid, NULL, 0);
+		waitpid(-1, NULL, 0);
 	if (subshell->next && subshell->next->type == COMMAND
 		&& allow_next(subshell))
 	{
