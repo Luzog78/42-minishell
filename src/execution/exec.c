@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 14:57:22 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:30:08 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	ft_execve(t_subshell *cmds)
 		get_right_cmds(cmds);
 		exit(0);
 	}
-	else if (cmds->next && cmds->next->next == NULL)
+	else if (cmds->next && cmds->next->pipe[0] != 0)
 	{
 		waitpid(pid, NULL, 0);
 		close(cmds->pipe[1]);
@@ -139,9 +139,16 @@ void	ft_exec_subshell(t_subshell *subshell)
 
 	if (!subshell)
 		return ;
+	if (subshell->link == PIPE)
+		ft_pipe(subshell);
 	pid = fork();
 	if (pid == 0)
 	{
+		if (subshell->pipe[1] != 0)
+		{
+			dup2(subshell->pipe[1], 1);
+			close(subshell->pipe[1]);
+		}
 		if (subshell->cmds && subshell->cmds->type == COMMAND)
 		{
 			subshell->cmds->env = ft_env_cpy(subshell->env);
@@ -154,6 +161,13 @@ void	ft_exec_subshell(t_subshell *subshell)
 		}
 		free_all(subshell, 0);
 		exit(0);
+	}
+	else if (subshell->next && subshell->next->pipe[0] != 0)
+	{
+		waitpid(pid, NULL, 0);
+		close(subshell->pipe[1]);
+		dup2(subshell->next->pipe[0], 0);
+		close(subshell->next->pipe[0]);
 	}
 	else
 		waitpid(pid, NULL, 0);
