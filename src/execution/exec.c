@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/28 21:40:54 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/29 14:57:22 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,12 @@ int	allow_next(t_subshell *cmds)
 return (0);
 }
 
-int	ft_execve(t_subshell *cmds)
+int	get_right_cmds(t_subshell *cmds)
 {
 	char	**argv;
 	int		exit_status;
 
 	argv = ft_lststr_to_char_array(cmds->argv);
-	exit_status = 0;
 	if (ft_strcmp(argv[0], "echo") == 0)
 		exit_status = ft_echo(argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)
@@ -78,9 +77,41 @@ int	ft_execve(t_subshell *cmds)
 		exit_status = ft_exit();
 	else
 		exit_status = ft_execve_bin(argv, cmds);
-	waitpid(-1, NULL, 0);
 	ft_free_char_array(argv);
 	return (exit_status);
+}
+
+int	ft_execve(t_subshell *cmds)
+{
+
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("minishell");
+		return (1);
+	}
+	if (!pid)
+	{
+		if (cmds->pipe[1] != 0)
+		{
+			dup2(cmds->pipe[1], 1);
+			close(cmds->pipe[1]);
+		}
+		get_right_cmds(cmds);
+		exit(0);
+	}
+	else if (cmds->next && cmds->next->next == NULL)
+	{
+		waitpid(pid, NULL, 0);
+		close(cmds->pipe[1]);
+		dup2(cmds->next->pipe[0], 0);
+		close(cmds->next->pipe[0]);
+	}
+	else
+		waitpid(pid, NULL, 0);
+	return (0);
 }
 
 void	ft_exec_cmd(t_subshell *cmds)
