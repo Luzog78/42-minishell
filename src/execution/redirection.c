@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/23 15:30:48 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/29 17:46:03 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_get_temp_filename(void)
 	char	*random;
 
 	random = ft_strdup("/tmp/minishell_XXXXXX");
-	
+
 	return (random);
 }
 
@@ -69,7 +69,7 @@ int	ft_heredoc(char *limiter)
 
 	line = NULL;
 	temp_filename = ft_get_temp_filename();
-	temp_fd = open(temp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	temp_fd = open(temp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (temp_fd == -1)
 	{
 		perror("minishell");
@@ -78,12 +78,17 @@ int	ft_heredoc(char *limiter)
 	while (ft_strcmp(line, limiter))
 	{
 		line = readline("> ");
+		if (ft_strcmp(line, limiter) == 0)
+			break ;
+		line = ft_strjoin(line, "\n");
 		write(temp_fd, line, ft_strlen(line));
 	}
+	close(temp_fd);
+	temp_fd = open(temp_filename, O_RDONLY);
 	dup2(temp_fd, STDIN_FILENO);
+	close(temp_fd);
 	unlink(temp_filename);
 	free(temp_filename);
-	close(temp_fd);
 	return (0);
 }
 

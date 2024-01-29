@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/25 12:33:17 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/29 19:37:31 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,9 @@ SRC_FILES			= \
 						src/execution/exec_bin.c \
 						src/execution/redirection.c \
 						src/execution/pipe.c \
+						src/execution/exec_cmds.c \
+						src/execution/exec_subshell.c \
+						src/execution/exec_utils.c \
 						src/builtins/cd.c \
 						src/builtins/echo.c \
 						src/builtins/env.c \

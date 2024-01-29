@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:11:09 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:46:52 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -405,6 +405,16 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 			quit_parenthesis = TRUE;
 			parsing_state = 2;
 		}
+		else if (ft_starts_with(cursor, "<<"))
+		{
+			cursor += 2;
+			tmp = ft_get_next_word(&cursor);
+			if (!*tmp)
+				subshell->exit_status = 1;
+			ft_stdin_add(&subshell->stdin, tmp, HEREDOC);
+			if (parsing_state == 1)
+				parsing_state = 2;
+		}
 		else if (ft_starts_with(cursor, "<"))
 		{
 			cursor++;
@@ -416,16 +426,6 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		else if (ft_get_out_redirection(cursor) != NO_OUT)
 		{
 			ft_parse_redirection(subshell, &cursor);
-			if (parsing_state == 1)
-				parsing_state = 2;
-		}
-		else if (ft_starts_with(cursor, "<<"))
-		{
-			cursor += 2;
-			tmp = ft_get_next_word(&cursor);
-			if (!*tmp)
-				subshell->exit_status = 1;
-			ft_stdin_add(&subshell->stdin, tmp, HEREDOC);
 			if (parsing_state == 1)
 				parsing_state = 2;
 		}
