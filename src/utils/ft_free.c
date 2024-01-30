@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/24 20:00:13 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 06:44:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ char	**ft_free_char_array(char **array)
 {
 	int	i;
 
+	if (!array)
+		return (NULL);
 	i = 0;
 	while (array[i])
 		free(array[i++]);

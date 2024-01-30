@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 03:32:26 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/30 10:54:06 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,28 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		line = readline("minishell $> ");
+		add_history(line);
 		if (!ft_check_parenthesis_and_quotes(line))
 		{
+			free(line);
 			ft_error("syntax error: wrong parentheses or quotes", NULL); //Print error inside ft_check_parenthesis_and_quotes
+			g_exit = 2;
 			continue ;
 		}
 		ft_parse(subshell, line);
 		if (subshell->exit_status)
 		{
-			// printf("error: parse\n"); //same here
+			free(line);
+			ft_free_subshell(subshell->cmds);
+			subshell->cmds = NULL;
+			g_exit = subshell->exit_status;
 			continue ;
 		}
 		ft_exec(subshell);
-		add_history(line);
 		free(line);
+		ft_free_subshell(subshell->cmds);
+		subshell->cmds = NULL;
 	}
+	ft_free_subshell(subshell);
 	return (g_exit);
 }

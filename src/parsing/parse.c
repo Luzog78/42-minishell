@@ -6,11 +6,59 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 03:49:57 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/30 10:47:23 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+void	ft_free_subshell(t_subshell *subshell)
+{
+	t_subshell	*tmp;
+	t_str_lst	*tmp2;
+	t_out		*tmp3;
+	t_stdin_lst	*tmp4;
+	t_subshell	*tmp5;
+
+	tmp = subshell;
+	while (tmp)
+	{
+		while (tmp->argv)
+		{
+			tmp2 = tmp->argv;
+			tmp->argv = tmp->argv->next;
+			free(tmp2->value);
+			free(tmp2);
+		}
+		while (tmp->outfiles)
+		{
+			tmp3 = tmp->outfiles;
+			tmp->outfiles = tmp->outfiles->next;
+			free(tmp3->to);
+			free(tmp3);
+		}
+		while (tmp->stdin)
+		{
+			tmp4 = tmp->stdin;
+			tmp->stdin = tmp->stdin->next;
+			free(tmp4->value);
+			free(tmp4);
+		}
+		ft_free_subshell(tmp->cmds);
+		ft_free_char_array(tmp->env);
+		tmp->cmds = NULL;
+		tmp->argv = NULL;
+		tmp->outfiles = NULL;
+		tmp->stdin = NULL;
+		tmp5 = tmp;
+		tmp = tmp->next;
+		free(tmp5);
+	}
+}
+
+/* *********************************************** */
+/* **********************echo > a << b || g && (e | < 98 f)************************* */
+/* *********************************************** */
 
 int	ft_error(char *str, t_subshell *subshell_to_free)
 {
@@ -149,6 +197,19 @@ char	*ft_concat_lst(t_str_lst *lst)
 	return (str);
 }
 
+void	ft_free_str_list(t_str_lst *lst)
+{
+	t_str_lst	*tmp;
+
+	while (lst)
+	{
+		tmp = lst->next;
+		free(lst->value);
+		free(lst);
+		lst = tmp;
+	}
+}
+
 char	*ft_get_next_word(char **str)
 {
 	t_str_lst	*lst;
@@ -186,6 +247,7 @@ char	*ft_get_next_word(char **str)
 	if (i - start_idx > 0)
 		ft_str_lst_add(&lst, ft_substr(*str, start_idx, i - start_idx));
 	word = ft_concat_lst(lst);
+	ft_free_str_list(lst);
 	(*str) += i;
 	return (word);
 }
@@ -231,8 +293,13 @@ t_out	*ft_out_add(t_out **out, int from, char *to, t_out_type type)
 	t_out	*new_out;
 	t_out	*tmp;
 
-	if (!to || !*to)
+	if (!to)
 		return (NULL);
+	if (!*to)
+	{
+		free(to);
+		return (NULL);
+	}
 	new_out = calloc(1, sizeof(t_out));
 	if (!new_out)
 		return (NULL);
@@ -360,20 +427,19 @@ void	ft_skip_parenthesis(char **cursor)
 		(*cursor)++;
 }
 
-t_link	ft_parse_subshell(t_subshell *subshell, char **str)
+t_bool	ft_parse_subshell(t_subshell *subshell, char **str)
 {
 	t_subshell	*curr_cmd;
 	char		*cursor;
-	t_link		ret;
+	t_bool		ret;
 
 	char	*tmp;
 	int		parsing_state; // 0: start, 1: argv, 2: redirections
-	t_bool	quit_parenthesis;
 
 	curr_cmd = subshell->cmds;
 	cursor = *str;
 
-	quit_parenthesis = FALSE;
+	ret = FALSE;
 	parsing_state = 0;
 
 	if (!*cursor || ft_is_empty(cursor))
@@ -385,7 +451,7 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		ft_skip_whitespace(&cursor);
 		if (ft_starts_with(cursor, "("))
 		{
-			if (quit_parenthesis || parsing_state == 1 || subshell->type != UNDEFINED)
+			if (parsing_state == 1 || subshell->type != UNDEFINED)
 			{
 				subshell->exit_status = ft_error(
 					"syntax error: unexpected parenthesis '('", NULL);
@@ -393,22 +459,21 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 			}
 			subshell->type = SUBSHELL;
 			cursor++;
-			ret = NONE;
-			while (ret == NONE && *cursor && !ft_is_empty(cursor))
+			while (!ret && *cursor && !ft_is_empty(cursor))
 			{
 				curr_cmd = ft_subshell_add(&subshell->cmds, UNDEFINED, subshell->env);
 				ret = ft_parse_subshell(curr_cmd, &cursor);
-				if (ret != NONE)
-					subshell->link = ret;
 				if (curr_cmd->exit_status)
+				{
+					subshell->exit_status = curr_cmd->exit_status;
 					break ;
+				}
 			}
-			break;
+			parsing_state = 2;
+			ret = FALSE;
 		}
 		else if (ft_starts_with(cursor, ")"))
 		{
-			if (quit_parenthesis)
-				break ;
 			cursor++;
 			if (subshell->type == UNDEFINED)
 			{
@@ -416,13 +481,11 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 					"syntax error: unexpected parenthesis ')'", NULL);
 				break ;
 			}
-			quit_parenthesis = TRUE;
-			parsing_state = 2;
+			ret = TRUE;
+			break ;
 		}
 		else if (ft_starts_with(cursor, "<<"))
 		{
-			if (quit_parenthesis)
-				break ;
 			cursor += 2;
 			tmp = ft_get_next_word(&cursor);
 			if (!*tmp)
@@ -434,8 +497,6 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		}
 		else if (ft_starts_with(cursor, "<"))
 		{
-			if (quit_parenthesis)
-				break ;
 			cursor++;
 			tmp = ft_get_next_word(&cursor);
 			if (!*tmp)
@@ -447,8 +508,6 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		}
 		else if (ft_get_out_redirection(cursor) != NO_OUT)
 		{
-			if (quit_parenthesis)
-				break ;
 			ft_parse_redirection(subshell, &cursor);
 			if (parsing_state == 1)
 				parsing_state = 2;
@@ -479,7 +538,7 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		}
 		else
 		{
-			if (subshell->type == SUBSHELL || quit_parenthesis)
+			if (subshell->type == SUBSHELL)
 			{
 				subshell->exit_status = ft_error(
 					"syntax error: subshell and command not separated", NULL);
@@ -489,37 +548,42 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 			if (parsing_state == 0)
 				parsing_state = 1;
 			if (parsing_state == 2)
-				subshell->exit_status = 1;
+				subshell->exit_status = ft_error(
+					"syntax error: missing a separator", NULL);
 			tmp = ft_get_next_word(&cursor);
 			ft_str_lst_add(&subshell->argv, tmp);
 		}
 	}
 	*str = cursor;
-	if (quit_parenthesis)
-	{
-		ret = subshell->link;
-		subshell->link = NONE;
-		return (ret);
-	}
 	if (subshell->type == UNDEFINED)
 		subshell->exit_status = ft_error(
 			"syntax error: missing command", NULL);
-	return (NONE);
+	return (ret);
 }
 
 void	ft_parse(t_subshell *subshell, char *str)
 {
-	t_link		ret;
+	t_bool		ret;
 	char		*cursor;
 	t_subshell	*curr_cmd;
 
-	ret = NONE;
+	subshell->exit_status = 0;
+	ret = FALSE;
 	cursor = str;
-	while (ret == NONE && *cursor && !ft_is_empty(cursor))
+	while (!ret && *cursor && !ft_is_empty(cursor))
 	{
 		curr_cmd = ft_subshell_add(&subshell->cmds, UNDEFINED, subshell->env);
 		ret = ft_parse_subshell(curr_cmd, &cursor);
-		if (ret != NONE)
-			subshell->link = ret;
+		if (curr_cmd->exit_status)
+		{
+			subshell->exit_status = curr_cmd->exit_status;
+			break ;
+		}
 	}
+	curr_cmd = subshell->cmds;
+	while (curr_cmd && curr_cmd->next)
+		curr_cmd = curr_cmd->next;
+	if (curr_cmd && curr_cmd->link != NONE)
+		subshell->exit_status = ft_error(
+			"syntax error: missing command", NULL);
 }
