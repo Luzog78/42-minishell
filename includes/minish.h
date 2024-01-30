@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 19:36:58 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 03:03:58 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,19 @@
 # include <curses.h>
 # include <termcap.h>
 
-# undef FALSE
-# undef TRUE
+# ifndef MAIN_FILE
+
+extern int	g_exit;
+
+# else
+#  undef MINISH_H
+# endif
+
+# ifndef CONTENTS
+#  define CONTENTS
+
+#  undef FALSE
+#  undef TRUE
 
 typedef enum e_bool
 {
@@ -129,5 +140,8 @@ void	free_all(t_subshell *subshell, int mode);
 char	**ft_free_char_array(char **array);
 char	**ft_env_owrite(char **env, char **new_env);
 char	**ft_split(char *str, char c);
+int	ft_error(char *str, t_subshell *subshell_to_free);
+
+# endif
 
 #endif

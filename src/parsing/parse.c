@@ -6,11 +6,20 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 02:00:39 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/30 03:49:57 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+int	ft_error(char *str, t_subshell *subshell_to_free)
+{
+	write(2, str, ft_strlen(str));
+	write(2, "\n", 1);
+	// ft_free_subshell(subshell_to_free);
+	(void)subshell_to_free;
+	return (1);
+}
 
 t_subshell	*ft_subshell_add(t_subshell **subshell, t_cmd_type type, char **env)
 {
@@ -33,6 +42,12 @@ t_subshell	*ft_subshell_add(t_subshell **subshell, t_cmd_type type, char **env)
 	return (new_subshell);
 }
 
+t_bool ft_is_whitespace(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n'
+			|| c == '\v' || c == '\f' || c == '\0');
+}
+
 t_bool	ft_is_empty(char *str)
 {
 	int	i;
@@ -40,19 +55,11 @@ t_bool	ft_is_empty(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (!(str[i] == '<' || str[i] == '>'
-			|| str[i] == '|' || str[i] == '&' || str[i] == ';'
-			|| str[i] == '(' || str[i] == ')'))
+		if (!ft_is_whitespace(str[i]))
 			return (FALSE);
 		i++;
 	}
 	return (TRUE);
-}
-
-t_bool ft_is_whitespace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n'
-			|| c == '\v' || c == '\f' || c == '\0');
 }
 
 void	ft_skip_whitespace(char **str)
@@ -224,6 +231,8 @@ t_out	*ft_out_add(t_out **out, int from, char *to, t_out_type type)
 	t_out	*new_out;
 	t_out	*tmp;
 
+	if (!to || !*to)
+		return (NULL);
 	new_out = calloc(1, sizeof(t_out));
 	if (!new_out)
 		return (NULL);
@@ -282,7 +291,8 @@ void	ft_parse_redirection(t_subshell *subshell, char **str)
 		ret = ft_out_add(&subshell->outfiles, fd, ft_get_next_word(str), APPEND);
 	}
 	if (!ret)
-		subshell->exit_status = 1;
+		subshell->exit_status = ft_error(
+			"syntax error: missing redirection statement", NULL);
 }
 
 t_bool	ft_check_parenthesis_and_quotes(char *str)
@@ -367,7 +377,8 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 	parsing_state = 0;
 
 	if (!*cursor || ft_is_empty(cursor))
-		subshell->exit_status = 1;
+		subshell->exit_status = ft_error(
+			"syntax error: missing command", NULL);
 
 	while (*cursor && !ft_is_empty(cursor))
 	{
@@ -375,7 +386,11 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		if (ft_starts_with(cursor, "("))
 		{
 			if (quit_parenthesis || parsing_state == 1 || subshell->type != UNDEFINED)
-				break ; // Syntax error
+			{
+				subshell->exit_status = ft_error(
+					"syntax error: unexpected parenthesis '('", NULL);
+				break ;
+			}
 			subshell->type = SUBSHELL;
 			cursor++;
 			ret = NONE;
@@ -385,47 +400,55 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 				ret = ft_parse_subshell(curr_cmd, &cursor);
 				if (ret != NONE)
 					subshell->link = ret;
+				if (curr_cmd->exit_status)
+					break ;
 			}
 			break;
 		}
-		/*else
-		{
-			curr_cmd = ft_subshell_add(&subshell->cmds, COMMAND, subshell->env);
-			ret = ft_parse_cmd(curr_cmd, &cursor);
-			if (ret != NONE)
-			{
-				subshell->link = ret;
-				break ;
-			}
-		}*/
 		else if (ft_starts_with(cursor, ")"))
 		{
 			if (quit_parenthesis)
 				break ;
 			cursor++;
+			if (subshell->type == UNDEFINED)
+			{
+				subshell->exit_status = ft_error(
+					"syntax error: unexpected parenthesis ')'", NULL);
+				break ;
+			}
 			quit_parenthesis = TRUE;
 			parsing_state = 2;
 		}
 		else if (ft_starts_with(cursor, "<<"))
 		{
+			if (quit_parenthesis)
+				break ;
 			cursor += 2;
 			tmp = ft_get_next_word(&cursor);
 			if (!*tmp)
-				subshell->exit_status = 1;
+				subshell->exit_status = ft_error(
+					"syntax error: missing heredoc delimiter", NULL);
 			ft_stdin_add(&subshell->stdin, tmp, HEREDOC);
 			if (parsing_state == 1)
 				parsing_state = 2;
 		}
 		else if (ft_starts_with(cursor, "<"))
 		{
+			if (quit_parenthesis)
+				break ;
 			cursor++;
 			tmp = ft_get_next_word(&cursor);
+			if (!*tmp)
+				subshell->exit_status = ft_error(
+					"syntax error: missing input file", NULL);
 			ft_stdin_add(&subshell->stdin, tmp, INFILE);
 			if (parsing_state == 1)
 				parsing_state = 2;
 		}
 		else if (ft_get_out_redirection(cursor) != NO_OUT)
 		{
+			if (quit_parenthesis)
+				break ;
 			ft_parse_redirection(subshell, &cursor);
 			if (parsing_state == 1)
 				parsing_state = 2;
@@ -456,8 +479,12 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		}
 		else
 		{
-			if (subshell->type == SUBSHELL)
-				break ; // Syntax error
+			if (subshell->type == SUBSHELL || quit_parenthesis)
+			{
+				subshell->exit_status = ft_error(
+					"syntax error: subshell and command not separated", NULL);
+				break ;
+			}
 			subshell->type = COMMAND;
 			if (parsing_state == 0)
 				parsing_state = 1;
@@ -474,6 +501,9 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 		subshell->link = NONE;
 		return (ret);
 	}
+	if (subshell->type == UNDEFINED)
+		subshell->exit_status = ft_error(
+			"syntax error: missing command", NULL);
 	return (NONE);
 }
 

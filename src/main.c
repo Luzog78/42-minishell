@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/28 21:43:33 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 03:32:26 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define MAIN_FILE
 #include "minish.h"
+#undef MAIN_FILE
+
+int	g_exit = 0;
 
 void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 {
@@ -45,18 +49,18 @@ int	main(int argc, char **argv, char **env)
 		line = readline("minishell $> ");
 		if (!ft_check_parenthesis_and_quotes(line))
 		{
-			printf("error: parenthesis or quotes\n"); //Print error inside ft_check_parenthesis_and_quotes
+			ft_error("syntax error: wrong parentheses or quotes", NULL); //Print error inside ft_check_parenthesis_and_quotes
 			continue ;
 		}
 		ft_parse(subshell, line);
 		if (subshell->exit_status)
 		{
-			printf("error: parse\n"); //same here
+			// printf("error: parse\n"); //same here
 			continue ;
 		}
 		ft_exec(subshell);
 		add_history(line);
 		free(line);
 	}
-	return (0);
+	return (g_exit);
 }
