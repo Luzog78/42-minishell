@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 17:29:01 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 17:50:57 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	get_right_cmds(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "env") == 0)
 		exit_status = ft_env(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		exit_status = ft_exit();
+		exit_status = ft_exit(argv);
 	else if (cmds->link == PIPE)
 		exit_status = ft_execve_bin_piped(argv, cmds);
 	else
