@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 01:51:42 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 17:29:01 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_right_cmds(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		exit_status = ft_unset(argv, cmds);
 	else if (ft_strcmp(argv[0], "env") == 0)
-		exit_status = ft_env(cmds->env);
+		exit_status = ft_env(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		exit_status = ft_exit();
 	else if (cmds->link == PIPE)
@@ -38,19 +38,6 @@ int	get_right_cmds(t_subshell *cmds)
 		exit_status = ft_execve_bin(argv, cmds);
 	ft_free_char_array(argv);
 	return (exit_status);
-}
-
-int	is_pipable(t_subshell *cmds)
-{
-	if (ft_strcmp(cmds->argv->value, "cd") == 0)
-		return (0);
-	else if (ft_strcmp(cmds->argv->value, "export") == 0)
-		return (0);
-	else if (ft_strcmp(cmds->argv->value, "unset") == 0)
-		return (0);
-	else if (ft_strcmp(cmds->argv->value, "exit") == 0)
-		return (0);
-	return (1);
 }
 
 int	ft_execve_pipe(t_subshell *cmds)
