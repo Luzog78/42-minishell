@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 18:44:04 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:52:24 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,36 @@ void	ft_get_path(char **argv)
 	ft_free_char_array(path);
 }
 
-int	ft_execve_bin(char **argv, t_subshell *cmds)
+int	ft_execve_bin_piped(char **argv, t_subshell *cmds)
 {
 	ft_get_path(argv);
 	if (execve(argv[0], argv, cmds->env) == -1)
 		perror("minishell");
 	ft_free_char_array(argv);
+	return (0);
+}
+
+int	ft_execve_bin(char **argv, t_subshell *cmds)
+{
+	pid_t	pid;
+
+	ft_get_path(argv);
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("minishell");
+		return (0);
+	}
+	if (!pid)
+	{
+		if (cmds->pipe[0] != 0)
+		{
+			dup2(cmds->pipe[0], 0);
+			close(cmds->pipe[0]);
+		}
+		execve(argv[0], argv, cmds->env);
+	}
+	else
+		waitpid(pid, NULL, 0);
 	return (0);
 }

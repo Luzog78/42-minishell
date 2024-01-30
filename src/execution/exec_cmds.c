@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 21:50:08 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 01:51:42 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	get_right_cmds(t_subshell *cmds)
 {
 	char	**argv;
 	int		exit_status;
-	(void) pipe;
 
 	argv = ft_lststr_to_char_array(cmds->argv);
 	if (ft_strcmp(argv[0], "echo") == 0)
@@ -33,6 +32,8 @@ int	get_right_cmds(t_subshell *cmds)
 		exit_status = ft_env(cmds->env);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		exit_status = ft_exit();
+	else if (cmds->link == PIPE)
+		exit_status = ft_execve_bin_piped(argv, cmds);
 	else
 		exit_status = ft_execve_bin(argv, cmds);
 	ft_free_char_array(argv);
@@ -52,43 +53,43 @@ int	is_pipable(t_subshell *cmds)
 	return (1);
 }
 
-int	ft_execve(t_subshell *cmds)
+int	ft_execve_pipe(t_subshell *cmds)
 {
-
 	pid_t	pid;
 
-	if (!is_pipable(cmds))
+	pid = fork();
+	if (pid == -1)
 	{
+		perror("minishell");
+		return (1);
+	}
+	if (!pid)
+	{
+		if (cmds->pipe[1] != 0)
+		{
+			dup2(cmds->pipe[1], 1);
+			close(cmds->pipe[1]);
+		}
 		get_right_cmds(cmds);
+		exit(0);
+	}
+	else if (cmds->next && cmds->next->pipe[0] != 0)
+	{
+		close(cmds->pipe[1]);
+		dup2(cmds->next->pipe[0], 0);
+		close(cmds->next->pipe[0]);
 	}
 	else
-	{
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("minishell");
-			return (1);
-		}
-		if (!pid)
-		{
-			if (cmds->pipe[1] != 0)
-			{
-				dup2(cmds->pipe[1], 1);
-				close(cmds->pipe[1]);
-			}
-			get_right_cmds(cmds);
-			exit(0);
-		}
-		else if (cmds->next && cmds->next->pipe[0] != 0)
-		{
-			close(cmds->pipe[1]);
-			dup2(cmds->next->pipe[0], 0);
-			close(cmds->next->pipe[0]);
-		}
-		else
-			waitpid(-1, NULL, 0);
-	}
+		waitpid(-1, NULL, 0);
 	return (0);
+}
+
+int	ft_execve(t_subshell *cmds)
+{
+	int	exit_status;
+
+	exit_status = get_right_cmds(cmds);
+	return (exit_status);
 }
 
 void	ft_exec_cmd(t_subshell *cmds)
@@ -99,7 +100,9 @@ void	ft_exec_cmd(t_subshell *cmds)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles);
 	if (!cmds->exit_status && cmds->link == PIPE)
 		cmds->exit_status = ft_pipe(cmds);
-	if (!cmds->exit_status && cmds->argv)
+	if (!cmds->exit_status && cmds->link == PIPE)
+		cmds->exit_status = ft_execve_pipe(cmds);
+	else if (!cmds->exit_status && cmds->argv)
 		cmds->exit_status = ft_execve(cmds);
 	if (cmds->next == NULL)
 		return ;
