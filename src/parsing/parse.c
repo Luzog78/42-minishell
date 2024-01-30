@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 15:46:52 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/30 02:00:39 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ t_bool	ft_is_empty(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if ((str[i] >= '0' && str[i] <= '9')
-			|| (str[i] >= 'A' && str[i] <= 'Z')
-			|| (str[i] >= 'a' && str[i] <= 'z'))
+		if (!(str[i] == '<' || str[i] == '>'
+			|| str[i] == '|' || str[i] == '&' || str[i] == ';'
+			|| str[i] == '(' || str[i] == ')'))
 			return (FALSE);
 		i++;
 	}
@@ -386,6 +386,7 @@ t_link	ft_parse_subshell(t_subshell *subshell, char **str)
 				if (ret != NONE)
 					subshell->link = ret;
 			}
+			break;
 		}
 		/*else
 		{
