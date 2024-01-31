@@ -16,6 +16,7 @@ infile*
 test*
 out*
 in*
+vsupp
 
 # Ignore IDE files
 .vscode/

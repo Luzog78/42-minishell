@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 18:21:19 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:43:48 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,16 @@ int	ft_isdigit(char *str)
 	result = 0;
 	while (str[i])
 	{
-		if ((str[i] < '0' || str[i] > '9') || i > 25)
+		if ((str[i] < '0' || str[i] > '9') && str[i] != '-')
 			return (0);
-		result += result * 10 + str[i] - '0';
-		if (result > 9223372036854775807 || result < -9223372036854775807)
+		result = (result * 10) + (str[i] - '0');
+		if (result == 922337203685477580 && str[i + 1] >= '8' && str[i + 1] <= '9')
+			return (0);
+		else if(result == -922337203685477580 && str[i + 1] <= '9')
+			return (0);
+		else if (result > 922337203685477580 && str[i + 1])
+			return (0);
+		else if (result < -922337203685477580 && str[i + 1])
 			return (0);
 		i++;
 	}
@@ -65,13 +71,13 @@ int	ft_exit(char **argv)
 	if (argv[1])
 	{
 
-		if (argv[1] && ft_isdigit(argv[1]) && !argv[2])
+		if (argv[1][0] != '-' && ft_isdigit(argv[1]) && !argv[2])
 			exit_code = ft_atoi(argv[1]) % 256;
-		// else if (argv[1] && ft_isokay(argv[1] && !argv[2]))
-		// 	exit_code = ;
-		else if (argv[1] && !ft_isdigit(argv[1]) && !argv[2])
+		else if (argv[1][0] == '-' && ft_isdigit(argv[1]) && !argv[2])
+			exit_code = 256 + (ft_atoi(argv[1]) % 256);
+		else if (argv[1] && !ft_isdigit(argv[1]))
 			exit_code = 2;
-		if (argv[1] && argv[2])
+		else if (argv[1] && argv[2])
 			return (1);
 	}
 	printf("exit %d\n", exit_code);
