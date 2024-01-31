@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/31 07:01:26 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/01 00:42:22 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ SRC_FILES			= \
 						src/utils/ft_strncmp.c \
 						src/utils/ft_free.c \
 						src/utils/ft_split.c \
+						src/utils/ft_quote.c \
 						src/main.c
 
 C_RESET				= \033[0m

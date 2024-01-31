@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   ft_quote.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 18:16:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/31 23:30:00 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/02/01 00:42:06 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "minish.h"
 
-# include "minish.h"
-
-int		ft_echo(char **argv);
-int		ft_cd(char **argv, t_subshell *cmds);
-int		ft_env(char **argv, char **env);
-int		ft_exit(char **argv);
-int		ft_export(char *argv, t_subshell *cmds);
-int		ft_pwd(char **env);
-int		ft_unset(char **argv, t_subshell *cmds);
-#endif
+/*Faire une fonction qui renvoie un char * qui a été malloc
+ *Avec les ",',$ avec getenv pour $
+ *La premiere quote est connecte a la quote la plus proche
+ *Ex: '"""'$PWD'"""' -> """/nfs/home/..."""
+*/
