@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/01/30 18:03:33 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/01/31 07:01:26 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,13 @@ C_WHITE				= \033[37m
 
 OBJ_FILES			= $(SRC_FILES:.c=.o)
 BUILD_FILES			= $(SRC_FILES:%.c=$(BUILD_DIR)/%.o)
+
+VALGRIND_SUPPR		= $(BUILD_DIR)/.val_suppr
+VALGRIND_OUT		= $(BUILD_DIR)/.val_out
+VALGRIND_ARGS		= --leak-check=full \
+						--show-leak-kinds=all \
+						--track-origins=yes \
+						--suppressions=$(VALGRIND_SUPPR)
 
 TO_COMPILE			= 0
 
@@ -129,12 +136,44 @@ define del =
 	@echo "$(C_RESET)"
 endef
 
+$(VALGRIND_SUPPR):
+	@echo '' > $(VALGRIND_SUPPR)
+
+	@echo	'{'						>> $(VALGRIND_SUPPR)
+	@echo	'	readline'			>> $(VALGRIND_SUPPR)
+	@echo	'	Memcheck:Leak'		>> $(VALGRIND_SUPPR)
+	@echo	'	...'				>> $(VALGRIND_SUPPR)
+	@echo	'	fun:readline'		>> $(VALGRIND_SUPPR)
+	@echo	'	...'				>> $(VALGRIND_SUPPR)
+	@echo	'	}'					>> $(VALGRIND_SUPPR)
+	@echo	''						>> $(VALGRIND_SUPPR)
+	@echo	'	{'					>> $(VALGRIND_SUPPR)
+	@echo	'	readline'			>> $(VALGRIND_SUPPR)
+	@echo	'	Memcheck:Leak'		>> $(VALGRIND_SUPPR)
+	@echo	'	...'				>> $(VALGRIND_SUPPR)
+	@echo	'	fun:add_history'	>> $(VALGRIND_SUPPR)
+	@echo	'	...'				>> $(VALGRIND_SUPPR)
+	@echo	'}'						>> $(VALGRIND_SUPPR)
+
+valgrind: all $(VALGRIND_SUPPR)
+	@clear
+	@echo -n "$(C_MAGENTA)$(C_BOLD)$(C_UNDERLINE)"
+	@echo "Running valgrind... :$(C_RESET)"
+	@echo ""
+	@echo "" > $(VALGRIND_OUT)
+	@valgrind $(VALGRIND_ARGS) ./$(NAME) 2>&1 | tee $(VALGRIND_OUT)
+	@clear
+	@echo -n "$(C_MAGENTA)$(C_BOLD)$(C_UNDERLINE)"
+	@echo "Running valgrind... :$(C_RESET)"
+	@echo ""
+	@cat $(VALGRIND_OUT) | sed -r '/^==[0-9]*==/s/(^==[0-9]*==)(.*(definitely lost|indirectly lost|possibly lost|still reachable|Invalid read|Invalid write|\.c:).*)/'$$(printf "$(C_BLACK)")'\1'$$(printf "$(C_YELLOW)")'\2'$$(printf "$(C_RESET)")'/; /==[0-9]*==/s/(.*==[0-9]*==.*)((definitely lost|indirectly lost|possibly lost|still reachable): .*)/\1'$$(printf "$(C_RED)$(C_BOLD)")'\2'$$(printf "$(C_RESET)")'/; /==[0-9]*==/s/(.*==[0-9]*==.*)((definitely lost|indirectly lost|possibly lost|still reachable): 0 bytes.*)/\1'$$(printf "$(C_RESET)$(C_BLACK)")'\2'$$(printf "$(C_RESET)")'/; /^==[0-9]*==/s/(.*)/'$$(printf "$(C_BLACK)")'\1'$$(printf "$(C_RESET)")'/;'
+
 clean :
-	$(call del, $(BUILD_DIR) $(BUILD_FILES))
+	$(call del, $(VALGRIND_SUPPR) $(VALGRIND_OUT) $(BUILD_DIR) $(BUILD_FILES))
 	@rm -rf $(BUILD_FILES) $(BUILD_DIR)
 
 fclean :
-	$(call del, "./$(NAME)" $(BUILD_DIR) $(BUILD_FILES))
+	$(call del, "./$(NAME)" $(VALGRIND_SUPPR) $(VALGRIND_OUT) $(BUILD_DIR) $(BUILD_FILES))
 	@rm -rf $(NAME) $(BUILD_FILES) $(BUILD_DIR)
 
 re : fclean m_line_break all

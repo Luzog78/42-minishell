@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 10:54:06 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/01/31 04:25:37 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,20 @@ int	main(int argc, char **argv, char **env)
 		if (!ft_check_parenthesis_and_quotes(line))
 		{
 			free(line);
-			ft_error("syntax error: wrong parentheses or quotes", NULL); //Print error inside ft_check_parenthesis_and_quotes
+			ft_error(2, "syntax error: wrong parentheses or quotes", NULL);
 			g_exit = 2;
 			continue ;
 		}
 		ft_parse(subshell, line);
+		free(line);
 		if (subshell->exit_status)
 		{
-			free(line);
 			ft_free_subshell(subshell->cmds);
 			subshell->cmds = NULL;
 			g_exit = subshell->exit_status;
 			continue ;
 		}
 		ft_exec(subshell);
-		free(line);
 		ft_free_subshell(subshell->cmds);
 		subshell->cmds = NULL;
 	}

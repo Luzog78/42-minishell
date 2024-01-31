@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 18:03:29 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/01/31 03:58:39 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ void	free_all(t_subshell *subshell, int mode);
 char	**ft_free_char_array(char **array);
 char	**ft_env_owrite(char **env, char **new_env);
 char	**ft_split(char *str, char c);
-int		ft_error(char *str, t_subshell *subshell_to_free);
+int		ft_error(int err, char *str, t_subshell *subshell_to_free);
 void	ft_free_subshell(t_subshell *subshell);
 
 # endif
