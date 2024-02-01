@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/31 03:58:39 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/01 02:07:28 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ char	**ft_env_owrite(char **env, char **new_env);
 char	**ft_split(char *str, char c);
 int		ft_error(int err, char *str, t_subshell *subshell_to_free);
 void	ft_free_subshell(t_subshell *subshell);
+char	*ft_getenv(char *str, int i);
+char	*ft_get_bash_string(char *str);
 
 # endif
 
