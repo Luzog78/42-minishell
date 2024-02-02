@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/31 04:26:25 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/02 17:23:27 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ char	*ft_get_next_word(char **str)
 			start_idx = i + 1;
 		}
 		else if (!quote && ((*str)[i] == '<' || (*str)[i] == '>'
-			|| (*str)[i] == '|' || (*str)[i] == '&' || (*str)[i] == ';'
+			|| (*str)[i] == '|' || (*str)[i] == ';'
 			|| (*str)[i] == '(' || (*str)[i] == ')' || ft_is_next_a_fd((*str) + i)))
 			break ;
 		i++;
