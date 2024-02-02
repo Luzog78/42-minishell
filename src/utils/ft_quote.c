@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:26:42 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/02 23:55:05 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ char	*ft_getvar(char *str, int *i, char **env)
 	(*i)++;
 	save = *i;
 	j = *i;
-	while (str[*i] != ' ' && str[*i] != '\0' && str[*i] != '\\'
-		&& str[*i] != '"' && str[*i] != '\'' && str[*i] != '$')
+	while (str[*i] != ' ' && str[*i] != '\0' && str[*i] != '\\' && str[*i] != '+'
+		&& str[*i] != '"' && str[*i] != '\'' && str[*i] != '$' && str[*i] != '=')
 		(*i)++;
 	j = *i - j;
 	(*i)--;
@@ -38,7 +38,8 @@ char	*ft_getvar(char *str, int *i, char **env)
 		return (NULL);
 	j = 0;
 	while (str[save] != ' ' && str[save] != '\0' && str[save] != '\\'
-		&& str[save] != '"' && str[save] != '\'' && str[save] != '$')
+		&& str[save] != '"' && str[save] != '\'' && str[save] != '$'
+		&& str[save] != '=' && str[save] != '+')
 		sub_str[j++] = str[save++];
 	sub_str[j] = '\0';
 	result = ft_getenv(sub_str, env);

@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/02 17:23:36 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/02 23:47:53 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRC_FILES			= \
 						src/utils/ft_split.c \
 						src/utils/ft_quote.c \
 						src/utils/ft_getenv.c \
+						src/utils/ft_substr.c \
 						src/main.c
 
 C_RESET				= \033[0m

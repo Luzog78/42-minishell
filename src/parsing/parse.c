@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:33:31 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/02 23:51:39 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,24 +130,6 @@ t_bool	ft_starts_with(char *str, char *prefix)
 	if (prefix[i])
 		return (FALSE);
 	return (TRUE);
-}
-
-char	*ft_substr(char *str, int start, int len)
-{
-	char	*substr;
-	int		i;
-
-	substr = calloc(len + 1, sizeof(char));
-	if (!substr)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		substr[i] = str[start + i];
-		i++;
-	}
-	substr[i] = 0;
-	return (substr);
 }
 
 t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str)

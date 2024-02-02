@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 21:54:19 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:14:46 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,36 +105,23 @@ char	**ft_update_env(char *new_var, char **env)
 {
 	int		i;
 	int		length;
-	char	*value;
-	int		mode;
+	char	*tmp;
 
-	i = -1;
-	mode = 0;
-	while (new_var[++i] && mode == 0)
-	{
-		if (new_var[i] == '=')
-			mode = 1;
-		if (new_var[i] == '+' && new_var[i + 1] == '=')
-			mode = 2;
-	}
-	length = i + 1;
-	i = -1;
-	while (env[++i])
+	i = 0;
+	while (new_var[i] && new_var[i] != '=')
+		i++;
+	length = i;
+	i = 0;
+	while (env[i])
 	{
 		if (ft_strncmp(new_var, env[i], length) == 0)
 		{
-			free(env[i]);
-			if (mode == 1 || mode == 0)
-				env[i] = ft_get_bash_string(new_var, env);
-			else if (mode == 2)
-			{
-				value = ft_get_bash_string(new_var + length, env);
-				env[i] = ft_strjoin(env[i], value);
-				free(value);
-				value = NULL;
-			}
-			return (env);
+			tmp = env[i];
+			env[i] = ft_strdup(new_var);
+			free(tmp);
+			break ;
 		}
+		i++;
 	}
 	return (env);
 }
@@ -143,86 +130,92 @@ int	var_is_here(char *var, char **env)
 {
 	int	i;
 	int	length;
-	int	save;
 
 	i = 0;
-	save = 0;
 	while (var[i] && var[i] != '=' && var[i] != '+')
 		i++;
 	length = i + 1;
-	if (var[i] == '+')
-		var[i] = '=';
-	save = i;
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(var, env[i], length) == 0)
-		{
-			if (save != 0)
-				var[save] = '+';
 			return (1);
-		}
 		i++;
 	}
 	return (0);
 }
 
-char	*var_concatenation(char *var)
+int	check_var(char *var)
 {
-	int		i;
-	char	*new_var;
-	int		j;
+	int	i;
 
-	i = 0;
+	i = 1;
+	if (var[0] < 'A' && var[0] > 'Z'
+		&& var[0] < 'a' && var[0] > 'z'
+		&& var[0] != '_' && var[0] != '$')
+		return (0);
 	while (var[i])
 	{
-		if (var[i] == '+' && var[i + 1] == '=')
-		{
-			i = 0;
-			j = 0;
-			new_var = malloc(sizeof(char) * ft_strlen(var));
-			while (var[i])
-			{
-				if (var[i] != '+')
-					new_var[j++] = var[i];
-				i++;
-			}
-			new_var[j] = '\0';
-			free(var);
-			var = new_var;
+		if (var[i] == '=' || (var[i] == '+' && var[i + 1] == '='))
 			return (1);
-		}
+		if (var[i] < 'A' && var[i] > 'Z' && var[i] < 'a' && var[i] > 'z'
+			&& var[i] < '0' && var[i] > '9' && var[i] != '_' && var[i] != '$')
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
-char	*ft_cat_var(char **env, char *argv)
+char	*ft_var_concat(char *var, char **env)
 {
+	char	*var_name;
+	char	*var_value;
+	char	*new_var_value;
+	char	*new_var;
 	int		i;
-	int		length;
-	char	*var;
 
 	i = 0;
-	while (argv[i] && argv[i] != '=')
+	while (var[i] && var[i] != '+')
 		i++;
-	length = i;
+	var_name = ft_substr(var, 0, i);
+	var_value = ft_getenv(var_name, env);
+	new_var_value = ft_substr(var, i + 2, ft_strlen(var) - i - 2);
+	new_var = ft_strjoin(var_name, "=");
+	free(var_name);
+	new_var = ft_strjoin(new_var, var_value);
+	new_var = ft_strjoin(new_var, new_var_value);
+	free(new_var_value);
+	free(var);
+	return (new_var);
+}
+
+char	*ft_get_var(char **env, char *argv)
+{
+	char	*var;
+	int		i;
+
 	i = 0;
-	while (env[i])
+	var = NULL;
+	if (!check_var(argv))
+		return (NULL);
+	while (argv[i])
 	{
-		if (ft_strncmp(env[i], argv, length) == 0)
+		if (argv[i] == '+' && argv[i + 1] == '=')
 		{
-			var = ft_strjoin(env[i], argv + length);
-			return (var);
+			var = ft_get_bash_string(argv, env);
+			var = ft_var_concat(var, env);
+			break ;
 		}
 		i++;
 	}
-	return (NULL);
+	if (!var)
+		var = ft_get_bash_string(argv, env);
+	return (var);
 }
 
 int	ft_export(char **argv, t_subshell *cmds)
 {
-	char	*var_concatened;
+	char	*var;
 
 	if (!argv[0])
 		ft_printenv(cmds->env);
@@ -230,18 +223,16 @@ int	ft_export(char **argv, t_subshell *cmds)
 	{
 		while (*argv)
 		{
-			if (var_concatenation(*argv) == 1)
+			var = ft_get_var(cmds->env, *argv);
+			if (var)
 			{
-				var_concatened = ft_cat_var(cmds->env, *argv);
-				free(*argv);
-				*argv = var_concatened;
+				if (var_is_here(var, cmds->env))
+					cmds->env = ft_update_env(var, cmds->env);
+				else
+					cmds->env = ft_add_env(var, cmds->env);
+				if (cmds->env == NULL)
+					return (1);
 			}
-			if (var_is_here(*argv, cmds->env))
-				cmds->env = ft_update_env(*argv, cmds->env);
-			else
-				cmds->env = ft_add_env(*argv, cmds->env);
-			if (cmds->env == NULL)
-				return (1);
 			argv++;
 		}
 	}
