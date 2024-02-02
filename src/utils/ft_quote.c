@@ -6,14 +6,14 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/01 20:02:27 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/01 20:29:25 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minish.h"
 
 /*Faire une fonction qui renvoie un char * qui a été malloc
- *Avec les ",',$ avec getenv pour $
+ *Avec les " ' $ avec getenv pour $
  *La premiere quote est connecte a la quote la plus proche
  *Ex: '"""'$PWD'"""' -> """/nfs/home/..."""
 */
