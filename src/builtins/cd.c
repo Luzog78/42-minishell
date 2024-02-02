@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 22:24:29 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:33:09 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	update_path(t_subshell *cmds)
 
 	cwd = getcwd(NULL, 0);
 	pwd = ft_strjoin("PWD=", cwd);
-	ft_export(pwd, cmds);
+	ft_export(&pwd, cmds);
 	free(pwd);
 	free(cwd);
 }
@@ -30,7 +30,7 @@ int	ft_home_cd(t_subshell *cmds)
 	char	*oldpwd;
 	char	*oldpwd_save;
 
-	home = getenv("HOME");
+	home = ft_getenv("HOME", cmds->env);
 	oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
 	if (!home)
 	{
@@ -38,11 +38,11 @@ int	ft_home_cd(t_subshell *cmds)
 		return (1);
 	}
 	oldpwd_save = ft_strdup(oldpwd);
-	ft_export(oldpwd, cmds);
+	ft_export(&oldpwd, cmds);
 	free(oldpwd);
 	if (chdir(home) == -1)
 	{
-		ft_export(oldpwd_save, cmds);
+		ft_export(&oldpwd_save, cmds);
 		free(oldpwd_save);
 		perror("minishell");
 		return (1);
@@ -63,11 +63,11 @@ int	ft_cd(char **argv, t_subshell *cmds)
 	oldpwd = ft_strjoin("OLDPWD=", cwd);
 	free(cwd);
 	oldpwd_save = ft_strdup(oldpwd);
-	ft_export(oldpwd, cmds);
+	ft_export(&oldpwd, cmds);
 	free(oldpwd);
 	if (chdir(argv[1]) == -1)
 	{
-		ft_export(oldpwd_save, cmds);
+		ft_export(&oldpwd_save, cmds);
 		free(oldpwd_save);
 		perror("minishell");
 		return (1);

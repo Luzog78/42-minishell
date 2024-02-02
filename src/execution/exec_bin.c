@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 03:21:24 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/02 17:31:40 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	ft_get_path(char **argv)
+void	ft_get_path(char **argv, char **env)
 {
 	char	**path;
 	char	*tmp;
 	int		i;
 
 	i = 0;
-	path = ft_split(getenv("PATH"), ':');
+	path = ft_split(ft_getenv("PATH", env), ':');
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
@@ -40,7 +40,7 @@ void	ft_get_path(char **argv)
 
 int	ft_execve_bin_piped(char **argv, t_subshell *cmds)
 {
-	ft_get_path(argv);
+	ft_get_path(argv, cmds->env);
 	if (execve(argv[0], argv, cmds->env) == -1)
 		perror("minishell");
 	ft_free_char_array(argv);
@@ -51,7 +51,7 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 {
 	pid_t	pid;
 
-	ft_get_path(argv);
+	ft_get_path(argv, cmds->env);
 	pid = fork();
 	if (pid == -1)
 	{

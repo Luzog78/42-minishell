@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/01 19:18:58 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:27:43 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ char	**ft_env_owrite(char **env, char **new_env);
 char	**ft_split(char *str, char c);
 int		ft_error(int err, char *str, t_subshell *subshell_to_free);
 void	ft_free_subshell(t_subshell *subshell);
-char	*ft_getenv(char *str, int *i);
-char	*ft_get_bash_string(char *str);
+char	*ft_getenv(char *str, char **env);
+char	*ft_get_bash_string(char *str, char **env);
 
 # endif
 

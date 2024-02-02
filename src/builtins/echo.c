@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/01 20:19:43 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:29:28 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_flags(char **argv)
 	return (i);
 }
 
-int	ft_echo(char **argv)
+int	ft_echo(char **argv, char **env)
 {
 	int		i;
 	int		flags;
@@ -49,7 +49,7 @@ int	ft_echo(char **argv)
 		flags = 1;
 	while (argv[i])
 	{
-		var = ft_get_bash_string(argv[i]);
+		var = ft_get_bash_string(argv[i], env);
 		printf("%s", var);
 		if (argv[i + 1])
 			printf(" ");

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 12:52:49 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:37:18 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	get_right_cmds(t_subshell *cmds)
 
 	argv = ft_lststr_to_char_array(cmds->argv);
 	if (ft_strcmp(argv[0], "echo") == 0)
-		exit_status = ft_echo(argv);
+		exit_status = ft_echo(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		exit_status = ft_cd(argv, cmds);
 	else if (ft_strcmp(argv[0], "pwd") == 0)
 		exit_status = ft_pwd(cmds->env);
 	else if (ft_strcmp(argv[0], "export") == 0)
-		exit_status = ft_export(argv, cmds);
+		exit_status = ft_export(argv + 1, cmds);
 	else if (ft_strcmp(argv[0], "unset") == 0)
 		exit_status = ft_unset(argv, cmds);
 	else if (ft_strcmp(argv[0], "env") == 0)

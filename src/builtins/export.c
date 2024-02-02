@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 13:44:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:39:08 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ char	**ft_update_env(char *new_var, char **env)
 		{
 			free(env[i]);
 			if (mode == 1 || mode == 0)
-				env[i] = ft_get_bash_string(new_var);
+				env[i] = ft_get_bash_string(new_var, env);
 			else if (mode == 2)
 			{
-				value = ft_get_bash_string(new_var + length);
+				value = ft_get_bash_string(new_var + length, env);
 				env[i] = ft_strjoin(env[i], value);
 				free(value);
 				value = NULL;
@@ -105,19 +105,23 @@ static int	var_is_here(char *var, char **env)
 {
 	int	i;
 	int	length;
+	int	save;
 
 	i = 0;
+	save = 0;
 	while (var[i] && var[i] != '=' && var[i] != '+')
 		i++;
 	length = i + 1;
 	if (var[i] == '+')
 		var[i] = '=';
+	save = i;
 	i = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(var, env[i], length) == 0)
 		{
-			
+			if (save != 0)
+				var[save] = '+';
 			return (1);
 		}
 		i++;
@@ -127,7 +131,6 @@ static int	var_is_here(char *var, char **env)
 
 int	ft_export(char **argv, t_subshell *cmds)
 {
-	argv++;
 	if (!argv[0])
 		ft_printenv(cmds->env);
 	else

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/01 20:29:25 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:26:42 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  *Ex: '"""'$PWD'"""' -> """/nfs/home/..."""
 */
 
-char	*ft_getenv(char *str, int *i)
+char	*ft_getvar(char *str, int *i, char **env)
 {
 	int		j;
 	int		save;
@@ -41,25 +41,25 @@ char	*ft_getenv(char *str, int *i)
 		&& str[save] != '"' && str[save] != '\'' && str[save] != '$')
 		sub_str[j++] = str[save++];
 	sub_str[j] = '\0';
-	result = getenv(sub_str);
+	result = ft_getenv(sub_str, env);
 	free(sub_str);
 	return (result);
 }
 
-void	check_dollar(int *result, int *i, char *str)
+void	check_dollar(int *result, int *i, char *str, char **env)
 {
 	char	*var;
 
 	if (str[*i] == '$')
 	{
-		var = ft_getenv(str, i);
+		var = ft_getvar(str, i, env);
 		if (var)
 			*result += ft_strlen(var);
 	}
 	else
 		(*result)++;
 }
-int	get_bash_string_size(char *str)
+int	get_bash_string_size(char *str, char **env)
 {
 	int		result;
 	int		i;
@@ -76,10 +76,10 @@ int	get_bash_string_size(char *str)
 		else if (str[i] == '"')
 		{
 			while (str[++i] != '"' && str[i] != '\0')
-				check_dollar(&result, &i, str);
+				check_dollar(&result, &i, str, env);
 		}
 		else
-			check_dollar(&result, &i, str);
+			check_dollar(&result, &i, str, env);
 		i++;
 	}
 	return (result);
@@ -105,14 +105,14 @@ char	*ft_addchar(char *dest, char character)
 	return (result);
 }
 
-char	*ft_get_bash_string(char *str)
+char	*ft_get_bash_string(char *str, char **env)
 {
 	int		i;
 	char	*bash_string;
 	char	*var;
 
 	i = 0;
-	bash_string = calloc(sizeof(char), get_bash_string_size(str) + 1);
+	bash_string = calloc(sizeof(char), get_bash_string_size(str, env) + 1);
 	while (str[i])
 	{
 		if (str[i] == '\'')
@@ -126,7 +126,7 @@ char	*ft_get_bash_string(char *str)
 			{
 				if (str[i] == '$')
 				{
-					var = ft_getenv(str, &i);
+					var = ft_getvar(str, &i, env);
 					if (var)
 						ft_strcat(bash_string, var);
 				}
@@ -138,7 +138,7 @@ char	*ft_get_bash_string(char *str)
 		{
 			if (str[i] == '$')
 			{
-				var = ft_getenv(str, &i);
+				var = ft_getvar(str, &i, env);
 				if (var)
 					ft_strcat(bash_string, var);
 			}
@@ -147,6 +147,6 @@ char	*ft_get_bash_string(char *str)
 		}
 		i++;
 	}
-	bash_string[get_bash_string_size(str)] = '\0';
+	bash_string[get_bash_string_size(str, env)] = '\0';
 	return (bash_string);
 }
