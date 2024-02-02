@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:54:08 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/02 21:54:19 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-
-
-static int	ft_printenv(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		printf("declare -x %s\n", env[i]);
-		i++;
-	}
-	return (0);
-}
 
 void	ft_arr_char_cpy(char **src, char **dst)
 {
@@ -37,6 +23,58 @@ void	ft_arr_char_cpy(char **src, char **dst)
 		i++;
 	}
 	dst[i] = NULL;
+}
+
+char	**ft_sort_env(char **env)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (env[i])
+	{
+		j = 0;
+		while (env[j])
+		{
+			if (ft_strncmp(env[i], env[j], ft_strlen(env[i])) < 0)
+			{
+				tmp = env[i];
+				env[i] = env[j];
+				env[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (env);
+}
+
+static void	ft_printenv(char **env)
+{
+	int		i;
+	char	**sorted_env;
+
+	i = 0;
+	while (env[i])
+		i++;
+	sorted_env = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	ft_arr_char_cpy(env, sorted_env);
+	sorted_env = ft_sort_env(sorted_env);
+	while (sorted_env[i])
+	{
+		printf("declare -x %s\n", sorted_env[i]);
+		i++;
+	}
+	sorted_env[i] = NULL;
+	i = 0;
+	while (sorted_env[i])
+	{
+		free(sorted_env[i]);
+		i++;
+	}
+	free(sorted_env);
 }
 
 char	**ft_add_env(char *new_var, char **env)
@@ -129,14 +167,75 @@ int	var_is_here(char *var, char **env)
 	return (0);
 }
 
+char	*var_concatenation(char *var)
+{
+	int		i;
+	char	*new_var;
+	int		j;
+
+	i = 0;
+	while (var[i])
+	{
+		if (var[i] == '+' && var[i + 1] == '=')
+		{
+			i = 0;
+			j = 0;
+			new_var = malloc(sizeof(char) * ft_strlen(var));
+			while (var[i])
+			{
+				if (var[i] != '+')
+					new_var[j++] = var[i];
+				i++;
+			}
+			new_var[j] = '\0';
+			free(var);
+			var = new_var;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	*ft_cat_var(char **env, char *argv)
+{
+	int		i;
+	int		length;
+	char	*var;
+
+	i = 0;
+	while (argv[i] && argv[i] != '=')
+		i++;
+	length = i;
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], argv, length) == 0)
+		{
+			var = ft_strjoin(env[i], argv + length);
+			return (var);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 int	ft_export(char **argv, t_subshell *cmds)
 {
+	char	*var_concatened;
+
 	if (!argv[0])
 		ft_printenv(cmds->env);
 	else
 	{
 		while (*argv)
 		{
+			if (var_concatenation(*argv) == 1)
+			{
+				var_concatened = ft_cat_var(cmds->env, *argv);
+				free(*argv);
+				*argv = var_concatened;
+			}
 			if (var_is_here(*argv, cmds->env))
 				cmds->env = ft_update_env(*argv, cmds->env);
 			else
