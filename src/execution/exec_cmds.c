@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:37:18 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:38:04 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,6 @@ int	ft_execve_pipe(t_subshell *cmds)
 	return (0);
 }
 
-int	ft_execve(t_subshell *cmds)
-{
-	int	exit_status;
-
-	exit_status = get_right_cmds(cmds);
-	return (exit_status);
-}
-
 void	ft_exec_cmd(t_subshell *cmds)
 {
 	if (!cmds->exit_status && cmds->stdin)
@@ -90,7 +82,7 @@ void	ft_exec_cmd(t_subshell *cmds)
 	if (!cmds->exit_status && cmds->link == PIPE)
 		cmds->exit_status = ft_execve_pipe(cmds);
 	else if (!cmds->exit_status && cmds->argv)
-		cmds->exit_status = ft_execve(cmds);
+		cmds->exit_status = get_right_cmds(cmds);
 	if (cmds->next == NULL)
 		return ;
 	cmds->next->env = ft_env_cpy(cmds->env);

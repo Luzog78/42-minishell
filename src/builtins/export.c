@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/03 00:14:46 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:50:46 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,16 +150,18 @@ int	check_var(char *var)
 	int	i;
 
 	i = 1;
-	if (var[0] < 'A' && var[0] > 'Z'
-		&& var[0] < 'a' && var[0] > 'z'
+	if (!var)
+		return (1);
+	if ((var[0] < 'A' || var[0] > 'Z')
+		&& (var[0] < 'a' || var[0] > 'z')
 		&& var[0] != '_' && var[0] != '$')
 		return (0);
 	while (var[i])
 	{
 		if (var[i] == '=' || (var[i] == '+' && var[i + 1] == '='))
 			return (1);
-		if (var[i] < 'A' && var[i] > 'Z' && var[i] < 'a' && var[i] > 'z'
-			&& var[i] < '0' && var[i] > '9' && var[i] != '_' && var[i] != '$')
+		if ((var[i] < 'A' || var[i] > 'Z') && (var[i] < 'a' || var[i] > 'z')
+			&& (var[i] < '0' || var[i] > '9') && var[i] != '_' && var[i] != '$')
 			return (0);
 		i++;
 	}
@@ -224,6 +226,12 @@ int	ft_export(char **argv, t_subshell *cmds)
 		while (*argv)
 		{
 			var = ft_get_var(cmds->env, *argv);
+			if (!check_var(var))
+			{
+				printf("bash: export: `%s': not a valid identifier\n", var);
+				free(var);
+				var = NULL;
+			}
 			if (var)
 			{
 				if (var_is_here(var, cmds->env))
@@ -233,6 +241,7 @@ int	ft_export(char **argv, t_subshell *cmds)
 				if (cmds->env == NULL)
 					return (1);
 			}
+			free(var);
 			argv++;
 		}
 	}

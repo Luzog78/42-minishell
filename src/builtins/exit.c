@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 20:46:51 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/03 00:39:02 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	ft_exit(char **argv)
 			return (1);
 	}
 	printf("exit\n");
+	ft_free_char_array(argv);
 	exit(exit_code);
 	return (0);
 }
