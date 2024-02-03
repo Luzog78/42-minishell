@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/03 00:50:46 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:21:32 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,30 @@ char	**ft_sort_env(char **env)
 	return (env);
 }
 
+void	add_double_quotes(char **env)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	while (env[i])
+	{
+		while (env[i][j])
+		{
+			j++;
+			if (env[i][j] == '=')
+			{
+				tmp = ft_substr(env[i], j + 1, ft_strlen(env[i]) - j - 1);
+				env[i] = ft_strjoin(env[i], "\"");
+			}
+		}
+		i++;
+		j = 0;
+	}
+}
+
 static void	ft_printenv(char **env)
 {
 	int		i;
@@ -62,7 +86,8 @@ static void	ft_printenv(char **env)
 	i = 0;
 	ft_arr_char_cpy(env, sorted_env);
 	sorted_env = ft_sort_env(sorted_env);
-	while (sorted_env[i])
+	add_double_quotes(sorted_env);
+	while (sorted_env[i] && ft_strchr(sorted_env[i], '='))
 	{
 		printf("declare -x %s\n", sorted_env[i]);
 		i++;
