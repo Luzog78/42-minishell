@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 02:08:58 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 03:15:39 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void	ft_exec_subshell(t_subshell *subshell)
 {
 	pid_t	pid;
+	int		status;
 
+	status = 0;
 	if (!subshell)
 		return ;
 	if (subshell->link == PIPE)
@@ -48,8 +50,12 @@ void	ft_exec_subshell(t_subshell *subshell)
 		close(subshell->next->pipe[0]);
 	}
 	else
-		waitpid(-1, NULL, 0);
-	subshell->pid = pid;
+	{
+		subshell->pid = pid;
+		waitpid(-1, &status, 0);
+	}
+	g_exit = WEXITSTATUS(status);
+	subshell->exit_status = g_exit;
 	if (subshell->next && subshell->next->type == COMMAND
 		&& allow_next(subshell))
 	{

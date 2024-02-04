@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 00:27:17 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 03:15:22 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	get_right_cmds(t_subshell *cmds)
 		exit_status = ft_execve_bin_piped(argv, cmds);
 	else
 		exit_status = ft_execve_bin(argv, cmds);
+	g_exit = exit_status;
 	ft_free_char_array(argv);
 	return (exit_status);
 }
@@ -43,7 +44,9 @@ int	get_right_cmds(t_subshell *cmds)
 int	ft_execve_pipe(t_subshell *cmds)
 {
 	pid_t	pid;
+	int		status;
 
+	status = 0;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -68,8 +71,10 @@ int	ft_execve_pipe(t_subshell *cmds)
 		close(cmds->next->pipe[0]);
 	}
 	else
-		waitpid(-1, NULL, 0);
-	return (0);
+		waitpid(-1, &status, 0);
+	g_exit = WEXITSTATUS(status);
+	cmds->exit_status = g_exit;
+	return (g_exit);
 }
 
 void	ft_exec_cmd(t_subshell *cmds)

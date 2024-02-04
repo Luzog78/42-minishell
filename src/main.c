@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 02:08:11 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 03:14:38 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 {
 	subshell->type = type;
 	subshell->env = NULL;
+	subshell->pid = 0;
 	if (type == SUBSHELL)
 		subshell->env = ft_env_cpy(env);
 	subshell->exit_status = 0;
@@ -45,10 +46,14 @@ int	main(int argc, char **argv, char **env)
 	if (!subshell)
 		return (1);
 	ft_subshell_init(subshell, SUBSHELL, env);
+	ft_sig_init(subshell);
 	while (1)
 	{
 		line = readline("minishell $> ");
-		add_history(line);
+		if (!line)
+			continue ;
+		if (ft_strlen(line))
+			add_history(line);
 		if (!ft_check_parenthesis_and_quotes(line))
 		{
 			free(line);

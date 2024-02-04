@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_quote.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 23:55:05 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 03:03:16 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minish.h"
+
+// TO REMOVE
+char	*ft_itoa(int i)
+{
+	char	*result;
+	int		j;
+	int		save;
+
+	if (i == 0)
+		return (ft_strdup("0"));
+	save = i;
+	j = 0;
+	while (i)
+	{
+		i /= 10;
+		j++;
+	}
+	result = malloc(sizeof(char) * (j + 1));
+	if (!result)
+		return (NULL);
+	result[j] = '\0';
+	while (j)
+	{
+		result[--j] = save % 10 + '0';
+		save /= 10;
+	}
+	return (result);
+}
 
 /*Faire une fonction qui renvoie un char * qui a été malloc
  *Avec les " ' $ avec getenv pour $
@@ -51,7 +79,14 @@ void	check_dollar(int *result, int *i, char *str, char **env)
 {
 	char	*var;
 
-	if (str[*i] == '$')
+	if (str[*i] == '$' && str[*i + 1] == '?')
+	{
+		var = ft_itoa(g_exit);
+		*result += ft_strlen(var);
+		free(var);
+		(*i)++;
+	}
+	else if (str[*i] == '$')
 	{
 		var = ft_getvar(str, i, env);
 		if (var)
@@ -125,7 +160,14 @@ char	*ft_get_bash_string(char *str, char **env)
 		{
 			while (str[++i] != '"' && str[i] != '\0')
 			{
-				if (str[i] == '$')
+				if (str[i] == '$' && str[i + 1] == '?')
+				{
+					var = ft_itoa(g_exit);
+					ft_strcat(bash_string, var);
+					free(var);
+					i++;
+				}
+				else if (str[i] == '$')
 				{
 					var = ft_getvar(str, &i, env);
 					if (var)
@@ -137,7 +179,14 @@ char	*ft_get_bash_string(char *str, char **env)
 		}
 		else
 		{
-			if (str[i] == '$')
+			if (str[i] == '$' && str[i + 1] == '?')
+			{
+				var = ft_itoa(g_exit);
+				ft_strcat(bash_string, var);
+				free(var);
+				i++;
+			}
+			else if (str[i] == '$')
 			{
 				var = ft_getvar(str, &i, env);
 				if (var)

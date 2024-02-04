@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/03 15:39:25 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/04 02:35:57 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRC_FILES			= \
 						src/utils/ft_getenv.c \
 						src/utils/ft_substr.c \
 						src/utils/ft_strchr.c \
+						src/ft_sig_handling.c \
 						src/main.c
 
 C_RESET				= \033[0m
