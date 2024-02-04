@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 03:14:38 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/04 03:22:49 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		line = readline("minishell $> ");
 		if (!line)
-			continue ;
+			line = ft_strdup("exit");
 		if (ft_strlen(line))
 			add_history(line);
 		if (!ft_check_parenthesis_and_quotes(line))
