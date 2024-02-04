@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:31:40 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 01:55:34 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	ft_execve_bin_piped(char **argv, t_subshell *cmds)
 int	ft_execve_bin(char **argv, t_subshell *cmds)
 {
 	pid_t	pid;
+	int	status;
 
 	ft_get_path(argv, cmds->env);
 	pid = fork();
@@ -68,6 +69,10 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 		exit(execve(argv[0], argv, cmds->env));
 	}
 	else
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+
+	// Result of the waitpid():
+	printf("%d\n", WEXITSTATUS(status));
+	g_exit = WEXITSTATUS(status);
 	return (0);
 }

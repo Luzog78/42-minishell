@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:34:27 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/25 12:49:46 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 00:37:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,6 @@ int		ft_count_words(char const *s, char c)
 			i++;
 	}
 	return (count);
-}
-
-static char	*ft_substr(char const *s, int start, int len)
-{
-	char	*substr;
-	int		i;
-
-	i = 0;
-	substr = malloc(sizeof(char) * (len + 1));
-	if (!substr)
-		return (NULL);
-	while (i < len && s[start])
-	{
-		substr[i] = s[start];
-		i++;
-		start++;
-	}
-	substr[i] = '\0';
-	return (substr);
 }
 
 char	**ft_split(char *s, char c)

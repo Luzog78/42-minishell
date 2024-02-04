@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:44:51 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 22:31:49 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 00:51:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**ft_env_cpy(char **env)
 		new_env[i] = ft_strdup(env[i]);
 		if (!new_env[i])
 		{
-			//free_all;
+			return (NULL);
 		}
 		i++;
 	}

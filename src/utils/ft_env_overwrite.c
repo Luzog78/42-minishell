@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 20:08:43 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/25 11:14:25 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 01:31:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 char	**ft_env_owrite(char **new_env, char **env)
 {
-	int	i = 0;
+	int	i;
 
-	while(env[i])
+	i = 0;
+	while (env[i])
 	{
 		free(env[i]);
 		i++;

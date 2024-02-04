@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 17:33:28 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 00:38:17 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,20 +65,6 @@ char	*ft_get_env(char *target, char **env)
 		i++;
 	}
 	return (NULL);
-}
-
-static int	var_is_here(char *var, char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(var, env[i], ft_strlen(var)) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 int	ft_unset(char **argv, t_subshell *cmds)

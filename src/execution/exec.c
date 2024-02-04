@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 19:04:31 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 01:31:40 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_exec(t_subshell *subshell)
 {
 	int	old_stdin;
-	int old_stdout;
+	int	old_stdout;
 
 	old_stdin = dup(0);
 	old_stdout = dup(1);
@@ -33,5 +33,7 @@ void	ft_exec(t_subshell *subshell)
 	waitpid(-1, NULL, 0);
 	dup2(old_stdin, 0);
 	dup2(old_stdout, 1);
+	close(old_stdin);
+	close(old_stdout);
 	free_all(subshell, 0);
 }
