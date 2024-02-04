@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 02:09:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/04 03:22:17 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/04 04:20:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,34 @@ static void	ft_kill_subshell(t_subshell *subshell, int sig)
 
 static void	ft_sig_handling(int sig)
 {
-	static int			state = 0;
-	static t_subshell	*master = NULL;
+	static int					state = 0;
+	static unsigned long long	ptr = 0;
+	static t_subshell			**master = NULL;
 
 	if (state < 2)
 	{
-		master = (t_subshell *)((unsigned long long)master | (sig << (state * 16)));
+		ptr |= (unsigned long long)(unsigned int)sig << (state * 32);
 		state++;
+		if (state == 2)
+			master = (t_subshell **)ptr;
 	}
-	if (sig == SIGINT || sig == SIGQUIT)
+	else if (sig == SIGINT || sig == SIGQUIT)
 	{
-		ft_kill_subshell(master, sig);
+		ft_kill_subshell(*master, sig);
 		g_exit = 128 + sig;
 		write(1, "\n", 1);
+		if (!(*master)->cmds)
+			write(1, "minishell $> ", 13);
 	}
 }
 
-void	ft_sig_init(t_subshell *master)
+void	ft_sig_init(t_subshell **master)
 {
 	unsigned long long	ptr;
 
 	ptr = (unsigned long long)master;
-	ft_sig_handling(ptr & 0xFFFF);
-	ft_sig_handling((ptr >> 16) & 0xFFFF);
+	ft_sig_handling(ptr & 0xFFFFFFFF);
+	ft_sig_handling((ptr >> 32) & 0xFFFFFFFF);
 	signal(SIGINT, ft_sig_handling);
 	signal(SIGQUIT, ft_sig_handling);
 }
