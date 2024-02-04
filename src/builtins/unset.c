@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 00:38:17 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 02:35:00 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,27 @@ char	*ft_get_env(char *target, char **env)
 	return (NULL);
 }
 
+static int	is_var_here_unset(char *target, char **env)
+{
+	int		i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(target, env[i], ft_strlen(target)) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	ft_unset(char **argv, t_subshell *cmds)
 {
 	char	*target;
 
 	if (argv[1] && argv[1][0] == '-')
 		return (125);
-	if (argv[1] && var_is_here(argv[1], cmds->env))
+	if (argv[1] && is_var_here_unset(argv[1], cmds->env))
 	{
 		target = ft_get_env(argv[1], cmds->env);
 		cmds->env = ft_unset_var(target, cmds->env);

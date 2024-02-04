@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 02:08:41 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 02:19:41 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	else
 		waitpid(pid, &status, 0);
 	cmds->pid = pid;
-	// Result of the waitpid():
-	printf("%d\n", WEXITSTATUS(status));
 	g_exit = WEXITSTATUS(status);
-	return (0);
+	return (WEXITSTATUS(status));
 }
