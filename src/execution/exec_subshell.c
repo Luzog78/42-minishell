@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 19:04:32 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/04 02:08:58 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_exec_subshell(t_subshell *subshell)
 	}
 	else
 		waitpid(-1, NULL, 0);
+	subshell->pid = pid;
 	if (subshell->next && subshell->next->type == COMMAND
 		&& allow_next(subshell))
 	{
