@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 03:15:22 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/05 15:06:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	get_right_cmds(t_subshell *cmds)
 		exit_status = ft_env(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		exit_status = ft_exit(argv);
-	else if (cmds->link == PIPE)
-		exit_status = ft_execve_bin_piped(argv, cmds);
 	else
 		exit_status = ft_execve_bin(argv, cmds);
 	g_exit = exit_status;
@@ -66,6 +64,7 @@ int	ft_execve_pipe(t_subshell *cmds)
 	}
 	else if (cmds->next && cmds->next->pipe[0] != 0)
 	{
+		waitpid(pid, &status, 0);
 		close(cmds->pipe[1]);
 		dup2(cmds->next->pipe[0], 0);
 		close(cmds->next->pipe[0]);
