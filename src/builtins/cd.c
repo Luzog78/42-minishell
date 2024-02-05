@@ -6,13 +6,13 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:57:21 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/05 04:14:33 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	update_path(t_subshell *cmds)
+static void	update_path(t_subshell *cmds)
 {
 	char	*pwd;
 	char	*cwd;
@@ -24,7 +24,7 @@ void	update_path(t_subshell *cmds)
 	free(cwd);
 }
 
-int	ft_home_cd(t_subshell *cmds)
+static int	ft_home_cd(t_subshell *cmds)
 {
 	char	*home;
 	char	*oldpwd;
@@ -51,12 +51,27 @@ int	ft_home_cd(t_subshell *cmds)
 	return (0);
 }
 
+static int	ft_argv_len(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+		i++;
+	return (i);
+}
+
 int	ft_cd(char **argv, t_subshell *cmds)
 {
 	char	*oldpwd;
 	char	*oldpwd_save;
 	char	*cwd;
 
+	if (ft_argv_len(argv) > 2)
+	{
+		printf("minishell: cd: too many arguments\n");
+		return (1);
+	}
 	if (argv[1] == NULL)
 		return (ft_home_cd(cmds));
 	cwd = getcwd(NULL, 0);
