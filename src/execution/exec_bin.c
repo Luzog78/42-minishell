@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 03:15:49 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/05 14:16:33 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,15 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 			dup2(cmds->pipe[0], 0);
 			close(cmds->pipe[0]);
 		}
-		exit(execve(argv[0], argv, cmds->env));
+		if (access(argv[0], X_OK) == -1)
+		{
+			perror("minishell");
+			ft_free_char_array(argv);
+			exit(127);
+		}
+		execve(argv[0], argv, cmds->env);
+		perror("minishell");
+		exit(1);
 	}
 	else
 	{
