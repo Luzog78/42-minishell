@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 02:09:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/04 04:20:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/05 03:04:28 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	ft_sig_handling(int sig)
 	static unsigned long long	ptr = 0;
 	static t_subshell			**master = NULL;
 
+	(void)master;
 	if (state < 2)
 	{
 		ptr |= (unsigned long long)(unsigned int)sig << (state * 32);
@@ -53,8 +54,10 @@ static void	ft_sig_handling(int sig)
 		ft_kill_subshell(*master, sig);
 		g_exit = 128 + sig;
 		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
 		if (!(*master)->cmds)
-			write(1, "minishell $> ", 13);
+			rl_redisplay();
 	}
 }
 
