@@ -3,50 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:29:28 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/05 04:12:11 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	check_flags(char **argv)
+/**
+ * @brief	Check if the echo command has flags
+ * 				-n	Do not print the trailing newline character
+ * 				-	Does nothing
+ * 				(only the "-n" and the "-" flags are supported)
+ * 
+ * @param	argv	The arguments of the echo command
+ * @param	idx		The index+1 of the last flag (modified)
+ * 
+ * @return	t_bool	TRUE if the -n flag is present, FALSE otherwise
+ */
+static t_bool	has_n_flag(char **argv, int *idx)
 {
-	int		i;
+	t_bool	n_flag;
 	int		j;
-
-	i = 1;
-	j = 1;
-	while (argv[i])
+	
+	n_flag = FALSE;
+	*idx = 1;
+	while (argv[*idx] && argv[*idx][0] == '-')
 	{
-		if (argv[i][0] == '-')
+		if (argv[*idx][1] == 'n')
 		{
-			while (argv[i][j])
-			{
-				if (argv[i][j] != 'n')
-					return (i);
+			j = 2;
+			while (argv[*idx][j] == 'n')
 				j++;
-			}
+			if (argv[*idx][j])
+				break ;
+			n_flag = TRUE;
 		}
-		else
-			return (i);
-		i++;
-		j = 1;
+		else if (argv[*idx][1])
+			break ;
+		(*idx)++;
 	}
-	return (i);
+	return (n_flag);
 }
 
 int	ft_echo(char **argv, char **env)
 {
 	int		i;
-	int		flags;
+	t_bool	n_flag;
 	char	*var;
 
-	i = check_flags(argv);
-	if (i < 2)
-		flags = 1;
+	n_flag = has_n_flag(argv, &i);
 	while (argv[i])
 	{
 		var = ft_get_bash_string(argv[i], env);
@@ -56,7 +64,7 @@ int	ft_echo(char **argv, char **env)
 		free(var);
 		i++;
 	}
-	if (flags == 1)
+	if (!n_flag)
 		printf("\n");
 	return (0);
 }
