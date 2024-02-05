@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 17:46:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:55:55 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*ft_get_temp_filename(void)
 	//do a function that returns a random string
 	char	*random;
 
-	random = ft_strdup("/tmp/minishell_XXXXXX");
+	random = ft_strdup("minishell_XXXXXX");
 
 	return (random);
 }
@@ -67,7 +67,7 @@ int	ft_heredoc(char *limiter)
 	char	*temp_filename;
 	int		temp_fd;
 
-	line = NULL;
+	line = malloc(1);
 	temp_filename = ft_get_temp_filename();
 	temp_fd = open(temp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	if (temp_fd == -1)
@@ -75,16 +75,19 @@ int	ft_heredoc(char *limiter)
 		perror("minishell");
 		return (1);
 	}
-	while (ft_strcmp(line, limiter))
+	while (!ft_strstr(line, limiter))
 	{
-		line = readline("> ");
+		printf("> ");
+		line[0] = '\0';
+		line = get_next_line(0, limiter);
 		if (ft_strcmp(line, limiter) == 0)
 			break ;
-		line = ft_strjoin(line, "\n");
 		write(temp_fd, line, ft_strlen(line));
+		free(line);
 	}
 	close(temp_fd);
 	temp_fd = open(temp_filename, O_RDONLY);
+
 	dup2(temp_fd, STDIN_FILENO);
 	close(temp_fd);
 	unlink(temp_filename);

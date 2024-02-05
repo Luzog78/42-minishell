@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/05 15:06:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:13:06 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,16 @@ int	ft_execve_pipe(t_subshell *cmds)
 		{
 			dup2(cmds->pipe[1], 1);
 			close(cmds->pipe[1]);
-			close(cmds->pipe[0]);
+			close(cmds->next->pipe[0]);
 		}
 		get_right_cmds(cmds);
 		exit(0);
 	}
 	else if (cmds->next && cmds->next->pipe[0] != 0)
 	{
-		waitpid(pid, &status, 0);
-		close(cmds->pipe[1]);
 		dup2(cmds->next->pipe[0], 0);
 		close(cmds->next->pipe[0]);
 	}
-	else
-		waitpid(-1, &status, 0);
 	g_exit = WEXITSTATUS(status);
 	cmds->exit_status = g_exit;
 	return (g_exit);

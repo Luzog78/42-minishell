@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 03:39:01 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/05 14:53:29 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ char	*ft_get_bash_string(char *str, char **env);
 char	*ft_substr(char *s, int start, int len);
 char	*ft_strchr(const char *s, int c);
 void	ft_sig_init(t_subshell **master);
+char	*get_next_line(int fd, char *limiter);
 
 # endif
 #endif

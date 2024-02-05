@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/05 15:04:46 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:11:33 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_get_path(char **argv, char **env)
 int	ft_execve_bin(char **argv, t_subshell *cmds)
 {
 	pid_t	pid;
-	int	status;
+	int		status;
 
 	status = 0;
 	ft_get_path(argv, cmds->env);
@@ -70,8 +70,8 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	}
 	else
 	{
-		cmds->pid = pid;
 		waitpid(pid, &status, 0);
+		cmds->pid = pid;
 	}
 	g_exit = WEXITSTATUS(status);
 	cmds->exit_status = g_exit;
