@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/05 17:11:33 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 02:54:09 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_get_path(char **argv, char **env)
 	char	*tmp;
 	int		i;
 
+	argv[0] = ft_get_bash_string(argv[0], env);
 	i = 0;
 	path = ft_split(ft_getenv("PATH", env), ':');
 	while (path[i])
@@ -57,6 +58,7 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 		{
 			dup2(cmds->pipe[0], 0);
 			close(cmds->pipe[0]);
+			close(cmds->prev->pipe[1]);
 		}
 		if (access(argv[0], X_OK) == -1)
 		{
@@ -66,7 +68,7 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 		}
 		execve(argv[0], argv, cmds->env);
 		perror("minishell");
-		exit(1);
+		exit(errno);
 	}
 	else
 	{
