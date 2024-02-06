@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/03 16:21:32 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:21:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	add_double_quotes(char **env)
 {
 	int		i;
 	int		j;
-	char	*tmp;
+	// char	*tmp;
 
 	i = 0;
 	j = 0;
@@ -65,7 +65,7 @@ void	add_double_quotes(char **env)
 			j++;
 			if (env[i][j] == '=')
 			{
-				tmp = ft_substr(env[i], j + 1, ft_strlen(env[i]) - j - 1);
+				// tmp = ft_substr(env[i], j + 1, ft_strlen(env[i]) - j - 1);
 				env[i] = ft_strjoin(env[i], "\"");
 			}
 		}

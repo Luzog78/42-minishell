@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/05 17:18:12 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:29:15 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	ft_exec(t_subshell *subshell)
 		subshell->cmds->env = ft_env_cpy(subshell->env);
 		ft_exec_subshell(subshell->cmds);
 	}
-	waitpid(-1, NULL, 0);
+	while (waitpid(-1, NULL, WNOHANG) != -1)
+		;
 	dup2(old_stdin, 0);
 	dup2(old_stdout, 1);
 	close(old_stdin);

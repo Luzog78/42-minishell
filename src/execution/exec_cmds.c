@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 01:59:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:31:49 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ int	ft_execve_pipe(t_subshell *cmds)
 {
 	pid_t	pid;
 	int		status;
+	int		end[2];
 
 	status = 0;
+	pipe(end);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -53,19 +55,17 @@ int	ft_execve_pipe(t_subshell *cmds)
 	}
 	if (!pid)
 	{
-		if (cmds->pipe[1] != 0)
-		{
-			dup2(cmds->pipe[1], 1);
-			close(cmds->pipe[1]);
-			close(cmds->next->pipe[0]);
-		}
+		dup2(end[1], 1);
+		close(end[0]);
+		close(end[1]);
 		get_right_cmds(cmds);
 		exit(0);
 	}
-	else if (cmds->next && cmds->next->pipe[0] != 0)
+	else
 	{
-		dup2(cmds->next->pipe[0], 0);
-		close(cmds->next->pipe[0]);
+		dup2(end[0], 0);
+		close(end[0]);
+		close(end[1]);
 	}
 	g_exit = WEXITSTATUS(status);
 	cmds->exit_status = g_exit;
@@ -79,9 +79,9 @@ void	ft_exec_cmd(t_subshell *cmds)
 	if (!cmds->exit_status && cmds->outfiles)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles);
 	if (!cmds->exit_status && cmds->link == PIPE)
-		cmds->exit_status = ft_pipe(cmds);
-	if (!cmds->exit_status && cmds->link == PIPE)
 		cmds->exit_status = ft_execve_pipe(cmds);
+	// else if (!cmds->exit_status && cmds->prev && cmds->prev->link == PIPE)
+	// 	cmds->exit_status = ft_execve_last_pipe(cmds);
 	else if (!cmds->exit_status && cmds->argv)
 		cmds->exit_status = get_right_cmds(cmds);
 	if (cmds->next == NULL)
