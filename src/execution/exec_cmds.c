@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 18:10:43 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 00:34:32 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,29 @@ int	get_right_cmds(t_subshell *cmds)
 	g_exit = exit_status;
 	ft_free_char_array(argv);
 	return (exit_status);
+}
+
+int	ft_execve_first_pipe(t_subshell *cmds)
+{
+	int		pipefd[2];
+	pid_t	pid;
+
+	pipe(pipefd);
+	pid = fork();
+	if (pid == 0)
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+		get_right_cmds(cmds);
+		exit(1);
+	}
+	else
+	{
+		close(pipefd[1]);
+		cmds->pipe_read_end = pipefd[0];
+	}
+	return (0);
 }
 
 int	ft_execve_pipe(t_subshell *cmds)
@@ -101,28 +124,7 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	return (g_exit);
 }
 
-int	ft_execve_first_pipe(t_subshell *cmds)
-{
-	int		pipefd[2];
-	pid_t	pid;
 
-	pipe(pipefd);
-	pid = fork();
-	if (pid == 0)
-	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
-		get_right_cmds(cmds);
-		exit(1);
-	}
-	else
-	{
-		close(pipefd[1]);
-		cmds->pipe_read_end = pipefd[0];
-	}
-	return (0);
-}
 
 void	ft_exec_cmd(t_subshell *cmds)
 {
@@ -143,6 +145,6 @@ void	ft_exec_cmd(t_subshell *cmds)
 	cmds->next->env = ft_env_cpy(cmds->env);
 	if (cmds->next->type == COMMAND && allow_next(cmds))
 		ft_exec_cmd(cmds->next);
-	// if (cmds->next->type == SUBSHELL && allow_next(cmds))
-	// 	ft_exec_subshell(cmds->next);
+	if (cmds->next->type == SUBSHELL && allow_next(cmds))
+		ft_exec_subshell(cmds->next);
 }
