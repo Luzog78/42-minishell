@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 01:42:41 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 02:02:51 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -564,6 +564,12 @@ void	ft_set_parents(t_subshell *subshell)
 	{
 		tmp->parent = subshell;
 		ft_set_parents(tmp);
+		tmp = tmp->next;
+	}
+	tmp = subshell;
+	while (tmp->next)
+	{
+		tmp->next->prev = tmp;
 		tmp = tmp->next;
 	}
 }

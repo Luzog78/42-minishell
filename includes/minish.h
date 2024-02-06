@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 01:40:28 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 02:01:51 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct s_subshell
 	t_link				link;
 	int					pipe[2];
 	struct s_subshell	*parent;
+	struct s_subshell	*prev;
 	struct s_subshell	*next;
 }	t_subshell;
 
