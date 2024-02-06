@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 23:51:39 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 01:42:41 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -555,6 +555,19 @@ t_bool	ft_parse_subshell(t_subshell *subshell, char **str)
 	return (ret);
 }
 
+void	ft_set_parents(t_subshell *subshell)
+{
+	t_subshell	*tmp;
+
+	tmp = subshell->cmds;
+	while (tmp)
+	{
+		tmp->parent = subshell;
+		ft_set_parents(tmp);
+		tmp = tmp->next;
+	}
+}
+
 void	ft_parse(t_subshell *subshell, char *str)
 {
 	t_bool		ret;
@@ -574,6 +587,7 @@ void	ft_parse(t_subshell *subshell, char *str)
 			break ;
 		}
 	}
+	ft_set_parents(subshell);
 	curr_cmd = subshell->cmds;
 	while (curr_cmd && curr_cmd->next)
 		curr_cmd = curr_cmd->next;
