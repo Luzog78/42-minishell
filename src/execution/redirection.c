@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 01:48:50 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 01:51:34 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_get_temp_filename(void)
 	return (random);
 }
 
-int	ft_heredoc(char *limiter)
+int	ft_heredoc(char *limiter, char **env)
 {
 	int		fd;
 	char	*filename;
@@ -78,6 +78,7 @@ int	ft_heredoc(char *limiter)
 			free(line);
 			break ;
 		}
+		line = ft_get_bash_string(line, env);
 		ft_putstr_fd(line, fd);
 		ft_putstr_fd("\n", fd);
 		free(line);
@@ -94,7 +95,7 @@ int	ft_heredoc(char *limiter)
 	return (fd);
 }
 
-int	ft_stdin(t_stdin_lst *stdin)
+int	ft_stdin(t_stdin_lst *stdin, char **env)
 {
 	int	exit_status;
 	int	fd;
@@ -103,7 +104,7 @@ int	ft_stdin(t_stdin_lst *stdin)
 	while (stdin)
 	{
 		if (stdin->type == HEREDOC)
-			fd = ft_heredoc(stdin->value);
+			fd = ft_heredoc(stdin->value, env);
 		else if (stdin->type == INFILE)
 			fd = ft_dup_infiles(stdin->value);
 		if (exit_status)
