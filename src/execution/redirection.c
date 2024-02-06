@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/05 14:55:55 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 01:48:50 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ int	ft_dup_infiles(char *infile)
 	if (fd == -1)
 	{
 		perror("minishell");
-		return (1);
+		return (-1);
 	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	return (0);
+	return (fd);
 }
 
 int	ft_dup_outfiles(t_out *outfiles)
@@ -53,62 +51,67 @@ int	ft_dup_outfiles(t_out *outfiles)
 
 char	*ft_get_temp_filename(void)
 {
-	//do a function that returns a random string
 	char	*random;
 
 	random = ft_strdup("minishell_XXXXXX");
-
 	return (random);
 }
 
 int	ft_heredoc(char *limiter)
 {
+	int		fd;
+	char	*filename;
 	char	*line;
-	char	*temp_filename;
-	int		temp_fd;
 
-	line = malloc(1);
-	temp_filename = ft_get_temp_filename();
-	temp_fd = open(temp_filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (temp_fd == -1)
+	filename = ft_get_temp_filename();
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
 	{
 		perror("minishell");
-		return (1);
+		return (-1);
 	}
-	while (!ft_strstr(line, limiter))
+	while (1)
 	{
-		printf("> ");
-		line[0] = '\0';
-		line = get_next_line(0, limiter);
-		if (ft_strcmp(line, limiter) == 0)
+		line = readline("> ");
+		if (!line || !ft_strcmp(line, limiter))
+		{
+			free(line);
 			break ;
-		write(temp_fd, line, ft_strlen(line));
+		}
+		ft_putstr_fd(line, fd);
+		ft_putstr_fd("\n", fd);
 		free(line);
 	}
-	close(temp_fd);
-	temp_fd = open(temp_filename, O_RDONLY);
-
-	dup2(temp_fd, STDIN_FILENO);
-	close(temp_fd);
-	unlink(temp_filename);
-	free(temp_filename);
-	return (0);
+	close(fd);
+	fd = open(filename, O_RDONLY);
+	unlink(filename);
+	free(filename);
+	if (fd == -1)
+	{
+		perror("minishell");
+		return (-1);
+	}
+	return (fd);
 }
 
 int	ft_stdin(t_stdin_lst *stdin)
 {
 	int	exit_status;
+	int	fd;
 
 	exit_status = 0;
 	while (stdin)
 	{
 		if (stdin->type == HEREDOC)
-			exit_status = ft_heredoc(stdin->value);
+			fd = ft_heredoc(stdin->value);
 		else if (stdin->type == INFILE)
-			exit_status = ft_dup_infiles(stdin->value);
+			fd = ft_dup_infiles(stdin->value);
 		if (exit_status)
 			return (exit_status);
 		stdin = stdin->next;
 	}
+	if (fd == -1)
+		return (1);
+	dup2(fd, 0);
 	return (0);
 }
