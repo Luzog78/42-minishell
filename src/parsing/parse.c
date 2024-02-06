@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 02:02:51 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 02:21:56 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,8 +233,8 @@ char	*ft_get_next_word(char **str)
 			start_idx = i + 1;
 		}
 		else if (!quote && ((*str)[i] == '<' || (*str)[i] == '>'
-			|| (*str)[i] == '|' || (*str)[i] == ';'
-			|| (*str)[i] == '(' || (*str)[i] == ')' || ft_is_next_a_fd((*str) + i)))
+			|| (*str)[i] == '|' || (*str)[i] == '('
+			|| (*str)[i] == ')' || ft_is_next_a_fd((*str) + i)))
 			break ;
 		i++;
 	}
@@ -566,12 +566,20 @@ void	ft_set_parents(t_subshell *subshell)
 		ft_set_parents(tmp);
 		tmp = tmp->next;
 	}
+}
+
+void	ft_set_prevs(t_subshell *subshell)
+{
+	t_subshell	*tmp;
+
 	tmp = subshell;
 	while (tmp->next)
 	{
-		tmp->next->prev = tmp;
+		tmp->next->prev = subshell;
 		tmp = tmp->next;
 	}
+	if (subshell->cmds)
+		ft_set_prevs(subshell->cmds);
 }
 
 void	ft_parse(t_subshell *subshell, char *str)
@@ -594,6 +602,7 @@ void	ft_parse(t_subshell *subshell, char *str)
 		}
 	}
 	ft_set_parents(subshell);
+	ft_set_prevs(subshell);
 	curr_cmd = subshell->cmds;
 	while (curr_cmd && curr_cmd->next)
 		curr_cmd = curr_cmd->next;

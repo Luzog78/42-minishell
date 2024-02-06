@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 03:37:41 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 02:20:45 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->outfiles = NULL;
 	subshell->link = NONE;
 	subshell->next = NULL;
+	subshell->prev = NULL;
+	subshell->parent = NULL;
 	subshell->pipe[0] = 0;
 	subshell->pipe[1] = 0;
 	subshell->pid = 0;
