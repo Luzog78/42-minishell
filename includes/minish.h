@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 02:54:00 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:58:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct s_subshell
 	t_out				*outfiles;
 
 	t_link				link;
-	int					pipe[2];
+	int					pipe_read_end;
 	struct s_subshell	*parent;
 	struct s_subshell	*prev;
 	struct s_subshell	*next;

@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 03:15:39 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 18:55:43 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+// void	ft_exec_first_subshell(t_subshell *subshell)
+// {
+
+// }
+
+// void	ft_execve_last_subshell(t_subshell *subshell)
+// {
+
+// }
 
 void	ft_exec_subshell(t_subshell *subshell)
 {
@@ -18,18 +28,9 @@ void	ft_exec_subshell(t_subshell *subshell)
 	int		status;
 
 	status = 0;
-	if (!subshell)
-		return ;
-	if (subshell->link == PIPE)
-		ft_pipe(subshell);
 	pid = fork();
 	if (pid == 0)
 	{
-		if (subshell->pipe[1] != 0)
-		{
-			dup2(subshell->pipe[1], 1);
-			close(subshell->pipe[1]);
-		}
 		if (subshell->cmds && subshell->cmds->type == COMMAND)
 		{
 			subshell->cmds->env = ft_env_cpy(subshell->env);
@@ -42,12 +43,6 @@ void	ft_exec_subshell(t_subshell *subshell)
 		}
 		free_all(subshell, 0);
 		exit(0);
-	}
-	else if (subshell->next && subshell->next->pipe[0] != 0)
-	{
-		close(subshell->pipe[1]);
-		dup2(subshell->next->pipe[0], 0);
-		close(subshell->next->pipe[0]);
 	}
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 02:20:45 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 17:58:41 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->next = NULL;
 	subshell->prev = NULL;
 	subshell->parent = NULL;
-	subshell->pipe[0] = 0;
-	subshell->pipe[1] = 0;
+	subshell->pipe_read_end = 0;
 	subshell->pid = 0;
 }
 

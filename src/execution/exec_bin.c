@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 02:54:09 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:03:01 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,6 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	}
 	if (!pid)
 	{
-		if (cmds->pipe[0] != 0)
-		{
-			dup2(cmds->pipe[0], 0);
-			close(cmds->pipe[0]);
-			close(cmds->prev->pipe[1]);
-		}
 		if (access(argv[0], X_OK) == -1)
 		{
 			perror("minishell");

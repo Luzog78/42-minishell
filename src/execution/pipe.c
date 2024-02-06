@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 16:56:52 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/27 14:22:26 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:03:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	ft_pipe(t_subshell *cmds)
 		perror("pipe");
 		return (1);
 	}
-	cmds->pipe[1] = pipefd[1];
-	cmds->next->pipe[0] = pipefd[0];
+	(void)cmds;
+	// cmds->pipe[1] = pipefd[1];
+	// cmds->next->pipe[0] = pipefd[0];
 	return (0);
 }
