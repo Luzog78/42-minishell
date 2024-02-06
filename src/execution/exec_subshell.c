@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 00:47:16 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 00:53:19 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,11 @@ int	ft_exec_last_subshell(t_subshell *subshell)
 
 void	ft_exec_subshell(t_subshell *subshell)
 {
-	// pid_t	pid;
+	pid_t	pid;
 
-	// pid = fork();
-	// if (!pid)
-	// {
+	pid = fork();
+	if (!pid)
+	{
 		if (subshell->link == PIPE && (!subshell->prev || subshell->prev->link != PIPE))
 			ft_exec_first_subshell(subshell);
 		else if (subshell->link == PIPE && subshell->prev && subshell->prev->link == PIPE)
@@ -127,12 +127,13 @@ void	ft_exec_subshell(t_subshell *subshell)
 			ft_exec_last_subshell(subshell);
 		else
 			ft_get_right_subshell(subshell);
-	// }
-	// else
-	// {
-		// subshell->pid = pid;
+		exit(0);
+	}
+	else
+	{
+		subshell->pid = pid;
 		subshell->exit_status = WEXITSTATUS(g_exit);
-	// }
+	}
 	if (subshell->next && subshell->next->type == COMMAND
 		&& allow_next(subshell))
 	{
