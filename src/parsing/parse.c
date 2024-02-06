@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 02:33:08 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 16:22:16 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -573,11 +573,12 @@ void	ft_set_prevs(t_subshell *subshell)
 	t_subshell	*tmp;
 
 	tmp = subshell;
-	while (tmp->next)
+	while (tmp)
 	{
 		if (tmp->cmds)
 			ft_set_prevs(tmp->cmds);
-		tmp->next->prev = tmp;
+		if (tmp->next)
+			tmp->next->prev = tmp;
 		tmp = tmp->next;
 	}
 }
