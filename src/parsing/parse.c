@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 02:21:56 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/06 02:33:08 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -575,11 +575,11 @@ void	ft_set_prevs(t_subshell *subshell)
 	tmp = subshell;
 	while (tmp->next)
 	{
-		tmp->next->prev = subshell;
+		if (tmp->cmds)
+			ft_set_prevs(tmp->cmds);
+		tmp->next->prev = tmp;
 		tmp = tmp->next;
 	}
-	if (subshell->cmds)
-		ft_set_prevs(subshell->cmds);
 }
 
 void	ft_parse(t_subshell *subshell, char *str)
