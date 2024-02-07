@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:16:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/02 17:55:12 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/07 18:16:45 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int		ft_echo(char **argv, char **env);
 int		ft_cd(char **argv, t_subshell *cmds);
 int		ft_env(char **argv, char **env);
-int		ft_exit(char **argv);
+int		ft_exit(t_subshell *cmds, char **argv);
 int		ft_export(char **argv, t_subshell *cmds);
 int		ft_pwd(char **env);
 int		ft_unset(char **argv, t_subshell *cmds);

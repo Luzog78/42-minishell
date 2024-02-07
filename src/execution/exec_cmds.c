@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 16:28:48 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/07 19:06:32 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	get_right_cmds(t_subshell *cmds)
 	else if (ft_strcmp(argv[0], "env") == 0)
 		exit_status = ft_env(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "exit") == 0)
-		exit_status = ft_exit(argv);
+		exit_status = ft_exit(cmds, argv);
 	else
 		exit_status = ft_execve_bin(argv, cmds);
 	g_exit = exit_status;
@@ -54,6 +54,7 @@ void	ft_execve_first_pipe(t_subshell *cmds)
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 		status = get_right_cmds(cmds);
+		free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
 	else
@@ -85,6 +86,7 @@ void	ft_execve_pipe(t_subshell *cmds)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		status = get_right_cmds(cmds);
+		free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
 	else
@@ -112,6 +114,7 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
 		status = get_right_cmds(cmds);
+		free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
 	else
@@ -119,7 +122,7 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 		waitpid(pid, &status, 0);
 		close(cmds->prev->pipe_read_end);
 		if (!g_exit)
-		g_exit = WEXITSTATUS(status);
+			g_exit = WEXITSTATUS(status);
 		cmds->exit_status = g_exit;
 	}
 	return (g_exit);

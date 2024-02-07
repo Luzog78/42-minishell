@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 16:28:26 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/07 18:32:03 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		ft_exec(subshell);
-		ft_free_subshell(subshell->cmds);
+		// ft_free_subshell(subshell->cmds);
 		subshell->cmds = NULL;
 	}
 	ft_free_subshell(subshell);

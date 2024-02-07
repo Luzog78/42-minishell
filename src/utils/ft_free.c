@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 17:13:43 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:45:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ char	**ft_free_char_array(char **array)
 	return (array);
 }
 
-void	free_all(t_subshell *subshell, int mode)
+void	free_cmds(t_subshell *subshell)
 {
+	t_subshell	*tmp;
+
 	while (subshell)
 	{
 		if (subshell->argv)
@@ -81,13 +83,15 @@ void	free_all(t_subshell *subshell, int mode)
 			subshell->stdin = ft_free_stdin_lst(subshell->stdin);
 		if (subshell->outfiles)
 			subshell->outfiles = ft_free_out_lst(subshell->outfiles);
-		if (subshell->env && mode == 1)
+		if (subshell->env)
 			subshell->env = ft_free_char_array(subshell->env);
 		if (subshell->cmds)
 		{
-			free_all(subshell->cmds, 1);
+			free_cmds(subshell->cmds);
 			subshell->cmds = NULL;
 		}
+		tmp = subshell;
 		subshell = subshell->next;
+		free(tmp);
 	}
 }

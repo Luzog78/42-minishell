@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 03:32:39 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:32:13 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,13 @@ long long	ft_atoi(char *number)
 	return (result * sign);
 }
 
-int	ft_exit(char **argv)
+int	ft_exit(t_subshell *cmds,char **argv)
 {
 	int	exit_code;
 
 	exit_code = 0;
 	if (argv[1])
 	{
-
 		if (argv[1][0] != '-' && ft_isdigit(argv[1]) && !argv[2])
 			exit_code = ft_atoi(argv[1]) % 256;
 		else if (argv[1][0] == '-' && ft_isdigit(argv[1]) && !argv[2])
@@ -88,6 +87,7 @@ int	ft_exit(char **argv)
 	}
 	printf("exit\n");
 	ft_free_char_array(argv);
+	free_cmds(ft_get_parent(cmds));
 	exit(exit_code);
 	return (0);
 }

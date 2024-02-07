@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 17:58:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 18:29:53 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,34 +124,36 @@ typedef struct s_subshell
 	struct s_subshell	*next;
 }	t_subshell;
 
-void	ft_parse(t_subshell *subshell, char *str);
-void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env);
-t_bool	ft_check_parenthesis_and_quotes(char *str);
-void	ft_exec(t_subshell *subshell);
-void	ft_exec_subshell(t_subshell *subshell);
-void	ft_exec_cmd(t_subshell *cmds);
-char	*ft_strdup(char *str);
-size_t	ft_strlen(const char *str);
-int		ft_strcmp(char *s1, char *s2);
-char	**ft_env_cpy(char **env);
-char	*ft_strcpy(char *dst, const char *src);
-void	ft_strcat(char *dest, char *str);
-void	ft_putstr_fd(char *str, int fd);
-char	*ft_strstr(const char *haystack, const char *needle);
-char	*ft_strjoin(char *s1, char *s2);
-int		ft_strncmp(char *s1, char *s2, int n);
-void	free_all(t_subshell *subshell, int mode);
-char	**ft_free_char_array(char **array);
-char	**ft_env_owrite(char **env, char **new_env);
-char	**ft_split(char *str, char c);
-int		ft_error(int err, char *str, t_subshell *subshell_to_free);
-void	ft_free_subshell(t_subshell *subshell);
-char	*ft_getenv(char *str, char **env);
-char	*ft_get_bash_string(char *str, char **env);
-char	*ft_substr(char *s, int start, int len);
-char	*ft_strchr(const char *s, int c);
-void	ft_sig_init(t_subshell **master);
-char	*get_next_line(int fd, char *limiter);
+void		ft_parse(t_subshell *subshell, char *str);
+void		ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env);
+t_bool		ft_check_parenthesis_and_quotes(char *str);
+void		ft_exec(t_subshell *subshell);
+void		ft_exec_subshell(t_subshell *subshell);
+void		ft_exec_cmd(t_subshell *cmds);
+char		*ft_strdup(char *str);
+size_t		ft_strlen(const char *str);
+int			ft_strcmp(char *s1, char *s2);
+char		**ft_env_cpy(char **env);
+char		*ft_strcpy(char *dst, const char *src);
+void		ft_strcat(char *dest, char *str);
+void		ft_putstr_fd(char *str, int fd);
+char		*ft_strstr(const char *haystack, const char *needle);
+char		*ft_strjoin(char *s1, char *s2);
+int			ft_strncmp(char *s1, char *s2, int n);
+void		free_cmds(t_subshell *subshell);
+char		**ft_free_char_array(char **array);
+char		**ft_env_owrite(char **env, char **new_env);
+char		**ft_split(char *str, char c);
+int			ft_error(int err, char *str, t_subshell *subshell_to_free);
+void		ft_free_subshell(t_subshell *subshell);
+char		*ft_getenv(char *str, char **env);
+char		*ft_get_bash_string(char *str, char **env);
+char		*ft_substr(char *s, int start, int len);
+char		*ft_strchr(const char *s, int c);
+void		ft_sig_init(t_subshell **master);
+char		*get_next_line(int fd, char *limiter);
+t_subshell	*ft_get_parent(t_subshell *cmds);
+t_subshell	*ft_get_nearest_subshell(t_subshell *cmds);
 
 # endif
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/05 04:14:33 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/07 18:05:40 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,10 @@ int	ft_cd(char **argv, t_subshell *cmds)
 	if (ft_argv_len(argv) > 2)
 	{
 		printf("minishell: cd: too many arguments\n");
-		return (1);
+		g_exit = 1;
+		return (g_exit);
 	}
-	if (argv[1] == NULL)
+	if (argv[1] == NULL || !ft_strcmp(argv[1], "~") || !ft_strcmp(argv[1], "--"))
 		return (ft_home_cd(cmds));
 	cwd = getcwd(NULL, 0);
 	oldpwd = ft_strjoin("OLDPWD=", cwd);
@@ -89,5 +90,5 @@ int	ft_cd(char **argv, t_subshell *cmds)
 	}
 	free(oldpwd_save);
 	update_path(cmds);
-	return (0);
+	return (g_exit);
 }
