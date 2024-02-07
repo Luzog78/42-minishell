@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 02:09:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/05 03:04:28 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/07 16:28:40 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,20 @@ static void	ft_sig_handling(int sig)
 		if (state == 2)
 			master = (t_subshell **)ptr;
 	}
-	else if (sig == SIGINT || sig == SIGQUIT)
+	else if (sig == SIGQUIT)
 	{
 		ft_kill_subshell(*master, sig);
-		g_exit = 128 + sig;
+		g_exit = 131;
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		if (!(*master)->cmds)
+			rl_redisplay();
+	}
+	else if (sig == SIGINT)
+	{
+		ft_kill_subshell(*master, sig);
+		g_exit = 130;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();

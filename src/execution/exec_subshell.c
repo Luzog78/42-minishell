@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 00:53:19 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:28:52 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	ft_get_right_subshell(t_subshell *subshell)
+void	ft_get_right_subshell(t_subshell *subshell)
 {
 	if (subshell->cmds && subshell->cmds->type == COMMAND)
 	{
@@ -25,16 +25,13 @@ int	ft_get_right_subshell(t_subshell *subshell)
 		ft_exec_subshell(subshell->cmds);
 	}
 	// free_all(subshell, 0);
-	return (0);
 }
 
-int	ft_exec_first_subshell(t_subshell *subshell)
+void	ft_exec_first_subshell(t_subshell *subshell)
 {
 	pid_t	pid;
-	int		status;
 	int		pipefd[2];
 
-	status = 0;
 	pipe(pipefd);
 	pid = fork();
 	if (pid == 0)
@@ -43,7 +40,7 @@ int	ft_exec_first_subshell(t_subshell *subshell)
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 		ft_get_right_subshell(subshell);
-		exit(0);
+		exit(g_exit);
 	}
 	else
 	{
@@ -51,18 +48,13 @@ int	ft_exec_first_subshell(t_subshell *subshell)
 		subshell->pipe_read_end = pipefd[0];
 		subshell->pid = pid;
 	}
-	g_exit = WEXITSTATUS(status);
-	subshell->exit_status = g_exit;
-	return (g_exit);
 }
 
-int	ft_exec_middle_subshell(t_subshell *subshell)
+void	ft_exec_middle_subshell(t_subshell *subshell)
 {
 	pid_t	pid;
-	int		status;
 	int		pipefd[2];
 
-	status = 0;
 	pipe(pipefd);
 	pid = fork();
 	if (pid == 0)
@@ -72,7 +64,7 @@ int	ft_exec_middle_subshell(t_subshell *subshell)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		ft_get_right_subshell(subshell);
-		exit(0);
+		exit(g_exit);
 	}
 	else
 	{
@@ -81,9 +73,6 @@ int	ft_exec_middle_subshell(t_subshell *subshell)
 		subshell->pipe_read_end = pipefd[0];
 		subshell->pid = pid;
 	}
-	g_exit = WEXITSTATUS(status);
-	subshell->exit_status = g_exit;
-	return (g_exit);
 }
 
 int	ft_exec_last_subshell(t_subshell *subshell)
@@ -100,15 +89,17 @@ int	ft_exec_last_subshell(t_subshell *subshell)
 		dup2(subshell->prev->pipe_read_end, STDIN_FILENO);
 		close(subshell->prev->pipe_read_end);
 		ft_get_right_subshell(subshell);
-		exit(0);
+		exit(g_exit);
 	}
 	else
 	{
-		close(subshell->prev->pipe_read_end);
 		subshell->pid = pid;
+		waitpid(pid, &status, 0);
+		close(subshell->prev->pipe_read_end);
+		if (!g_exit)
+		g_exit = WEXITSTATUS(status);
+		subshell->exit_status = g_exit;
 	}
-	g_exit = WEXITSTATUS(status);
-	subshell->exit_status = g_exit;
 	return (g_exit);
 }
 
@@ -127,7 +118,7 @@ void	ft_exec_subshell(t_subshell *subshell)
 			ft_exec_last_subshell(subshell);
 		else
 			ft_get_right_subshell(subshell);
-		exit(0);
+		exit(g_exit);
 	}
 	else
 	{
@@ -146,4 +137,5 @@ void	ft_exec_subshell(t_subshell *subshell)
 		subshell->next->env = ft_env_cpy(subshell->env);
 		ft_exec_subshell(subshell->next);
 	}
+	g_exit = subshell->exit_status;
 }

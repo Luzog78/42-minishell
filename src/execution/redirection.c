@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 02:44:57 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:00:00 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_heredoc(char *limiter, char **env)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !ft_strcmp(line, limiter))
+		if (!line || !ft_strcmp(line, limiter) || g_exit)
 		{
 			free(line);
 			break ;
@@ -114,6 +114,5 @@ int	ft_stdin(t_stdin_lst *stdin, char **env)
 	}
 	dup2(fd, 0);
 	close(fd);
-	g_exit = 0;
 	return (g_exit);
 }

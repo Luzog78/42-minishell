@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 03:02:29 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:28:48 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,13 @@ int	get_right_cmds(t_subshell *cmds)
 	return (exit_status);
 }
 
-int	ft_execve_first_pipe(t_subshell *cmds)
+void	ft_execve_first_pipe(t_subshell *cmds)
 {
 	int		pipefd[2];
 	pid_t	pid;
 	int		status;
 
+	status = 0; // TODO
 	pipe(pipefd);
 	pid = fork();
 	if (pid == 0)
@@ -60,11 +61,9 @@ int	ft_execve_first_pipe(t_subshell *cmds)
 		close(pipefd[1]);
 		cmds->pipe_read_end = pipefd[0];
 	}
-	g_exit = WEXITSTATUS(status);
-	return (g_exit);
 }
 
-int	ft_execve_pipe(t_subshell *cmds)
+void	ft_execve_pipe(t_subshell *cmds)
 {
 	pid_t	pid;
 	int		status;
@@ -76,7 +75,8 @@ int	ft_execve_pipe(t_subshell *cmds)
 	if (pid == -1)
 	{
 		perror("minishell");
-		return (1);
+		g_exit = 1;
+		return ;
 	}
 	if (!pid)
 	{
@@ -93,8 +93,6 @@ int	ft_execve_pipe(t_subshell *cmds)
 		close(pipefd[1]);
 		cmds->pipe_read_end = pipefd[0];
 	}
-	g_exit = WEXITSTATUS(status);
-	return (g_exit);
 }
 
 int	ft_execve_last_pipe(t_subshell *cmds)
@@ -118,9 +116,12 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	}
 	else
 	{
+		waitpid(pid, &status, 0);
 		close(cmds->prev->pipe_read_end);
+		if (!g_exit)
+		g_exit = WEXITSTATUS(status);
+		cmds->exit_status = g_exit;
 	}
-	g_exit = WEXITSTATUS(status);
 	return (g_exit);
 }
 
@@ -133,9 +134,9 @@ void	ft_exec_cmd(t_subshell *cmds)
 	if (!cmds->exit_status && cmds->outfiles)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles);
 	if (!cmds->exit_status && cmds->link == PIPE && (!cmds->prev || cmds->prev->link != PIPE))
-		cmds->exit_status = ft_execve_first_pipe(cmds);
+		ft_execve_first_pipe(cmds);
 	else if (!cmds->exit_status && cmds->link == PIPE && cmds->prev && cmds->prev->link == PIPE)
-		cmds->exit_status = ft_execve_pipe(cmds);
+		ft_execve_pipe(cmds);
 	else if (!cmds->exit_status && cmds->prev && cmds->prev->link == PIPE)
 		cmds->exit_status = ft_execve_last_pipe(cmds);
 	else if (!cmds->exit_status && cmds->argv)

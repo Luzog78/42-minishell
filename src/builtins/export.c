@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 03:18:41 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:34:02 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,11 +252,17 @@ int	ft_export(char **argv, t_subshell *cmds)
 	{
 		while (*argv)
 		{
+			if (**argv == '-')
+			{
+				printf("minishell: export: the flag `%s' is not handled\n", *argv);
+				exit_status = 2;
+				argv++;
+				continue ;
+			}
 			var = ft_get_var(cmds->env, *argv);
 			if (!check_var(var))
 			{
-				printf("bash: export: `%s': not a valid identifier\n", var);
-				free(var);
+				printf("minishell: export: `%s': not a valid identifier\n", var);
 				var = NULL;
 				exit_status = 1;
 			}
