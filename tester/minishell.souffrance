@@ -1,0 +1,212 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    minishell.souffrance                               :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
+#    Updated: 2024/02/07 18:26:50 by ysabik           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+$ echo abc
+
+@ abc
+
+---
+
+$ echo "Hello, World!" You"are"'my'"friend"
+
+@ Hello, World! Youaremyfriend
+
+---
+
+$ export a=42 b=24 c
+$ echo $? $a $b | cat -e
+
+@ 0 42 24$
+
+---
+
+$ echo -n "$a$b" | cat | cat|cat |wc -l|cat|cat
+$ ps -a | grep -E "(minish)|(cat)" | wc -l
+
+@ 0
+@ 1
+
+---
+
+$ export =sdgsdfgsdfg c=1
+$ expr $? + $c | sed -r "s/([0-9]*)/>> \1 <</;"
+
+###
+@ >> 2 <<
+
+---
+
+$ unset a b c d
+$ echo $a $b $c $?
+
+@ 0
+
+---
+
+$ unset a
+$ export a+=Hello
+$ echo $a $?
+$ export a+=,''' '"World !"
+$ echo $a $?
+
+@ Hello 0
+@ Hello, World ! 0
+
+---
+
+$ unset a
+$ export a=echo
+$ $a $a $?
+$ $a $a $?
+
+@ echo echo 0
+@ echo echo 0
+
+---
+
+$ mkdir -p io
+$ << 1 > io/infile << 2 cat << 3
+$ abc
+$ 1
+$ def
+$ 2
+$ ghi
+$ 3
+$ export a=io/infile
+$ cat -e $a $a
+$ rm -rf io
+
+@ ghi$
+@ abc$
+
+---
+
+$ cat lajfhlskjluniunauhrihlvkfd
+$ echo $?
+
+###
+@ 1
+
+---
+
+$ lajfhlskjluniunauhrihlvkfd
+$ echo $?
+
+###
+@ 127
+
+---
+
+$ mkdir -p io
+$ > io/outfile1 pwd
+$ echo $?
+$ cd io
+$ > outfile2 pwd
+$ diff outfile1 outfile2 | grep -E "^[<>] " | sed -r "s/(^[<>] )//; s/(\/io$)//" | head -n 1 > outfile3
+$ diff outfile1 outfile2 | grep -E "^[<>] " | sed -r "s/(^[<>] )//; s/(\/io$)//" | tail -n 1 > outfile4
+$ diff outfile3 outfile4 | wc -l
+$ echo $?
+$ cd .. abc
+$ echo $?
+$ ls | wc -l
+$ echo $?
+$ cd ..
+$ echo $?
+$ rm -rf io
+
+###
+@ 0
+@ 0
+@ 0
+@ 1
+@ 4
+@ 0
+@ 0
+
+---
+
+$ mkdir -p io
+$ cd io
+$ cat | ls
+$ hey
+$ echo $?
+$ cd ..
+$ rm -rf io
+$ echo $?
+
+@ 0
+
+---
+
+$ touch io
+$ cd io
+$ echo $?
+$ ./io
+$ echo $?
+$ rm -f io
+
+###
+@ 1
+@ 126
+
+---
+
+$ export a=Hello b=World
+$ cat<<$a
+$ $b
+$ $a
+$ echo $?
+$ cat<<'$a'
+$ $b
+$ $a
+$ echo $?
+$ cat<<$b''$b
+$ $a
+$ $a
+$ $b$b
+$ echo $?
+$ cat<<"$a"
+$ $b
+$ $a
+$ echo $?
+
+@ World
+@ 0
+@ $b
+@ 0
+@ $a
+@ $a
+@ 0
+@ $b
+@ 0
+
+---
+
+$ expr 1 + 1
+$ echo $?
+$ expr $? + $?
+$ expr $? + $?
+$ expr $? + $?
+$ expr $? + $?
+
+@ 2
+@ 0
+@ 0
+@ 2
+@ 0
+@ 2
+
+---
+
+$ echo abc # | wc -l
+
+@ abc

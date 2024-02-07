@@ -1,8 +1,3 @@
-# ========= Minishell =========
-
-minishell
-
-
 # ========= General =========
 
 # Ignore compiled executable & object files
@@ -22,3 +17,12 @@ vsupp
 .vscode/
 .idea/
 .gitignore
+
+
+# ========= Minishell =========
+
+minishell
+!tester
+!tester/*
+!tester/**
+
