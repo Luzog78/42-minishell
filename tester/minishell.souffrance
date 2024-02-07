@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/07 18:26:50 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/07 23:29:47 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,10 @@ $ echo $? $a $b | cat -e
 
 ---
 
+$ unset
+$ unset a b c
 $ echo -n "$a$b" | cat | cat|cat |wc -l|cat|cat
-$ ps -a | grep -E "(minish)|(cat)" | wc -l
+$ ps -a | grep -E "(bash)|(minish)|(cat)" | wc -l
 
 @ 0
 @ 1
@@ -38,7 +40,7 @@ $ ps -a | grep -E "(minish)|(cat)" | wc -l
 ---
 
 $ export =sdgsdfgsdfg c=1
-$ expr $? + $c | sed -r "s/([0-9]*)/>> \1 <</;"
+$ expr $? + $c | sed -r "s/([0-9]*)/>> \1 <</"
 
 ###
 @ >> 2 <<
@@ -68,8 +70,8 @@ $ export a=echo
 $ $a $a $?
 $ $a $a $?
 
-@ echo echo 0
-@ echo echo 0
+@ echo 0
+@ echo 0
 
 ---
 
@@ -86,7 +88,7 @@ $ cat -e $a $a
 $ rm -rf io
 
 @ ghi$
-@ abc$
+@ ghi$
 
 ---
 
@@ -136,8 +138,10 @@ $ rm -rf io
 
 $ mkdir -p io
 $ cd io
+$ echo $?
 $ cat | ls
 $ hey
+$ %EOF
 $ echo $?
 $ cd ..
 $ rm -rf io
