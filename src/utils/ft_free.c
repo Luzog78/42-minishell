@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 06:44:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/07 17:13:43 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_stdin_lst	*ft_free_stdin_lst(t_stdin_lst *lst)
 	while (lst)
 	{
 		tmp = lst->next;
-		free(lst->value);
+		// free(lst->value); already freed in stdin
 		free(lst);
 		lst = tmp;
 	}
