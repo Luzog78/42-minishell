@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 18:45:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:37:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,10 @@ void	free_cmds(t_subshell *subshell)
 			subshell->outfiles = ft_free_out_lst(subshell->outfiles);
 		if (subshell->env)
 			subshell->env = ft_free_char_array(subshell->env);
+		if (subshell->stdin_fd != STDIN_FILENO)
+			close(subshell->stdin_fd);
+		if (subshell->stdout_fd != STDOUT_FILENO)
+			close(subshell->stdout_fd);
 		if (subshell->cmds)
 		{
 			free_cmds(subshell->cmds);
