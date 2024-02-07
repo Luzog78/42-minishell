@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 19:18:31 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:45:20 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 
 void	ft_exec(t_subshell *subshell)
 {
-	// int	stdin;
-	// int	stdout;
-
-	// stdin = dup(STDIN_FILENO);
-	// stdout = dup(STDOUT_FILENO);
+	subshell->stdin_fd = dup(STDIN_FILENO);
+	subshell->stdout_fd = dup(STDOUT_FILENO);
 	if (subshell->cmds && subshell->cmds->type == COMMAND)
 	{
 		subshell->cmds->env = ft_env_cpy(subshell->env);
@@ -32,9 +29,9 @@ void	ft_exec(t_subshell *subshell)
 	}
 	while (waitpid(-1, NULL, WNOHANG) != -1)
 		;
-	// dup2(stdin, STDIN_FILENO);
-	// dup2(stdout, STDOUT_FILENO);
-	// close(stdin);
-	// close(stdout);
+	dup2(subshell->stdin_fd, 0);
+	dup2(subshell->stdout_fd, 1);
+	close(subshell->stdin_fd);
+	close(subshell->stdout_fd);
 	free_cmds(subshell->cmds);
 }

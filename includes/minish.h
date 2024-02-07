@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 18:29:53 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:53:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ typedef struct s_subshell
 
 	t_link				link;
 	int					pipe_read_end;
+	int					stdin_fd;
+	int					stdout_fd;
 	struct s_subshell	*parent;
 	struct s_subshell	*prev;
 	struct s_subshell	*next;
@@ -154,6 +156,7 @@ void		ft_sig_init(t_subshell **master);
 char		*get_next_line(int fd, char *limiter);
 t_subshell	*ft_get_parent(t_subshell *cmds);
 t_subshell	*ft_get_nearest_subshell(t_subshell *cmds);
+char		*ft_get_value_from_env(char *key, char **env);
 
 # endif
 #endif

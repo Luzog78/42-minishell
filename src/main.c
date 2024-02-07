@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 18:32:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 22:42:26 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->prev = NULL;
 	subshell->parent = NULL;
 	subshell->pipe_read_end = 0;
+	subshell->stdin_fd = 0;
+	subshell->stdout_fd = 1;
 	subshell->pid = 0;
 }
 
