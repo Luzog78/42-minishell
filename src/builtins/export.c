@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 17:21:07 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:18:41 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int	check_var(char *var)
 
 	i = 1;
 	if (!var)
-		return (1);
+		return (0);
 	if ((var[0] < 'A' || var[0] > 'Z')
 		&& (var[0] < 'a' || var[0] > 'z')
 		&& var[0] != '_' && var[0] != '$')
@@ -224,7 +224,7 @@ char	*ft_get_var(char **env, char *argv)
 	i = 0;
 	var = NULL;
 	if (!check_var(argv))
-		return (NULL);
+		return (ft_strdup(argv));
 	while (argv[i])
 	{
 		if (argv[i] == '+' && argv[i + 1] == '=')
@@ -243,7 +243,9 @@ char	*ft_get_var(char **env, char *argv)
 int	ft_export(char **argv, t_subshell *cmds)
 {
 	char	*var;
+	int		exit_status;
 
+	exit_status = 0;
 	if (!argv[0])
 		ft_printenv(cmds->env);
 	else
@@ -256,6 +258,7 @@ int	ft_export(char **argv, t_subshell *cmds)
 				printf("bash: export: `%s': not a valid identifier\n", var);
 				free(var);
 				var = NULL;
+				exit_status = 1;
 			}
 			if (var)
 			{
@@ -270,5 +273,5 @@ int	ft_export(char **argv, t_subshell *cmds)
 			argv++;
 		}
 	}
-	return (0);
+	return (exit_status);
 }

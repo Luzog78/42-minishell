@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 00:34:32 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:02:29 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	ft_execve_first_pipe(t_subshell *cmds)
 {
 	int		pipefd[2];
 	pid_t	pid;
+	int		status;
 
 	pipe(pipefd);
 	pid = fork();
@@ -51,15 +52,16 @@ int	ft_execve_first_pipe(t_subshell *cmds)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
-		get_right_cmds(cmds);
-		exit(1);
+		status = get_right_cmds(cmds);
+		exit(status);
 	}
 	else
 	{
 		close(pipefd[1]);
 		cmds->pipe_read_end = pipefd[0];
 	}
-	return (0);
+	g_exit = WEXITSTATUS(status);
+	return (g_exit);
 }
 
 int	ft_execve_pipe(t_subshell *cmds)
@@ -82,8 +84,8 @@ int	ft_execve_pipe(t_subshell *cmds)
 		close(cmds->prev->pipe_read_end);
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
-		get_right_cmds(cmds);
-		exit(1);
+		status = get_right_cmds(cmds);
+		exit(status);
 	}
 	else
 	{
@@ -92,7 +94,6 @@ int	ft_execve_pipe(t_subshell *cmds)
 		cmds->pipe_read_end = pipefd[0];
 	}
 	g_exit = WEXITSTATUS(status);
-	cmds->exit_status = g_exit;
 	return (g_exit);
 }
 
@@ -112,15 +113,14 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	{
 		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
-		get_right_cmds(cmds);
-		exit(0);
+		status = get_right_cmds(cmds);
+		exit(status);
 	}
 	else
 	{
 		close(cmds->prev->pipe_read_end);
 	}
 	g_exit = WEXITSTATUS(status);
-	cmds->exit_status = g_exit;
 	return (g_exit);
 }
 

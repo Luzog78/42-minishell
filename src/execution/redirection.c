@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 01:51:34 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 02:44:57 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,22 +97,23 @@ int	ft_heredoc(char *limiter, char **env)
 
 int	ft_stdin(t_stdin_lst *stdin, char **env)
 {
-	int	exit_status;
 	int	fd;
 
-	exit_status = 0;
 	while (stdin)
 	{
 		if (stdin->type == HEREDOC)
 			fd = ft_heredoc(stdin->value, env);
 		else if (stdin->type == INFILE)
 			fd = ft_dup_infiles(stdin->value);
-		if (exit_status)
-			return (exit_status);
 		stdin = stdin->next;
 	}
 	if (fd == -1)
-		return (1);
+	{
+		g_exit = 1;
+		return (g_exit);
+	}
 	dup2(fd, 0);
-	return (0);
+	close(fd);
+	g_exit = 0;
+	return (g_exit);
 }

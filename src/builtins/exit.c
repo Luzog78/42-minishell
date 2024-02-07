@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/03 00:39:02 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/07 03:32:39 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,15 @@ int	ft_exit(char **argv)
 		else if (argv[1][0] == '-' && ft_isdigit(argv[1]) && !argv[2])
 			exit_code = 256 + (ft_atoi(argv[1]) % 256);
 		else if (argv[1] && !ft_isdigit(argv[1]))
-			exit_code = 2;
+		{
+			write(2, "exit: p: numeric argement required\n", 35);
+			exit(2);
+		}
 		else if (argv[1] && argv[2])
+		{
+			write(2, "exit: too many arguments\n", 25);
 			return (1);
+		}
 	}
 	printf("exit\n");
 	ft_free_char_array(argv);
