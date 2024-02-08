@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 09:36:13 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:51:58 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	get_right_cmds(t_subshell *cmds)
 	int		exit_status;
 
 	argv = ft_lststr_to_char_array(cmds->argv, cmds->env);
-	if (ft_strcmp(argv[0], "echo") == 0)
+	if (!argv)
+		exit_status = g_exit;
+	else if (ft_strcmp(argv[0], "echo") == 0)
 		exit_status = ft_echo(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "cd") == 0)
 		exit_status = ft_cd(argv, cmds);

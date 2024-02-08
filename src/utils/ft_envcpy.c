@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_envcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:44:51 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 00:51:54 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:18:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**ft_env_cpy(char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	new_env = malloc(sizeof(char *) * (i + 1));
+	new_env = ft_calloc(sizeof(char *), (i + 1));
 	if (!new_env)
 		return (NULL);
 	i = 0;

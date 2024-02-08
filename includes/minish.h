@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 05:54:53 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:20:36 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ void	ft_printf_err(char *str, char *err);
 void	ft_print(char *str);
 void	ft_printf(char *str, char *err);
 void	ft_printf_err2(char *str, char *err1, char *err2);
+void	*ft_calloc(size_t count, size_t size);
 
 # endif
 #endif

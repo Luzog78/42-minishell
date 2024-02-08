@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 09:41:53 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:13:32 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 	i = 0;
 	quote = 0;
 	*is_formattable = TRUE;
-	new = calloc(sizeof(char), 1);
+	new = ft_calloc(sizeof(char), 1);
 	if (!new)
 		return (NULL);
 	while (limiter[i])

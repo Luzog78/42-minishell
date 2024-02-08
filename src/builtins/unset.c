@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 03:21:58 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:18:15 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**ft_unset_var(char *target, char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	new_env = malloc(sizeof(char *) * i);
+	new_env = ft_calloc(sizeof(char *), i);
 	if (!new_env)
 		return (NULL);
 	new_env = ft_new_env(target, env, new_env);

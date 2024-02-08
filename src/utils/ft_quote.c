@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 02:41:06 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:18:42 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_itoa(int i)
 		i /= 10;
 		j++;
 	}
-	result = malloc(sizeof(char) * (j + 1));
+	result = ft_calloc(sizeof(char), (j + 1));
 	if (!result)
 		return (NULL);
 	result[j] = '\0';
@@ -61,7 +61,7 @@ char	*ft_getvar(char *str, int *i, char **env)
 		(*i)++;
 	j = *i - j;
 	(*i)--;
-	sub_str = malloc(sizeof(char) * (j + 1));
+	sub_str = ft_calloc(sizeof(char), (j + 1));
 	if (!sub_str)
 		return (NULL);
 	j = 0;
@@ -127,7 +127,7 @@ char	*ft_addchar(char *dest, char character)
 	char	*result;
 
 	i = 0;
-	result = malloc(sizeof(char) * (ft_strlen(dest) + 2));
+	result = ft_calloc(sizeof(char), (ft_strlen(dest) + 2));
 	if (!result)
 		return (NULL);
 	while (dest[i])
@@ -150,7 +150,10 @@ char	*ft_get_bash_string(char *str, char **env)
 
 	is_empty = TRUE;
 	i = 0;
-	bash_string = calloc(sizeof(char), get_bash_string_size(str, env) + 1);
+	int size = get_bash_string_size(str, env);
+	bash_string = ft_calloc((size + 1), sizeof(char));
+	if (!bash_string)
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '\'')

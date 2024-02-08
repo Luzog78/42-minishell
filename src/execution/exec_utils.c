@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 02:00:28 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:13:28 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	ft_realloc(char ***args, char *str)
 	i = 0;
 	while (*args && (*args)[i])
 		i++;
-	new = calloc(sizeof(char *), (i + 2));
+	new = ft_calloc(sizeof(char *), (i + 2));
 	if (!new)
 		return ;
 	i = 0;

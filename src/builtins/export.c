@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 09:14:29 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:49:15 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	add_double_quotes(char **env)
 				k++;
 			j++;
 		}
-		tmp = calloc(sizeof(char), ft_strlen(env[i]) + k + 3);
+		tmp = ft_calloc(sizeof(char), ft_strlen(env[i]) + k + 3);
 		j = 0;
 		while (env[i][j])
 		{
@@ -109,7 +109,7 @@ static void	ft_printenv(char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	sorted_env = malloc(sizeof(char *) * (i + 1));
+	sorted_env = ft_calloc(sizeof(char *), (i + 1));
 	i = 0;
 	ft_arr_char_cpy(env, sorted_env);
 	sorted_env = ft_sort_env(sorted_env);
@@ -137,7 +137,7 @@ char	**ft_add_env(char *new_var, char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	new_env = malloc(sizeof(char *) * (i + 2));
+	new_env = ft_calloc(sizeof(char *), (i + 2));
 	if (!new_env)
 		return (NULL);
 	ft_arr_char_cpy(env, new_env);
@@ -239,7 +239,7 @@ char	*ft_var_concat(char *var, char **env)
 	new_var = ft_strjoin(new_var, var_value);
 	new_var = ft_strjoin(new_var, new_var_value);
 	free(new_var_value);
-	free(var);
+	//free(var);
 	return (new_var);
 }
 

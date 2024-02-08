@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 09:41:30 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 10:13:59 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_subshell	*ft_subshell_add(t_subshell **subshell, t_cmd_type type, char **env)
 	t_subshell	*new_subshell;
 	t_subshell	*tmp;
 
-	new_subshell = calloc(1, sizeof(t_subshell));
+	new_subshell = ft_calloc(1, sizeof(t_subshell));
 	if (!new_subshell)
 		return (NULL);
 	ft_subshell_init(new_subshell, type, env);
@@ -137,7 +137,7 @@ t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str)
 	t_str_lst	*new_argv;
 	t_str_lst	*tmp;
 
-	new_argv = calloc(1, sizeof(t_str_lst));
+	new_argv = ft_calloc(1, sizeof(t_str_lst));
 	if (!new_argv)
 		return (NULL);
 	new_argv->value = str;
@@ -167,7 +167,7 @@ char	*ft_concat_lst(t_str_lst *lst)
 		len += ft_strlen(lst->value);
 		lst = lst->next;
 	}
-	str = calloc(len + 1, sizeof(char));
+	str = ft_calloc(len + 1, sizeof(char));
 	if (!str)
 		return (NULL);
 	lst = tmp;
@@ -294,7 +294,7 @@ t_out	*ft_out_add(t_out **out, int from, char *to, t_out_type type)
 		free(to);
 		return (NULL);
 	}
-	new_out = calloc(1, sizeof(t_out));
+	new_out = ft_calloc(1, sizeof(t_out));
 	if (!new_out)
 		return (NULL);
 	new_out->from = from;
@@ -317,7 +317,7 @@ t_stdin_lst	*ft_stdin_add(t_stdin_lst **stdin, char *value, t_stdin_type type)
 	t_stdin_lst	*new_stdin;
 	t_stdin_lst	*tmp;
 
-	new_stdin = calloc(1, sizeof(t_stdin_lst));
+	new_stdin = ft_calloc(1, sizeof(t_stdin_lst));
 	if (!new_stdin)
 		return (NULL);
 	new_stdin->value = value;
