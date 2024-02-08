@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 19:06:32 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 01:22:35 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	get_right_cmds(t_subshell *cmds)
 	char	**argv;
 	int		exit_status;
 
-	argv = ft_lststr_to_char_array(cmds->argv);
+	argv = ft_lststr_to_char_array(cmds->argv, cmds->env);
 	if (ft_strcmp(argv[0], "echo") == 0)
 		exit_status = ft_echo(argv, cmds->env);
 	else if (ft_strcmp(argv[0], "cd") == 0)
