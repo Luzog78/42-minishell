@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:49 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 02:55:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 03:22:14 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int	ft_env(char **argv, char **env)
 	i = 0;
 	if (argv[1] && argv[1][0] == '-')
 	{
-		write(2, "env: invalid option\n", 20);
+		ft_printf_err("env: invalid option `%s'\n", argv[1]);
 		return (125);
 	}
 	else if (argv[1] && argv[1][0] != '-')
 	{
-		write(2, "env: too many arguments\n", 25);
+		ft_print_err("env: too many arguments\n");
 		return (127);
 	}
 	while (env[i])

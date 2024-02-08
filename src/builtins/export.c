@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 15:34:02 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 03:15:23 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,7 @@ int	ft_export(char **argv, t_subshell *cmds)
 		{
 			if (**argv == '-')
 			{
-				printf("minishell: export: the flag `%s' is not handled\n", *argv);
+				ft_printf_err("minishell: export: the flag `%s' is not handled\n", *argv);
 				exit_status = 2;
 				argv++;
 				continue ;
@@ -262,7 +262,7 @@ int	ft_export(char **argv, t_subshell *cmds)
 			var = ft_get_var(cmds->env, *argv);
 			if (!check_var(var))
 			{
-				printf("minishell: export: `%s': not a valid identifier\n", var);
+				ft_printf_err("minishell: export: `%s': not a valid identifier\n", var);
 				var = NULL;
 				exit_status = 1;
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 22:53:07 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 03:14:26 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,9 @@ char		*get_next_line(int fd, char *limiter);
 t_subshell	*ft_get_parent(t_subshell *cmds);
 t_subshell	*ft_get_nearest_subshell(t_subshell *cmds);
 char		*ft_get_value_from_env(char *key, char **env);
+void	ft_print_err(char *str);
+void	ft_printf_err(char *str, char *err);
+void	ft_printf_err2(char *str, char *err1, char *err2);
 
 # endif
 #endif

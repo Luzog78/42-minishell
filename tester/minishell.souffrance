@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/08 02:17:56 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/08 02:55:13 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,10 @@ $ echo $? $a $b | cat -e
 $ unset
 $ unset a b c
 $ echo -n "$a$b" | cat | cat|cat |wc -l|cat|cat
-$ ps -a | grep -E "(bash)|(minish)|(cat)" | wc -l
+$ ps -a | grep -E "(cat)" | wc -l
 
 @ 0
-@ 1
+@ 0
 
 ---
 

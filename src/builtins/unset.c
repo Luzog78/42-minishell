@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 02:21:46 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 03:21:58 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ft_unset(char **argv, t_subshell *cmds)
 
 	if (argv[1] && argv[1][0] == '-')
 	{
-		write(2, "unset: invalid option\n", 22);
+		ft_printf_err("minishell: unset: invalid option `%s'\n", argv[1]);
 		return (2);
 	}
 	i = 1;

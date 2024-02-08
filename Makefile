@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/07 22:53:41 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/08 03:18:55 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRC_FILES			= \
 						src/utils/ft_env_overwrite.c \
 						src/utils/ft_strcpy.c \
 						src/utils/ft_strcat.c \
+						src/utils/ft_printf_err.c \
 						src/utils/ft_putstr_fd.c \
 						src/utils/ft_strstr.c \
 						src/utils/ft_strjoin.c \

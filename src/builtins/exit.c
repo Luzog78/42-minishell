@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 18:32:13 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 03:21:12 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,12 @@ int	ft_exit(t_subshell *cmds,char **argv)
 			exit_code = 256 + (ft_atoi(argv[1]) % 256);
 		else if (argv[1] && !ft_isdigit(argv[1]))
 		{
-			write(2, "exit: p: numeric argement required\n", 35);
+			ft_printf_err("exit: p: numeric argement required (`%s')\n", argv[1]);
 			exit(2);
 		}
 		else if (argv[1] && argv[2])
 		{
-			write(2, "exit: too many arguments\n", 25);
+			ft_print_err("exit: too many arguments\n");
 			return (1);
 		}
 	}

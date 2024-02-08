@@ -8,7 +8,7 @@ test_only: list[int] = []
 print_failed_only = False
 
 # Leave None to auto-detect a fixed prompt / heredoc prompt.
-prompt_regex: str | None = "(minishell)|(GEXIT)"
+prompt_regex: str | None = None
 heredoc_prompt_regex: str | None = None
 
 # Set to False to print the detailed output of all tests.
@@ -474,7 +474,7 @@ for i, test in enumerate(tests):
 		else:
 			stats.failed.append(i)
 
-		if print_failed_only and test.passed:
+		if print_failed_only and test.passed and len(test_only) != 1:
 			continue
 
 		if not first:

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 01:19:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 03:15:06 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	ft_home_cd(t_subshell *cmds)
 	home = ft_get_value_from_env("HOME", cmds->env);
 	if (!home)
 	{
-		printf("minishell: cd: HOME not set\n");
+		ft_print_err("minishell: cd: HOME not set\n");
 		return (1);
 	}
 	if (chdir(home) == -1)
@@ -90,7 +90,7 @@ char	*ft_get_translated_path(char *path, t_subshell *cmds)
 		translated_path = ft_get_value_from_env("OLDPWD", cmds->env);
 		if (!translated_path)
 		{
-			write(2, "minishell: cd: OLDPWD not set\n", 30);
+			ft_print_err("minishell: cd: OLDPWD not set\n");
 			g_exit = 1;
 			return (NULL);
 		}
@@ -107,7 +107,7 @@ int	ft_cd(char **argv, t_subshell *cmds)
 
 	if (ft_argv_len(argv) > 2)
 	{
-		printf("minishell: cd: too many arguments\n");
+		ft_print_err("minishell: cd: too many arguments\n");
 		g_exit = 1;
 		return (g_exit);
 	}
