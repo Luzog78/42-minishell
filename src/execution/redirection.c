@@ -6,18 +6,18 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 04:14:25 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 09:41:53 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "builtins.h"
 
-int	ft_dup_infiles(char *infile)
+int	ft_dup_infiles(char *infile, char **env)
 {
 	int	fd;
 
-	fd = open(infile, O_RDONLY);
+	fd = open(ft_get_bash_string(infile, env), O_RDONLY);
 	if (fd == -1)
 	{
 		perror("minishell");
@@ -27,7 +27,7 @@ int	ft_dup_infiles(char *infile)
 	return (fd);
 }
 
-int	ft_dup_outfiles(t_out *outfiles)
+int	ft_dup_outfiles(t_out *outfiles, char **env)
 {
 	int	fd;
 
@@ -35,9 +35,9 @@ int	ft_dup_outfiles(t_out *outfiles)
 	{
 		fd = -1;
 		if (outfiles->type == REPLACE)
-			fd = open(outfiles->to, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd = open(ft_get_bash_string(outfiles->to, env), O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (outfiles->type == APPEND)
-			fd = open(outfiles->to, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			fd = open(ft_get_bash_string(outfiles->to, env), O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
 		{
 			perror("minishell");
@@ -63,12 +63,10 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 	char	*new;
 	int		i;
 	char	quote;
-	t_bool	dollar;
 
 	i = 0;
 	quote = 0;
 	*is_formattable = TRUE;
-	dollar = FALSE;
 	new = calloc(sizeof(char), 1);
 	if (!new)
 		return (NULL);
@@ -76,9 +74,8 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 	{
 		if (limiter[i] == '\'' || limiter[i] == '\"')
 		{
+			*is_formattable = FALSE;
 			quote = limiter[i];
-			if (limiter[i + 1] != quote)
-				*is_formattable = FALSE;
 			i++;
 			while (limiter[i] && limiter[i] != quote)
 			{
@@ -94,10 +91,6 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 				|| (limiter[i + 1] >= 'a' && limiter[i + 1] <= 'z')
 				|| (limiter[i + 1] >= 'A' && limiter[i + 1] <= 'Z')))
 		{
-			if (!dollar)
-				dollar = TRUE;
-			else
-				*is_formattable = FALSE;
 			new = realloc(new, ft_strlen(new) + 2);
 			if (!new)
 				return (NULL);
@@ -184,7 +177,7 @@ int	ft_stdin(t_stdin_lst *stdin, char **env)
 		if (stdin->type == HEREDOC)
 			fd = ft_heredoc(stdin->value, env);
 		else if (stdin->type == INFILE)
-			fd = ft_dup_infiles(stdin->value);
+			fd = ft_dup_infiles(stdin->value, env);
 		stdin = stdin->next;
 	}
 	if (fd == -1)

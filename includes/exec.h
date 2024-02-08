@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:13 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 01:22:41 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 09:36:25 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "minish.h"
 # include "builtins.h"
 
-int		ft_dup_infiles(char *infile);
-int		ft_dup_outfiles(t_out *outfiles);
+int		ft_dup_infiles(char *infile, char **env);
+int		ft_dup_outfiles(t_out *outfiles, char **env);
 int		ft_heredoc(char *limiter, char **env);
 int		ft_stdin(t_stdin_lst *stdin, char **env);
 int		ft_pipe(t_subshell *cmds);

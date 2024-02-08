@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 03:15:23 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 09:14:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,50 @@ void	add_double_quotes(char **env)
 {
 	int		i;
 	int		j;
-	// char	*tmp;
+	int		k;
+	char	*tmp;
 
 	i = 0;
-	j = 0;
 	while (env[i])
 	{
+		j = 0;
+		while (env[i][j] && env[i][j] != '=')
+			j++;
+		k = 0;
 		while (env[i][j])
 		{
+			if (env[i][j] == '"')
+				k++;
 			j++;
+		}
+		tmp = calloc(sizeof(char), ft_strlen(env[i]) + k + 3);
+		j = 0;
+		while (env[i][j])
+		{
 			if (env[i][j] == '=')
 			{
-				// tmp = ft_substr(env[i], j + 1, ft_strlen(env[i]) - j - 1);
-				env[i] = ft_strjoin(env[i], "\"");
+				tmp[j] = env[i][j];
+				j++;
+				tmp[j] = '"';
+				k = j;
+				k++;
+				while (env[i][j])
+				{
+					if (env[i][j] == '"')
+						tmp[k++] = '\\';
+					tmp[k++] = env[i][j++];
+				}
+				tmp[k] = '"';
+			}
+			else
+			{
+				tmp[j] = env[i][j];
+				j++;
 			}
 		}
+		free(env[i]);
+		env[i] = tmp;
 		i++;
-		j = 0;
 	}
 }
 
@@ -229,14 +256,15 @@ char	*ft_get_var(char **env, char *argv)
 	{
 		if (argv[i] == '+' && argv[i + 1] == '=')
 		{
-			var = ft_get_bash_string(argv, env);
-			var = ft_var_concat(var, env);
+			// var = ft_get_bash_string(argv, env);
+			var = ft_var_concat(argv, env);
 			break ;
 		}
 		i++;
 	}
 	if (!var)
-		var = ft_get_bash_string(argv, env);
+		var = ft_strdup(argv);
+	// 	var = ft_get_bash_string(argv, env);
 	return (var);
 }
 
@@ -260,8 +288,10 @@ int	ft_export(char **argv, t_subshell *cmds)
 				continue ;
 			}
 			var = ft_get_var(cmds->env, *argv);
-			if (!check_var(var))
+			if (!var || !check_var(var))
 			{
+				if (!var)
+					var = "(null)";
 				ft_printf_err("minishell: export: `%s': not a valid identifier\n", var);
 				var = NULL;
 				exit_status = 1;
