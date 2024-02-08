@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 03:06:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 02:21:46 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	**ft_new_env(char *target, char **env, char **new_env)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -84,18 +84,24 @@ static int	is_var_here_unset(char *target, char **env)
 int	ft_unset(char **argv, t_subshell *cmds)
 {
 	char	*target;
+	int		i;
 
 	if (argv[1] && argv[1][0] == '-')
 	{
 		write(2, "unset: invalid option\n", 22);
 		return (2);
 	}
-	if (argv[1] && is_var_here_unset(argv[1], cmds->env))
+	i = 1;
+	while (argv[i])
 	{
-		target = ft_get_env(argv[1], cmds->env);
-		cmds->env = ft_unset_var(target, cmds->env);
-		free(target);
-		return (0);
+		if (argv[i] && is_var_here_unset(argv[i], cmds->env))
+		{
+			target = ft_get_env(argv[i], cmds->env);
+			cmds->env = ft_unset_var(target, cmds->env);
+			free(target);
+			return (0);
+		}
+		i++;
 	}
-	return (1);
+	return (0);
 }

@@ -102,7 +102,7 @@ while len(args):
 		args = args[2:]
 	
 	elif args[0] == '-o':
-		print_failed_only = False
+		print_failed_only = True
 		args = args[1:]
 
 	elif args[0] == '-f':
@@ -204,8 +204,8 @@ class Test:
 
 	def __str__(self) -> str:
 		s = ''
-		s += get_text('    Input', self.input.strip(), C_MAGENTA, 8)
-		s += get_text('    Expected', self.expected.strip(), C_BLUE, 8)
+		s += get_text('    Input', self.input, C_MAGENTA, 8)
+		s += get_text('    Expected', self.expected, C_BLUE, 8)
 		err = "Yes" if self.should_error else "No"
 		s += f'    {C_YELLOW}Should error:{C_RESET} {C_YELLOW}{err}{C_RESET}\n'
 		if self.passed is not None:
@@ -220,14 +220,14 @@ class Test:
 		return s[:-1]
 
 	def __repr__(self) -> str:
-		input = self.input.strip().split('\n')
-		expected = self.expected.strip().split('\n')
+		input = self.input.split('\n')
+		expected = self.expected.split('\n')
 		s = f'    {C_MAGENTA}{C_BOLD}Input:{C_RESET} {C_MAGENTA}{input}{C_RESET}\n' \
 			+ f'    {C_BLUE}{C_BOLD}Expected:{C_RESET} {C_BLUE}{expected}{C_RESET}\n' \
 			+ f'    {C_YELLOW}{C_BOLD}Should error:{C_RESET} {C_YELLOW}{self.should_error}{C_RESET}\n'
 		if self.passed is not None:
-			std_out = self.result_output.strip().split('\n')
-			std_err = self.result_error.strip().split('\n')
+			std_out = self.result_output.split('\n')
+			std_err = self.result_error.split('\n')
 			s += '\n'
 			s += f'    {C_WHITE}{C_BOLD}Standard Output:{C_RESET} {C_WHITE}{std_out}{C_RESET}\n' \
 				+ f'    {C_RED}{C_BOLD}Standard Error:{C_RESET} {C_RED}{std_err}{C_RESET}\n'

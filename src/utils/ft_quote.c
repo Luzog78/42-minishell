@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/04 03:03:16 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 02:41:06 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,13 +146,16 @@ char	*ft_get_bash_string(char *str, char **env)
 	int		i;
 	char	*bash_string;
 	char	*var;
+	t_bool	is_empty;
 
+	is_empty = TRUE;
 	i = 0;
 	bash_string = calloc(sizeof(char), get_bash_string_size(str, env) + 1);
 	while (str[i])
 	{
 		if (str[i] == '\'')
 		{
+			is_empty = FALSE;
 			while (str[++i] != '\'' && str[i] != '\0')
 				bash_string[ft_strlen(bash_string)] = str[i];
 		}
@@ -162,6 +165,7 @@ char	*ft_get_bash_string(char *str, char **env)
 			{
 				if (str[i] == '$' && str[i + 1] == '?')
 				{
+					is_empty = FALSE;
 					var = ft_itoa(g_exit);
 					ft_strcat(bash_string, var);
 					free(var);
@@ -171,16 +175,23 @@ char	*ft_get_bash_string(char *str, char **env)
 				{
 					var = ft_getvar(str, &i, env);
 					if (var)
+					{
+						is_empty = FALSE;
 						ft_strcat(bash_string, var);
+					}
 				}
 				else
+				{
+					is_empty = FALSE;
 					bash_string[ft_strlen(bash_string)] = str[i];
+				}
 			}
 		}
 		else
 		{
 			if (str[i] == '$' && str[i + 1] == '?')
 			{
+				is_empty = FALSE;
 				var = ft_itoa(g_exit);
 				ft_strcat(bash_string, var);
 				free(var);
@@ -190,13 +201,24 @@ char	*ft_get_bash_string(char *str, char **env)
 			{
 				var = ft_getvar(str, &i, env);
 				if (var)
+				{
+					is_empty = FALSE;
 					ft_strcat(bash_string, var);
+				}
 			}
 			else
+			{
+				is_empty = FALSE;
 				bash_string[ft_strlen(bash_string)] = str[i];
+			}
 		}
 		i++;
 	}
 	bash_string[get_bash_string_size(str, env)] = '\0';
+	if (is_empty)
+	{
+		free(bash_string);
+		return (NULL);
+	}
 	return (bash_string);
 }
