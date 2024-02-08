@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 01:24:59 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 02:00:28 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,32 +36,32 @@ size_t	ft_lstsize(t_str_lst *lst)
 	return (i);
 }
 
-static void	ft_realloc(char ***array, char *str)
+static void	ft_realloc(char ***args, char *str)
 {
 	char	**new;
 	int		i;
 
 	i = 0;
-	while (*array && (*array)[i])
+	while (*args && (*args)[i])
 		i++;
 	new = calloc(sizeof(char *), (i + 2));
 	if (!new)
 		return ;
 	i = 0;
-	while (*array && (*array)[i])
+	while (*args && (*args)[i])
 	{
-		new[i] = ft_strdup((*array)[i]);
+		new[i] = ft_strdup((*args)[i]);
 		i++;
 	}
 	new[i] = ft_strdup(str);
 	i = 0;
-	while (*array && (*array)[i])
+	while (*args && (*args)[i])
 	{
-		free((*array)[i]);
+		free((*args)[i]);
 		i++;
 	}
-	free(*array);
-	*array = new;
+	free(*args);
+	*args = new;
 }
 
 void	ft_append_wildkartttt(char ***args, char *str, char **env)

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/05 04:12:11 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 02:06:09 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ int	ft_echo(char **argv, char **env)
 	t_bool	n_flag;
 	char	*var;
 
+	(void)env;
 	n_flag = has_n_flag(argv, &i);
 	while (argv[i])
 	{
-		var = ft_get_bash_string(argv[i], env);
+		var = argv[i];
 		printf("%s", var);
 		if (argv[i + 1])
 			printf(" ");
-		free(var);
 		i++;
 	}
 	if (!n_flag)
