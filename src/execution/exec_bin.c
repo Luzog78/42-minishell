@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 02:43:30 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 03:32:24 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	ft_get_path(char **argv, char **env)
 {
 	char	**path;
 	char	*tmp;
-	char	*translated;
+	// char	*translated;
 	int		i;
 
-	translated = ft_get_bash_string(argv[0], env);
-	free(argv[0]);
-	argv[0] = translated;
+	// translated = ft_get_bash_string(argv[0], env);
+	// free(argv[0]);
+	// argv[0] = translated;
 	i = 0;
 	path = ft_split(ft_getenv("PATH", env), ':');
 	while (path[i])
@@ -80,8 +80,7 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	{
 		waitpid(pid, &status, 0);
 		cmds->pid = pid;
-		if (!g_exit)
-			g_exit = WEXITSTATUS(status);
+		g_exit = WEXITSTATUS(status);
 		cmds->exit_status = g_exit;
 	}
 	return (g_exit);

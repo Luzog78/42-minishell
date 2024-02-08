@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/08 03:18:55 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/08 03:35:46 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -176,6 +176,9 @@ valgrind: all $(VALGRIND_SUPPR)
 	@echo ""
 	@cat $(VALGRIND_OUT) | sed -r '/^==[0-9]*==/s/(^==[0-9]*==)(.*(definitely lost|indirectly lost|possibly lost|still reachable|Invalid read|Invalid write|\.c:).*)/'$$(printf "$(C_BLACK)")'\1'$$(printf "$(C_YELLOW)")'\2'$$(printf "$(C_RESET)")'/; /==[0-9]*==/s/(.*==[0-9]*==.*)((definitely lost|indirectly lost|possibly lost|still reachable): .*)/\1'$$(printf "$(C_RED)$(C_BOLD)")'\2'$$(printf "$(C_RESET)")'/; /==[0-9]*==/s/(.*==[0-9]*==.*)((definitely lost|indirectly lost|possibly lost|still reachable): 0 bytes.*)/\1'$$(printf "$(C_RESET)$(C_BLACK)")'\2'$$(printf "$(C_RESET)")'/; /^==[0-9]*==/s/(.*)/'$$(printf "$(C_BLACK)")'\1'$$(printf "$(C_RESET)")'/;'
 
+test:
+	@make && clear && python3 tester/tester.py -b ./minishell -s tester/minishell.souffrance -o
+
 clean :
 	$(call del, $(VALGRIND_SUPPR) $(VALGRIND_OUT) $(BUILD_DIR) $(BUILD_FILES))
 	@rm -rf $(BUILD_FILES) $(BUILD_DIR)
@@ -186,4 +189,4 @@ fclean :
 
 re : fclean m_line_break all
 
-.PHONY : all bonus clean fclean re
+.PHONY : all bonus clean fclean re valgrind m_line_break test
