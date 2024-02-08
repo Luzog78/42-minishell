@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 16:28:29 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 02:21:17 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,12 @@ void	ft_get_path(char **argv, char **env)
 {
 	char	**path;
 	char	*tmp;
+	char	*translated;
 	int		i;
 
-	argv[0] = ft_get_bash_string(argv[0], env);
+	translated = ft_get_bash_string(argv[0], env);
+	free(argv[0]);
+	argv[0] = translated;
 	i = 0;
 	path = ft_split(ft_getenv("PATH", env), ':');
 	while (path[i])
@@ -56,13 +59,15 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	{
 		if (access(argv[0], X_OK) == -1)
 		{
-			perror("minishell:");
+			perror("minishell");
 			ft_free_char_array(argv);
+			ft_free_subshell(ft_get_parent(cmds));
 			exit(127);
 		}
 		execve(argv[0], argv, cmds->env);
 		perror("minishell");
-		printf(">>>>> %d\n", errno);
+		ft_free_char_array(argv);
+		ft_free_subshell(ft_get_parent(cmds));
 		exit(errno);
 	}
 	else
