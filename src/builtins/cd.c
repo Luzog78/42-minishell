@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 23:31:18 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 01:19:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,18 @@ static void	update_path(t_subshell *cmds)
 {
 	char	*pwd;
 	char	*cwd;
+	char	*value_envp;
 
 	cwd = getcwd(NULL, 0);
 	pwd = ft_strjoin("PWD=", cwd);
-	cmds->env = ft_update_env(pwd, cmds->env);
+	value_envp = ft_get_value_from_env("PWD", cmds->env);
+	if (!value_envp)
+		cmds->env = ft_add_env(pwd, cmds->env);
+	else
+	{
+		cmds->env = ft_update_env(pwd, cmds->env);
+		free(value_envp);
+	}
 	free(pwd);
 	free(cwd);
 }
@@ -80,6 +88,12 @@ char	*ft_get_translated_path(char *path, t_subshell *cmds)
 	else if (path[0] == '-')
 	{
 		translated_path = ft_get_value_from_env("OLDPWD", cmds->env);
+		if (!translated_path)
+		{
+			write(2, "minishell: cd: OLDPWD not set\n", 30);
+			g_exit = 1;
+			return (NULL);
+		}
 		return (translated_path);
 	}
 	return (ft_strdup(path));
@@ -101,13 +115,19 @@ int	ft_cd(char **argv, t_subshell *cmds)
 		|| !ft_strcmp(argv[1], "--"))
 		return (ft_home_cd(cmds));
 	path = ft_get_translated_path(argv[1], cmds);
+	cwd = ft_get_value_from_env("PWD", cmds->env);
+	if (!cwd)
+		oldpwd = ft_strdup("OLDPWD");
+	else
+		oldpwd = ft_strjoin("OLDPWD=", cwd);
 	if (chdir(path) == -1)
 	{
+		free(oldpwd);
+		free(cwd);
+		free(path);
 		perror("minishell");
 		return (1);
 	}
-	cwd = ft_get_value_from_env("PWD", cmds->env);
-	oldpwd = ft_strjoin("OLDPWD=", cwd);
 	cmds->env = ft_update_env(oldpwd, cmds->env);
 	free(oldpwd);
 	free(path);
