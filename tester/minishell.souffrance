@@ -6,9 +6,11 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/08 02:55:13 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/08 07:53:21 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+=== Custom Tests ===
 
 $ echo abc
 
@@ -214,3 +216,659 @@ $ expr $? + $?
 $ echo abc # | wc -l
 
 @ abc
+
+
+
+=== Built-ins: echo ===
+
+$ echo
+
+@ 
+
+---
+
+$ echo -n
+
+---
+
+$ echo abc
+
+@ abc
+
+---
+
+$ echo -n abc > outfile
+$ echo >> outfile
+$ cat outfile
+
+@ abc
+
+---
+
+$ echo -n -n
+$ echo -nnnnnnn
+
+---
+
+$ echo $?
+$ fasfdsfd
+$ echo $?
+
+###
+@ 0
+@ 127
+
+---
+
+$ echo # abc
+
+@ 
+
+---
+
+$ ec''h"o"  "Hello, World!"  '$?'   You"are"$?'my$?'"friend$?"$?
+
+@ Hello, World! $? Youare0my$?friend00
+
+
+=== Built-ins: cd / pwd ===
+
+$ mkdir -p io
+$ pwd > io/out1
+$ echo $?
+$ cd io
+$ echo $?
+$ pwd > out2
+$ echo $?
+$ diff out1 out2 | head -n 1
+$ echo $?
+
+@ 0
+@ 0
+@ 0
+@ 1c1
+@ 0
+
+---
+
+$ mkdir -p io
+$ pwd > out1
+$ echo $?
+$ cd io abc
+$ echo $?
+$ pwd > out2
+$ echo $?
+$ diff out1 out2 | wc -l
+
+###
+@ 0
+@ 1
+@ 0
+@ 0
+
+---
+
+$ pwd > out1
+$ echo $?
+$ mkdir -p io
+$ cd io
+$ echo $?
+$ pwd > ../out2
+$ echo $?
+$ cd .. abc
+$ echo $?
+$ pwd > ../out3
+$ echo $?
+$ cd ..
+$ echo $?
+$ pwd > out4
+$ echo $?
+$ diff out1 out2 | wc -l
+$ diff out2 out3 | wc -l
+$ diff out3 out4 | wc -l
+$ diff out1 out4 | wc -l
+
+###
+@ 0
+@ 0
+@ 0
+@ 1
+@ 0
+@ 0
+@ 0
+@ 4
+@ 0
+@ 4
+@ 0
+
+---
+
+$ pwd sfdglk-jglkjd-lkgsfg | wc -l
+$ echo $?
+
+@ 1
+@ 0
+
+
+=== Built-ins: env ===
+
+$ env | grep -E "^(PATH|HOME|USER|LOGNAME|SHLVL|PWD|OLDPWD|_)=" | wc -l
+
+@ 8
+
+---
+
+$ env | wc -l > out1
+$ env | grep -E "^([a-zA-Z_][a-zA-Z0-9_]*)=" | wc -l > out2
+$ diff out1 out2 | wc -l
+
+@ 0
+
+
+=== Built-ins: export / unset ===
+
+$ export a=42
+$ echo $? $a | cat -e
+
+@ 0 42$
+
+---
+
+$ export a=42 b=24 c
+$ echo $? $a $b | cat -e
+
+@ 0 42 24$
+
+---
+
+$ unset
+$ echo $?
+
+@ 0
+
+---
+
+$ unset =---0asdf 809834-09 '/- / -/ / - /-/'
+$ echo $?
+
+@ 0
+
+---
+
+$ unset a b c d
+$ echo $?
+$ echo $a $b $c $?
+
+@ 0
+@ 0
+
+---
+
+$ export a=42 c c c c =d b=24
+$ echo $? $a $b $c | cat -e
+
+###
+@ 1 42 24$
+
+---
+
+$ export | wc -l > out1
+$ export | grep -E '^declare -x ([a-zA-Z_][a-zA-Z0-9_]*)=".*$' | wc -l > out2
+$ diff out1 out2 | wc -l
+
+@ 0
+
+---
+
+$ export c= d=" 42 "
+$ echo $? $c $d | cat -e
+$ env | grep -E "^(c=)"
+$ env | grep -E "^(d=)"
+
+@ 0 42$
+@ c=
+@ d= 42 
+
+---
+
+$ export a=echo
+$ $a $a $?
+$ $a $a $?
+
+@ echo 0
+@ echo 0
+
+
+=== Built-ins: exit ===
+
+$ exit 0 0
+$ echo $?
+
+###
+@ 1
+
+
+=== Basics ===
+
+$ doesnotexist
+$ echo $?
+
+###
+@ 127
+
+---
+
+$ rm -rf io
+$ echo $?
+$ touch io
+$ echo $?
+$ cd io
+$ echo $?
+
+###
+@ 0
+@ 0
+@ 1
+
+---
+
+$ rm -rf io
+$ echo $?
+$ touch io
+$ echo $?
+$ ./io
+$ echo $?
+
+###
+@ 0
+@ 0
+@ 126
+
+
+=== ft_souffrance: exit status ===
+
+$ unset a
+$ $a
+$ echo $?
+
+@ 0
+
+---
+
+$ expr $?
+$ expr $?
+$ expr $?
+$ expr $?
+$ expr $?
+$ expr $?
+
+@ 0
+@ 1
+@ 0
+@ 1
+@ 0
+@ 1
+
+---
+
+$ lolilol | ls | lolilol
+$ echo $?
+
+###
+@ 127
+
+---
+
+$ rm -rf io
+$ mkdir -p io
+$ cd io
+$ echo $?
+$ touch a
+$ echo $?
+$ lolilol | lolilol | ls | wc -l | cat |cat| cat|cat 
+$ echo $?
+
+###
+@ 0
+@ 0
+@ 1
+@ 0
+
+---
+
+$ rm -rf io
+$ echo $?
+$ mkdir io
+$ echo $?
+$ mkdir io
+$ echo $?
+
+###
+@ 0
+@ 0
+@ 1
+
+
+=== ft_souffrance: redirections ===
+
+$ rm -rf io
+$ mkdir io
+$ cd io
+$ echo $?
+$ echo -n abc >out>out2 >   out3
+$ echo $?
+$ >> out echo 1
+$ >>out2 echo 2
+$ >>out3 echo 3
+$ cat out
+$ cat out2
+$ cat out3
+
+@ 0
+@ 0
+@ 1
+@ 2
+@ abc3
+
+---
+
+$ rm -rf io
+$ mkdir io
+$ cd io
+$ echo $?
+$ echo -n abc>1 > 2 >3
+$ <2 <3 grep abc
+
+@ 0
+@ abc
+
+---
+
+$ rm -rf io
+$ mkdir io
+$ cd io
+$ echo $?
+$ echo abc>1 > 2 >3
+$ <2 cat >1 < 3
+$ echo $?
+$ >> 1 echo 1
+$ >> 2 echo 2
+$ >> 3 echo 3
+$ cat 1
+$ cat 2
+$ cat 3
+
+@ 0
+@ 0
+@ abc
+@ 1
+@ 2
+@ abc
+@ 3
+
+---
+
+$ rm -rf io
+$ mkdir io
+$ cd io
+$ echo $?
+
+$ <mdr | >lol < mdr > mdr | <mdr
+$ echo $?
+$ ls
+
+###
+@ 0
+@ 0
+@ lol
+
+---
+
+$ rm -rf io
+$ mkdir io
+$ cd io
+$ echo $?
+
+$ >out echo out
+$ >out1>out2>out3<out>out4 cat -e
+$ echo $?
+$ ls | wc -l
+$ >> out1 echo 1
+$ >> out2 echo 2
+$ >> out3 echo 3
+$ >> out4 echo 4
+$ cat out1
+$ cat out2
+$ cat out3
+$ cat out4
+
+@ 0
+@ 0
+@ 5
+@ 1
+@ 2
+@ 3
+@ out$
+@ 4
+
+---
+
+$ <<here cat << here << here
+$ abc
+$ here
+$ def
+$ here
+$ ghi
+$ here
+$ echo $?
+
+@ ghi
+@ 0
+
+---
+
+$ export a=io
+$ << 1 > out cat << $a
+$ abc
+$ 1
+$ def
+$ io
+$ $a
+$ echo $?
+$ cat out | cat | cat | cat | cat | cat | cat -e
+
+@ 0
+@ def$
+@ io$
+
+---
+
+$ export a=io b=outfile
+$ rm -rf $a
+$ mkdir $a
+$ echo $?
+
+$ << 1 > $a/$b cat << $b
+$ abc
+$ 1
+$ def
+$ outfile
+$ $a
+$ $b
+$ echo $?
+$ cat $a/$b
+
+@ 0
+@ 0
+@ def
+@ outfile
+@ io
+
+---
+
+$ export a=io b=outfile
+$ rm -rf $a
+$ mkdir $a
+$ echo $?
+
+$ << 1 > $a/$b cat << ''$b""''
+$ abc
+$ 1
+$ def
+$ outfile
+$ $a
+$ $b
+$ echo $?
+$ cat $a/$b
+
+@ 0
+@ 0
+@ def
+@ outfile
+@ $a
+
+---
+
+$ export a=io b=outfile
+$ rm -rf $a
+$ mkdir $a
+$ echo $?
+
+$ << 1 > $a/$b cat << '$b'""''
+$ abc
+$ 1
+$ def
+$ outfile
+$ $a
+$ $b
+$ echo $?
+$ cat $a/$b
+
+@ 0
+@ 0
+@ def
+@ outfile
+@ $a
+
+---
+
+$ export a=io b=outfile
+$ rm -rf $a
+$ mkdir $a
+$ echo $?
+
+$ << 1 > $a/$b cat << "$b"
+$ abc
+$ 1
+$ def
+$ outfile
+$ $a
+$ $b
+$ echo $?
+$ cat $a/$b
+
+@ 0
+@ 0
+@ def
+@ outfile
+@ $a
+
+---
+
+$ export a=io b=outfile
+$ rm -rf $a
+$ mkdir $a
+$ echo $?
+
+$ << 1 > $a/$b cat << "a"$b
+$ abc
+$ 1
+$ def
+$ outfile
+$ $a
+$ $b
+$ a$b
+$ echo $?
+$ cat $a/$b
+
+@ 0
+@ 0
+@ def
+@ outfile
+@ $a
+@ $b
+
+---
+
+$ export a=io b=outfile
+$ rm -rf $a
+$ mkdir $a
+$ echo $?
+
+$ << 1 > $a/$b cat << $b$b
+$ abc
+$ 1
+$ def
+$ outfile
+$ $a
+$ $b
+$ $b$b
+$ echo $?
+$ cat $a/$b
+
+@ 0
+@ 0
+@ def
+@ outfile
+@ io
+@ outfile
+
+---
+
+$ cat <<""
+$ echo $?
+$ 
+$ echo $?
+
+@ echo $?
+@ 0
+
+=== ft_souffrance: error ===
+
+$ <lolilollll
+###
+
+---
+
+$ <
+###
+
+---
+
+$ << 1 > << 2
+###
+
+---
+
+$ |
+###
+
+---
+
+$ << 1 > 2 cat <| cat
+###
+
+---
+
+$ >>> outt
+###
+
+---
+
+$ <<<
+###
+
+---
+
+$ <<><>><>>>>
+###

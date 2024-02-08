@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 02:06:09 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/08 06:02:28 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ int	ft_echo(char **argv, char **env)
 	while (argv[i])
 	{
 		var = argv[i];
-		printf("%s", var);
+		write(1, var, ft_strlen(var));
 		if (argv[i + 1])
-			printf(" ");
+			write(1, " ", 1);
 		i++;
 	}
 	if (!n_flag)
-		printf("\n");
+		write(1, "\n", 1);
 	return (0);
 }

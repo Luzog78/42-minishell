@@ -201,6 +201,11 @@ class Test:
 		
 		if self.expected != self.result_output:
 			self.passed = False
+	
+	def is_empty(self) -> bool:
+		return self.input == "" \
+			and self.expected == "" \
+			and not self.should_error
 
 	def __str__(self) -> str:
 		s = ''
@@ -253,17 +258,18 @@ class Stats:
 		ratio = f'{ratio:.2f}%'
 		s = f'{c("Sum-Up :", C_CYAN + C_BOLD + C_UNDERLINE)}\n\n'
 
-		s += f'    {c("Total ..... :", C_CYAN + C_BOLD)} ' \
-			+ f'{c(len(self.total), C_CYAN)}'
-		if len(self.crashed):
-			s += f' {c("(", C_DIM)}{c(f"{len(self.crashed)} CRASHED", C_RED)}{c(")", C_DIM)}'
-		s += '\n'
-
 		s += f'    {c("Ratio ..... :", C_GREEN + C_BOLD)} ' \
 			+ f'{c(len(self.passed), C_GREEN)}' \
 			+ f'{c("/", C_DIM)}' \
 			+ f'{c(len(self.failed), C_RED)} ' \
 			+ f'{c("(", C_DIM)}{c(ratio, C_YELLOW)}{c(")", C_DIM)}\n'
+
+		s += f'    {c("Total ..... :", C_CYAN + C_BOLD)} ' \
+			+ f'{c(len(self.total), C_CYAN)} test' \
+			+ ('s' if len(self.total) else '') + ' checked !'
+		if len(self.crashed):
+			s += f' {c("(", C_DIM)}{c(f"{len(self.crashed)} CRASHED", C_RED)}{c(")", C_DIM)}'
+		s += '\n'
 
 		if len(self.failed) or len(self.crashed):
 			s += '\n'
@@ -409,29 +415,53 @@ if souffrance is None:
 	print_error(f'Could not read "{souffrance_path}"')
 	exit(1)
 
-tests = [Test()]
+tests: list[Test] = [Test()]
+sections: dict[int, list[str, bool]] = {}
 
 i = 0
 for line in souffrance.split('\n'):
-	if line == '---':
-		i += 1
+	if line.startswith('=== ') and line.endswith(' ==='):
+		sections[i + 2] = [line[4:-4], False]
+		if tests[i].is_empty():
+			continue
 		tests.append(Test())
+		i += 1
+
+	elif line == '---':
+		if tests[i].is_empty():
+			continue
+		tests.append(Test())
+		i += 1
 	
 	elif line.startswith('$ '):
 		tests[i].input += line[2:] + '\n'
 	
 	elif line.startswith('@ '):
 		tests[i].expected += line[2:] + '\n'
+		if line[2:].endswith(chr(4)):
+			tests[i].expected = tests[i].expected[:-2]
 	
 	elif line == '###': # line.startswith('! '):
 		tests[i].should_error = True
 
-del tests[-1]
+if tests[-1].is_empty():
+	del tests[-1]
 
 tests.insert(0, Test())
 tests[0].input = "~CALIB~\n~CALIB~\n~CALIB~\ncat << EOF\n~HCALIB~\n~HCALIB~\n~HCALIB~\n"
 
 stats = Stats()
+
+
+def get_section(i: int) -> int:
+	if not sections:
+		return -1
+	curr = min(sections.keys())
+	for k in sections.keys():
+		if k > i:
+			continue
+		curr = k
+	return curr
 
 
 cwd = os.getcwd()
@@ -482,6 +512,48 @@ for i, test in enumerate(tests):
 
 		if not first:
 			print('\n')
+		sec = get_section(i)
+		if sections.get(sec) is not None and not sections[sec][1]:
+			c = lambda s, c_: f'{c_}{s}{C_RESET}'
+
+			'''
+			line1 = f'Section {sec}:'
+			len1 = len(line1)
+
+			line2 = f'{sections[sec][0]}'
+			len2 = len(line2)
+
+			lenn = max(len1, len2) + 10
+			extra = 4
+
+			line1 = c(f'{line1:^{lenn}}', C_WHITE + C_BOLD)
+			line2 = c(f'{line2:^{lenn}}', C_WHITE + C_ITALIC)
+
+			border = c('-' * (lenn + extra * 2), C_BOLD)
+			side = c('-' * extra, C_BOLD)
+			line1 = side + c(line1, C_WHITE) + side
+			line2 = side + c(line2, C_WHITE) + side
+
+			print(border)
+			print(line1)
+			print(line2)
+			print(border)
+			print()
+			'''
+
+			nb = sorted(list(sections.keys())).index(sec) + 1
+
+			s = ''
+			s += c('=' * 8, C_BOLD) + '  '
+			s += c(f'Section {nb}', C_WHITE + C_BOLD)
+			s += ' | '
+			s += c(f'{sections[sec][0]}', C_WHITE + C_ITALIC)
+			s += '  ' + c('=' * 8, C_BOLD) + '\n'
+
+			print(s)
+
+			sections[sec][1] = True
+		
 		print(f'{C_CYAN}{C_UNDERLINE}Test {C_BOLD}{i}:{C_RESET}')
 		print(repr(test) if print_repr else test)
 	except Exception as e:

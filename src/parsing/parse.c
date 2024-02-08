@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 16:22:16 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 05:29:49 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -528,6 +528,12 @@ t_bool	ft_parse_subshell(t_subshell *subshell, char **str)
 		{
 			subshell->link = PIPE;
 			cursor++;
+			break ;
+		}
+		else if (ft_starts_with(cursor, "#"))
+		{
+			while (*cursor)
+				cursor++;
 			break ;
 		}
 		else
