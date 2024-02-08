@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 17:17:55 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/08 04:14:25 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,38 +58,78 @@ char	*ft_get_temp_filename(void)
 	return (random);
 }
 
-char	*get_right_limiter(char *limiter, t_bool *quote)
+char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 {
-	char	*new_limiter;
+	char	*new;
 	int		i;
+	char	quote;
+	t_bool	dollar;
 
 	i = 0;
-	new_limiter = calloc(1, 1);
-	if (!new_limiter)
+	quote = 0;
+	*is_formattable = TRUE;
+	dollar = FALSE;
+	new = calloc(sizeof(char), 1);
+	if (!new)
 		return (NULL);
-	*quote = false;
-	if (limiter[0] == '\'' || limiter[0] == '"')
-		*quote = true;
-	if (limiter[ft_strlen(limiter) - 1] == '\''
-		|| limiter[ft_strlen(limiter) - 1] == '"')
-		*quote = true;
 	while (limiter[i])
 	{
-		if (limiter[i] != '\'' && limiter[i] != '"')
+		if (limiter[i] == '\'' || limiter[i] == '\"')
 		{
-			new_limiter = realloc(new_limiter, i + 1);
-			if (!new_limiter)
+			quote = limiter[i];
+			if (limiter[i + 1] != quote)
+				*is_formattable = FALSE;
+			i++;
+			while (limiter[i] && limiter[i] != quote)
 			{
-				free(new_limiter);
-				return (NULL);
+				new = realloc(new, ft_strlen(new) + 2);
+				if (!new)
+					return (NULL);
+				new[ft_strlen(new) + 1] = 0;
+				new[ft_strlen(new)] = limiter[i];
+				i++;
 			}
-			new_limiter[ft_strlen(new_limiter)] = limiter[i];
+		}
+		else if (limiter[i] == '$' && (limiter[i + 1] == '_'
+				|| (limiter[i + 1] >= 'a' && limiter[i + 1] <= 'z')
+				|| (limiter[i + 1] >= 'A' && limiter[i + 1] <= 'Z')))
+		{
+			if (!dollar)
+				dollar = TRUE;
+			else
+				*is_formattable = FALSE;
+			new = realloc(new, ft_strlen(new) + 2);
+			if (!new)
+				return (NULL);
+			new[ft_strlen(new) + 1] = 0;
+			new[ft_strlen(new)] = limiter[i];
+			i++;
+			while (limiter[i] && (limiter[i] == '_'
+				|| (limiter[i] >= 'a' && limiter[i] <= 'z')
+				|| (limiter[i] >= 'A' && limiter[i] <= 'Z')
+				|| (limiter[i] >= '0' && limiter[i] <= '9')))
+			{
+				new = realloc(new, ft_strlen(new) + 2);
+				if (!new)
+					return (NULL);
+				new[ft_strlen(new) + 1] = 0;
+				new[ft_strlen(new)] = limiter[i];
+				i++;
+			}
+			continue ;
+		}
+		else
+		{
+			*is_formattable = FALSE;
+			new = realloc(new, ft_strlen(new) + 2);
+			if (!new)
+				return (NULL);
+			new[ft_strlen(new) + 1] = 0;
+			new[ft_strlen(new)] = limiter[i];
 		}
 		i++;
 	}
-	new_limiter[ft_strlen(new_limiter)] = '\0';
-	free(limiter);
-	return (new_limiter);
+	return (new);
 }
 
 int	ft_heredoc(char *limiter, char **env)
@@ -97,7 +137,7 @@ int	ft_heredoc(char *limiter, char **env)
 	int		fd;
 	char	*filename;
 	char	*line;
-	t_bool	quote;
+	t_bool	is_formattable;
 
 	filename = ft_get_temp_filename();
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -106,7 +146,7 @@ int	ft_heredoc(char *limiter, char **env)
 		perror("minishell");
 		return (-1);
 	}
-	limiter = get_right_limiter(limiter, &quote);
+	limiter = get_right_limiter(limiter, &is_formattable);
 	while (1)
 	{
 		line = readline("> ");
@@ -115,9 +155,10 @@ int	ft_heredoc(char *limiter, char **env)
 			free(line);
 			break ;
 		}
-		if (!quote)
+		if (is_formattable)
 			line = ft_get_bash_string(line, env);
-		ft_putstr_fd(line, fd);
+		if (line)
+			ft_putstr_fd(line, fd);
 		ft_putstr_fd("\n", fd);
 		free(line);
 	}

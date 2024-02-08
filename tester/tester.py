@@ -283,18 +283,21 @@ def calibrate_prompts(output: str) -> None:
 
 	if prompt_regex is None:
 		indexes = [m.start() for m in re.finditer('~CALIB~', output)]
-		if len(indexes) != 3:
+		if len(indexes) == 0:
+			prompt = ""
+		elif len(indexes) != 3:
 			print_error('Could not calibrate prompt')
 			exit(1)
 
-		prompt = ""
-		while True:
-			indexes[0] -= 1
-			indexes[1] -= 1
-			indexes[2] -= 1
-			if not output[indexes[0]] == output[indexes[1]] == output[indexes[2]]:
-				break
-			prompt = output[indexes[0]] + prompt
+		if prompt is None:
+			prompt = ""
+			while True:
+				indexes[0] -= 1
+				indexes[1] -= 1
+				indexes[2] -= 1
+				if not output[indexes[0]] == output[indexes[1]] == output[indexes[2]]:
+					break
+				prompt = output[indexes[0]] + prompt
 
 		if prompt.startswith('\n'):
 			prompt = prompt[1:]

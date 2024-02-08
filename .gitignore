@@ -23,6 +23,6 @@ vsupp
 
 minishell
 !tester
-!tester/*
-!tester/**
+!*.py
+!*.souffrance
 
