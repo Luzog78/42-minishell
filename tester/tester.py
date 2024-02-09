@@ -1,4 +1,5 @@
 import os, traceback, re
+from threading import Thread
 
 bin_path = '/usr/bin/bash'
 testing_path = './testing'
@@ -186,7 +187,11 @@ class Test:
 		self.result_output: str | None = None
 		self.result_error: str | None = None
 
+		self.timed_out: bool = False
 		self.passed: bool | None = None
+	
+	def timeout(self) -> None:
+		self.timed_out = True
 	
 	def check(self) -> None:
 		self.passed = True
@@ -218,7 +223,9 @@ class Test:
 			s += get_text('    Standard Output', self.result_output, C_WHITE, 8)
 			s += get_text('    Standard Error', self.result_error, C_RED, 8)
 			s += '\n'
-			if self.passed:
+			if self.timed_out:
+				s += f'    {C_RED}{C_BOLD}>>> [Timed out] <<<{C_RESET}\n'
+			elif self.passed:
 				s += f'    {C_GREEN}{C_BOLD}>>> [Passed] <<<{C_RESET}\n'
 			else:
 				s += f'    {C_RED}{C_BOLD}>>> [Failed] <<<{C_RESET}\n'
@@ -237,7 +244,9 @@ class Test:
 			s += f'    {C_WHITE}{C_BOLD}Standard Output:{C_RESET} {C_WHITE}{std_out}{C_RESET}\n' \
 				+ f'    {C_RED}{C_BOLD}Standard Error:{C_RESET} {C_RED}{std_err}{C_RESET}\n'
 			s += '\n'
-			if self.passed:
+			if self.timed_out:
+				s += f'    {C_RED}{C_BOLD}>>> [Timed out] <<<{C_RESET}\n'
+			elif self.passed:
 				s += f'    {C_GREEN}{C_BOLD}>>> [Passed] <<<{C_RESET}\n'
 			else:
 				s += f'    {C_RED}{C_BOLD}>>> [Failed] <<<{C_RESET}\n'
@@ -487,11 +496,17 @@ for i, test in enumerate(tests):
 		with open('.in.tmp', 'w') as f:
 			f.write(test.input)
 
-		os.system(f'{bin_path} < .in.tmp > .out.tmp 2> .err.tmp')
+		t = Thread(target=lambda: os.system(f'{bin_path} < .in.tmp > .out.tmp 2> .err.tmp'))
+
+		t.start()
+		t.join(3)
+
+		if t.is_alive():
+			test.timeout()
 
 		with open('.out.tmp', 'r') as f:
 			test.result_output = clean_output(f.read()) if i else f.read()
-		
+
 		with open('.err.tmp', 'r') as f:
 			test.result_error = f.read()
 

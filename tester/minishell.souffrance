@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/08 09:42:01 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/08 10:55:27 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -624,13 +624,13 @@ $ mkdir io
 $ cd io
 $ echo $?
 
-$ <mdr | >lol < mdr > mdr | <mdr
+$ <mdr a | >lol < mdr b > mdr | <mdr c
 $ echo $?
 $ ls
 
 ###
 @ 0
-@ 0
+@ 1
 @ lol
 
 ---
