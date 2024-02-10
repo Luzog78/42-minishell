@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:03:10 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:37:34 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	ft_execve_pipe(t_subshell *cmds)
 		close(cmds->prev->pipe_read_end);
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
 		status = get_right_cmds(cmds);
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
