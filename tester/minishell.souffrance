@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    minishell.souffrance                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/08 10:55:27 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/10 03:07:08 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -223,7 +223,7 @@ $ echo abc # | wc -l
 
 $ echo
 
-@ 
+@
 
 ---
 
@@ -262,7 +262,7 @@ $ echo $?
 
 $ echo # abc
 
-@ 
+@
 
 ---
 
@@ -270,6 +270,11 @@ $ ec''h"o"  "Hello, World!"  '$?'   You"are"$?'my$?'"friend$?"$?
 
 @ Hello, World! $? Youare0my$?friend00
 
+---
+
+$ echo "    # haha"
+
+@     # haha
 
 === Built-ins: cd / pwd ===
 
@@ -427,7 +432,7 @@ $ env | grep -E "^(d=)"
 
 @ 0 42$
 @ c=
-@ d= 42 
+@ d= 42
 
 ---
 
@@ -536,7 +541,7 @@ $ cd io
 $ echo $?
 $ touch a
 $ echo $?
-$ lolilol | lolilol | ls | wc -l | cat |cat| cat|cat 
+$ lolilol | lolilol | ls | wc -l | cat |cat| cat|cat
 $ echo $?
 
 ###
@@ -837,12 +842,52 @@ $ cat $a/$b
 ---
 
 $ cat <<""
-$ echo $?
-$ 
+$
 $ echo $?
 
 @ echo $?
 @ 0
+###
+
+---
+
+$ unset 6_a
+$ echo $?
+
+@ 0
+
+---
+
+$ export coucou="test"
+$ unset coucou | ls
+$ env | grep coucou | wc -l
+
+@ 1
+
+---
+
+$ unset 0oui
+$ echo $?
+
+@ 0
+
+---
+
+$ export HELLO=test
+$ unset HELLO=
+$ echo $?
+$ env | grep HELLO | wc -l
+
+@ 0
+@ 1
+
+---
+
+$ unset -lol
+$ echo $?
+
+@ 2
+###
 
 === ft_souffrance: error ===
 

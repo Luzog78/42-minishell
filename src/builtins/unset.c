@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:18:15 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 01:32:49 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,19 @@ char	*ft_get_env(char *target, char **env)
 static int	is_var_here_unset(char *target, char **env)
 {
 	int		i;
+	int		length;
 
 	i = 0;
+	length = 0;
+	while (target[length])
+	{
+		if (target[length] == '=')
+			return (0);
+		length++;
+	}
 	while (env[i])
 	{
-		if (ft_strncmp(target, env[i], ft_strlen(target)) == 0)
+		if (ft_strncmp(target, env[i], length) == 0)
 			return (1);
 		i++;
 	}

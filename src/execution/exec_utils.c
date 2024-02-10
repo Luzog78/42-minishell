@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:13:28 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 01:59:42 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 	char	quote;
 	char	*tmp;
 	DIR		*dir;
-	
+
 	quote = 0;
 	tmp = str;
 	while (*tmp && *tmp != '*')
@@ -93,7 +93,7 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 		return ;
 	}
 	free(str);
-	
+
 	// There is a wild card. So we need to find all the files that is IN THE CURRENT DIRECTORY
 	dir = opendir(".");
 	if (!dir)
@@ -114,7 +114,7 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 	closedir(dir);
 }
 
-void ft_append_str(char ***args, char *str, char **env)
+void	ft_append_str(char ***args, char *str, char **env)
 {
 	char	*new;
 
@@ -130,6 +130,7 @@ void ft_append_str(char ***args, char *str, char **env)
 	{
 		free(str);
 		ft_realloc(args, new);
+		free(new);
 		return ;
 	}
 	free(new);

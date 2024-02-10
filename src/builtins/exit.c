@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 03:21:12 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 02:00:58 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ int	ft_exit(t_subshell *cmds,char **argv)
 			exit_code = 256 + (ft_atoi(argv[1]) % 256);
 		else if (argv[1] && !ft_isdigit(argv[1]))
 		{
-			ft_printf_err("exit: p: numeric argement required (`%s')\n", argv[1]);
+			ft_printf_err("exit: p: numeric argument required ('%s')\n", argv[1]);
+			free_cmds(ft_get_parent(cmds));
+			ft_free_char_array(argv);
 			exit(2);
 		}
 		else if (argv[1] && argv[2])
