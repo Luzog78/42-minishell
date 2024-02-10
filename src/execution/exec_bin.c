@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 16:41:34 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:16:26 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,21 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 		{
 			perror("minishell:");
 			ft_free_char_array(argv);
-			ft_free_subshell(ft_get_parent(cmds));
+			ft_free_cmds(ft_get_parent(cmds));
 			exit(127);
 		}
 		if (access(argv[0], X_OK) == -1)
 		{
 			perror("minishell");
 			ft_free_char_array(argv);
-			ft_free_subshell(ft_get_parent(cmds));
+			ft_free_cmds(ft_get_parent(cmds));
 			exit(126);
 		}
+		ft_close_std(ft_get_parent(cmds));
 		execve(argv[0], argv, cmds->env);
 		perror("minishell");
 		ft_free_char_array(argv);
-		ft_free_subshell(ft_get_parent(cmds));
+		ft_free_cmds(ft_get_parent(cmds));
 		exit(errno);
 	}
 	else

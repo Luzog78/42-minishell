@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:51:58 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 18:03:10 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_execve_first_pipe(t_subshell *cmds)
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 		status = get_right_cmds(cmds);
-		free_cmds(ft_get_parent(cmds));
+		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
 	else
@@ -88,7 +88,7 @@ void	ft_execve_pipe(t_subshell *cmds)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		status = get_right_cmds(cmds);
-		free_cmds(ft_get_parent(cmds));
+		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
 	else
@@ -116,7 +116,7 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
 		status = get_right_cmds(cmds);
-		free_cmds(ft_get_parent(cmds));
+		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
 	else

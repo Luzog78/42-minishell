@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 19:00:05 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:02:56 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_exec_first_subshell(t_subshell *subshell)
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
 		ft_get_right_subshell(subshell);
-		free_cmds(ft_get_parent(subshell));
+		ft_free_cmds(ft_get_parent(subshell));
 		exit(g_exit);
 	}
 	else
@@ -64,7 +64,7 @@ void	ft_exec_middle_subshell(t_subshell *subshell)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		ft_get_right_subshell(subshell);
-		free_cmds(ft_get_parent(subshell));
+		ft_free_cmds(ft_get_parent(subshell));
 		exit(g_exit);
 	}
 	else
@@ -90,7 +90,7 @@ int	ft_exec_last_subshell(t_subshell *subshell)
 		dup2(subshell->prev->pipe_read_end, STDIN_FILENO);
 		close(subshell->prev->pipe_read_end);
 		ft_get_right_subshell(subshell);
-		free_cmds(ft_get_parent(subshell));
+		ft_free_cmds(ft_get_parent(subshell));
 		exit(g_exit);
 	}
 	else
@@ -120,7 +120,7 @@ void	ft_exec_subshell(t_subshell *subshell)
 			ft_exec_last_subshell(subshell);
 		else
 			ft_get_right_subshell(subshell);
-		free_cmds(ft_get_parent(subshell));
+		ft_free_cmds(ft_get_parent(subshell));
 		exit(g_exit);
 	}
 	else

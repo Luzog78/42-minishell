@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 22:37:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:15:41 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	**ft_free_char_array(char **array)
 	return (array);
 }
 
-void	free_cmds(t_subshell *subshell)
+void	ft_free_cmds(t_subshell *subshell)
 {
 	t_subshell	*tmp;
 
@@ -91,11 +91,19 @@ void	free_cmds(t_subshell *subshell)
 			close(subshell->stdout_fd);
 		if (subshell->cmds)
 		{
-			free_cmds(subshell->cmds);
+			ft_free_cmds(subshell->cmds);
 			subshell->cmds = NULL;
 		}
 		tmp = subshell;
 		subshell = subshell->next;
 		free(tmp);
 	}
+}
+
+void	ft_close_std(t_subshell *subshell)
+{
+	if (subshell->stdin_fd != STDIN_FILENO)
+		close(subshell->stdin_fd);
+	if (subshell->stdout_fd != STDOUT_FILENO)
+		close(subshell->stdout_fd);
 }

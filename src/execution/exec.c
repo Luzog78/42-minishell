@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 22:45:20 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:03:10 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ void	ft_exec(t_subshell *subshell)
 	dup2(subshell->stdout_fd, 1);
 	close(subshell->stdin_fd);
 	close(subshell->stdout_fd);
-	free_cmds(subshell->cmds);
+	ft_free_cmds(subshell->cmds);
 }

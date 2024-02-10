@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:13:32 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 18:09:03 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,14 @@
 
 int	ft_dup_infiles(char *infile, char **env)
 {
-	int	fd;
+	int		fd;
+	char	*path;
 
-	fd = open(ft_get_bash_string(infile, env), O_RDONLY);
+	path = ft_get_bash_string(infile, env);
+	if (!path)
+		return (-1);
+	fd = open(path, O_RDONLY);
+	free(path);
 	if (fd == -1)
 	{
 		perror("minishell");
@@ -172,8 +177,11 @@ int	ft_stdin(t_stdin_lst *stdin, char **env)
 {
 	int	fd;
 
+	fd = 0;
 	while (stdin)
 	{
+		if (fd != 0)
+			close(fd);
 		if (stdin->type == HEREDOC)
 			fd = ft_heredoc(stdin->value, env);
 		else if (stdin->type == INFILE)

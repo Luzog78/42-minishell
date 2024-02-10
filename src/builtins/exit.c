@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 02:00:58 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:02:56 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_exit(t_subshell *cmds,char **argv)
 		else if (argv[1] && !ft_isdigit(argv[1]))
 		{
 			ft_printf_err("exit: p: numeric argument required ('%s')\n", argv[1]);
-			free_cmds(ft_get_parent(cmds));
+			ft_free_cmds(ft_get_parent(cmds));
 			ft_free_char_array(argv);
 			exit(2);
 		}
@@ -89,7 +89,7 @@ int	ft_exit(t_subshell *cmds,char **argv)
 	}
 	printf("exit\n");
 	ft_free_char_array(argv);
-	free_cmds(ft_get_parent(cmds));
+	ft_free_cmds(ft_get_parent(cmds));
 	exit(exit_code);
 	return (0);
 }

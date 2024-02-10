@@ -3,58 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 03:07:38 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:13:59 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 17:59:47 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-void	ft_free_subshell(t_subshell *subshell)
-{
-	t_subshell	*tmp;
-	t_str_lst	*tmp2;
-	t_out		*tmp3;
-	t_stdin_lst	*tmp4;
-	t_subshell	*tmp5;
+// void	ft_free_subshell(t_subshell *subshell)
+// {
+// 	t_subshell	*tmp;
+// 	t_str_lst	*tmp2;
+// 	t_out		*tmp3;
+// 	t_stdin_lst	*tmp4;
+// 	t_subshell	*tmp5;
 
-	tmp = subshell;
-	while (tmp)
-	{
-		while (tmp->argv)
-		{
-			tmp2 = tmp->argv;
-			tmp->argv = tmp->argv->next;
-			free(tmp2->value);
-			free(tmp2);
-		}
-		while (tmp->outfiles)
-		{
-			tmp3 = tmp->outfiles;
-			tmp->outfiles = tmp->outfiles->next;
-			free(tmp3->to);
-			free(tmp3);
-		}
-		while (tmp->stdin)
-		{
-			tmp4 = tmp->stdin;
-			tmp->stdin = tmp->stdin->next;
-			free(tmp4->value);
-			free(tmp4);
-		}
-		ft_free_subshell(tmp->cmds);
-		ft_free_char_array(tmp->env);
-		tmp->cmds = NULL;
-		tmp->argv = NULL;
-		tmp->outfiles = NULL;
-		tmp->stdin = NULL;
-		tmp5 = tmp;
-		tmp = tmp->next;
-		free(tmp5);
-	}
-}
+// 	tmp = subshell;
+// 	while (tmp)
+// 	{
+// 		while (tmp->argv)
+// 		{
+// 			tmp2 = tmp->argv;
+// 			tmp->argv = tmp->argv->next;
+// 			free(tmp2->value);
+// 			free(tmp2);
+// 		}
+// 		while (tmp->outfiles)
+// 		{
+// 			tmp3 = tmp->outfiles;
+// 			tmp->outfiles = tmp->outfiles->next;
+// 			free(tmp3->to);
+// 			free(tmp3);
+// 		}
+// 		while (tmp->stdin)
+// 		{
+// 			tmp4 = tmp->stdin;
+// 			tmp->stdin = tmp->stdin->next;
+// 			free(tmp4->value);
+// 			free(tmp4);
+// 		}
+// 		ft_free_subshell(tmp->cmds);
+// 		ft_free_char_array(tmp->env);
+// 		tmp->cmds = NULL;
+// 		tmp->argv = NULL;
+// 		tmp->outfiles = NULL;
+// 		tmp->stdin = NULL;
+// 		tmp5 = tmp;
+// 		tmp = tmp->next;
+// 		free(tmp5);
+// 	}
+// }
 
 /* *********************************************** */
 /* **********************echo > a << b || g && (e | < 98 f)************************* */

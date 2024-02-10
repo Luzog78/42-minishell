@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:41:25 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 18:03:31 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **env)
 		free(line);
 		if (subshell->exit_status)
 		{
-			ft_free_subshell(subshell->cmds);
+			ft_free_cmds(subshell->cmds);
 			subshell->cmds = NULL;
 			g_exit = subshell->exit_status;
 			continue ;

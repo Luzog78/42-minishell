@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:20:36 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/10 18:15:56 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void		ft_putstr_fd(char *str, int fd);
 char		*ft_strstr(const char *haystack, const char *needle);
 char		*ft_strjoin(char *s1, char *s2);
 int			ft_strncmp(char *s1, char *s2, int n);
-void		free_cmds(t_subshell *subshell);
+void		ft_free_cmds(t_subshell *subshell);
 char		**ft_free_char_array(char **array);
 char		**ft_env_owrite(char **env, char **new_env);
 char		**ft_split(char *str, char c);
@@ -157,12 +157,13 @@ char		*get_next_line(int fd, char *limiter);
 t_subshell	*ft_get_parent(t_subshell *cmds);
 t_subshell	*ft_get_nearest_subshell(t_subshell *cmds);
 char		*ft_get_value_from_env(char *key, char **env);
-void	ft_print_err(char *str);
-void	ft_printf_err(char *str, char *err);
-void	ft_print(char *str);
-void	ft_printf(char *str, char *err);
-void	ft_printf_err2(char *str, char *err1, char *err2);
-void	*ft_calloc(size_t count, size_t size);
+void		ft_print_err(char *str);
+void		ft_printf_err(char *str, char *err);
+void		ft_print(char *str);
+void		ft_printf(char *str, char *err);
+void		ft_printf_err2(char *str, char *err1, char *err2);
+void		*ft_calloc(size_t count, size_t size);
+void		ft_close_std(t_subshell *subshell);
 
 # endif
 #endif
