@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/10 03:07:08 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/11 02:57:35 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -928,3 +928,93 @@ $ <<<
 
 $ <<><>><>>>>
 ###
+
+=== wildcards ===
+
+
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d
+$ touch outfile.d
+$ export wild=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *$wild*.d
+$ cd ..
+$ rm -r ./wild
+
+@ infile
+@ outfile
+
+---
+
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d
+$ touch outfile.d
+$ export wild=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *'$wild'*.d
+$ cd ..
+$ rm -r wild
+
+###
+
+---
+
+$ mkdir wild
+$ cd ./wild
+$ touch infile outfile file podwal ilesf dsfiless files
+$ ls *file
+$ cd ..
+$ rm -r wild
+
+@ file
+@ infile
+@ outfile
+
+---
+
+$ mkdir wild
+$ cd ./wild
+$ echo "helloooooooo" > infile
+$ echo "niceeee" > infile2
+$ echo "test" > infile3
+$ cat *
+$ cd ..
+$ rm -r ./wild
+
+@ helloooooooo
+@ niceeee
+@ test
+
+---
+
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d outfile.d
+$ export wild=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *'$w'ild*.d
+$ cd ..
+$ rm -r wild
+###
+
+---
+
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d outfile.d
+$ export wile=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *"$w"ile*.d
+$ cd ..
+$ rm -r wild
+
+@ infile
+@ outfile
+
+---
