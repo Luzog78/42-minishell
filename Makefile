@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/08 03:35:46 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/11 19:46:16 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC_FILES			= \
 						src/execution/exec_cmds.c \
 						src/execution/exec_subshell.c \
 						src/execution/exec_utils.c \
+						src/execution/wildcards.c \
 						src/builtins/cd.c \
 						src/builtins/echo.c \
 						src/builtins/env.c \
@@ -52,6 +53,7 @@ SRC_FILES			= \
 						src/utils/ft_strchr.c \
 						src/utils/ft_get_parent.c \
 						src/utils/ft_get_value_from_env.c \
+						src/utils/ft_itoa.c \
 						src/ft_sig_handling.c \
 						src/main.c
 

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 03:10:49 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:49:37 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,49 +64,28 @@ static void	ft_realloc(char ***args, char *str)
 	*args = new;
 }
 
-int	get_index(char *s)
+void	ft_sort_args(char ***args)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	*tmp;
 
-	i = 0;
-	while (s[i] && s[i] != '*')
-		i++;
-	return (i);
-}
-
-static t_bool	ft_wildcard_allow(char *file, char *str)
-{
-	char	*tmpfile;
-	char	*tmpwild;
-	t_bool	ret;
-
-	ret = FALSE;
-	tmpfile = file;
-	tmpwild = str;
-	while (*tmpfile && *tmpwild)
+	i = 1;
+	while (*args && (*args)[i])
 	{
-		if (*tmpwild == '*')
+		j = i + 1;
+		while (*args && (*args)[j])
 		{
-			tmpwild++;
-			if (!*tmpwild)
-				return (TRUE);
-			while (*tmpfile &&
-				ft_strcmp(
-					ft_substr(tmpfile, 0, get_index(tmpwild)),
-					ft_substr(tmpwild, 0, get_index(tmpwild))) != 0)
-				tmpfile++;
- 			if (!*tmpfile)
-				return (FALSE);
-			ret = TRUE;
+			if (ft_strcmp((*args)[i], (*args)[j]) > 0)
+			{
+				tmp = (*args)[i];
+				(*args)[i] = (*args)[j];
+				(*args)[j] = tmp;
+			}
+			j++;
 		}
-		else if (*tmpfile != *tmpwild)
-			return (FALSE);
-		tmpfile++;
-		tmpwild++;
+		i++;
 	}
-	if (!*tmpfile && (!*tmpwild || *tmpwild == '*'))
-		return (ret);
-	return (FALSE);
 }
 
 void	ft_append_wildkartttt(char ***args, char *str, char **env)
@@ -158,47 +137,16 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 			is_matched = TRUE;
 			tmp = ft_strdup(entry->d_name);
 			if (tmp)
+			{
 				ft_realloc(args, tmp);
+				free(tmp);
+			}
 		}
 	}
 	if (!is_matched)
 		ft_realloc(args, new);
+	free(new);
 	closedir(dir);
-}
-
-t_bool	ft_is_wildcard(char *str)
-{
-	while (*str)
-	{
-		if (*str == '*')
-			return (TRUE);
-		str++;
-	}
-	return (FALSE);
-}
-
-void	ft_sort_args(char ***args)
-{
-	int		i;
-	int		j;
-	char	*tmp;
-
-	i = 1;
-	while (*args && (*args)[i])
-	{
-		j = i + 1;
-		while (*args && (*args)[j])
-		{
-			if (ft_strcmp((*args)[i], (*args)[j]) > 0)
-			{
-				tmp = (*args)[i];
-				(*args)[i] = (*args)[j];
-				(*args)[j] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
 }
 
 void	ft_append_str(char ***args, char *str, char **env)

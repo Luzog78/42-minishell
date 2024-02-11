@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:15:56 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 19:45:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void		ft_printf(char *str, char *err);
 void		ft_printf_err2(char *str, char *err1, char *err2);
 void		*ft_calloc(size_t count, size_t size);
 void		ft_close_std(t_subshell *subshell);
+char		*ft_itoa(int n);
 
 # endif
 #endif

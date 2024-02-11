@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:09:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 19:45:14 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,29 @@ int	ft_dup_outfiles(t_out *outfiles, char **env)
 
 char	*ft_get_temp_filename(void)
 {
+	//get a random name for the file that does not exist and its in the /tmp
+	char	*filename;
 	char	*random;
+	int		i;
 
-	random = ft_strdup("minishell_XXXXXX");
-	return (random);
+	i = 0;
+	filename = ft_calloc(sizeof(char), 15);
+	if (!filename)
+		return (NULL);
+	ft_strcpy(filename, "/tmp/minishell");
+	while (access(filename, F_OK) != -1)
+	{
+		free(filename);
+		random = ft_itoa(i);
+		filename = ft_calloc(sizeof(char), 15 + ft_strlen(random));
+		if (!filename)
+			return (NULL);
+		ft_strcpy(filename, "/tmp/minishell");
+		ft_strcat(filename, random);
+		free(random);
+		i++;
+	}
+	return (filename);
 }
 
 char	*get_right_limiter(char *limiter, t_bool *is_formattable)

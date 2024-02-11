@@ -6,39 +6,39 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 23:09:55 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 19:47:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minish.h"
 
 // TO REMOVE
-char	*ft_itoa(int i)
-{
-	char	*result;
-	int		j;
-	int		save;
+// char	*ft_itoa(int i)
+// {
+// 	char	*result;
+// 	int		j;
+// 	int		save;
 
-	if (i == 0)
-		return (ft_strdup("0"));
-	save = i;
-	j = 0;
-	while (i)
-	{
-		i /= 10;
-		j++;
-	}
-	result = ft_calloc(sizeof(char), (j + 1));
-	if (!result)
-		return (NULL);
-	result[j] = '\0';
-	while (j)
-	{
-		result[--j] = save % 10 + '0';
-		save /= 10;
-	}
-	return (result);
-}
+// 	if (i == 0)
+// 		return (ft_strdup("0"));
+// 	save = i;
+// 	j = 0;
+// 	while (i)
+// 	{
+// 		i /= 10;
+// 		j++;
+// 	}
+// 	result = ft_calloc(sizeof(char), (j + 1));
+// 	if (!result)
+// 		return (NULL);
+// 	result[j] = '\0';
+// 	while (j)
+// 	{
+// 		result[--j] = save % 10 + '0';
+// 		save /= 10;
+// 	}
+// 	return (result);
+// }
 
 /*Faire une fonction qui renvoie un char * qui a été malloc
  *Avec les " ' $ avec getenv pour $
