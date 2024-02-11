@@ -6,11 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:16:43 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/29 15:50:58 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:36:06 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

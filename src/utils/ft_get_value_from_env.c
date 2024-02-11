@@ -6,11 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 22:52:28 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/07 22:52:37 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:29:23 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 char	*ft_get_value_from_env(char *key, char **env)
 {

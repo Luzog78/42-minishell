@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 06:02:28 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/11 20:56:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_bool	has_n_flag(char **argv, int *idx)
 {
 	t_bool	n_flag;
 	int		j;
-	
+
 	n_flag = FALSE;
 	*idx = 1;
 	while (argv[*idx] && argv[*idx][0] == '-')

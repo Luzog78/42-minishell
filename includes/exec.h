@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:13 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 16:49:59 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:34:40 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "minish.h"
 # include "builtins.h"
+# include "utils.h"
 
 int		ft_dup_infiles(char *infile, char **env);
 int		ft_dup_outfiles(t_out *outfiles, char **env);

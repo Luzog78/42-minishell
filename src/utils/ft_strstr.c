@@ -6,11 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 16:27:49 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:28:05 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:37:36 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 char	*ft_strstr(const char *haystack, const char *needle)
 {

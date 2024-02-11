@@ -6,13 +6,13 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 01:32:49 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:49:19 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-char	**ft_new_env(char *target, char **env, char **new_env)
+static char	**ft_new_env(char *target, char **env, char **new_env)
 {
 	int	i;
 	int	j;
@@ -36,7 +36,7 @@ char	**ft_new_env(char *target, char **env, char **new_env)
 	return (new_env);
 }
 
-char	**ft_unset_var(char *target, char **env)
+static char	**ft_unset_var(char *target, char **env)
 {
 	char	**new_env;
 	int		i;
@@ -53,7 +53,7 @@ char	**ft_unset_var(char *target, char **env)
 	return (new_env);
 }
 
-char	*ft_get_env(char *target, char **env)
+static char	*ft_get_env(char *target, char **env)
 {
 	int		i;
 

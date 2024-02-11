@@ -6,11 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:15:41 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:27:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 t_str_lst	*ft_free_str_lst(t_str_lst *lst)
 {

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 19:45:54 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:34:19 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,6 @@ char		*ft_strjoin(char *s1, char *s2);
 int			ft_strncmp(char *s1, char *s2, int n);
 void		ft_free_cmds(t_subshell *subshell);
 char		**ft_free_char_array(char **array);
-char		**ft_env_owrite(char **env, char **new_env);
-char		**ft_split(char *str, char c);
 int			ft_error(int err, char *str, t_subshell *subshell_to_free);
 void		ft_free_subshell(t_subshell *subshell);
 char		*ft_getenv(char *str, char **env);
@@ -161,7 +159,6 @@ void		ft_print_err(char *str);
 void		ft_printf_err(char *str, char *err);
 void		ft_print(char *str);
 void		ft_printf(char *str, char *err);
-void		ft_printf_err2(char *str, char *err1, char *err2);
 void		*ft_calloc(size_t count, size_t size);
 void		ft_close_std(t_subshell *subshell);
 char		*ft_itoa(int n);

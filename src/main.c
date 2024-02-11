@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:03:31 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:40:01 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,6 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->stdin_fd = 0;
 	subshell->stdout_fd = 1;
 	subshell->pid = 0;
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-	size_t	i;
-
-	ptr = malloc(count * size);
-	if (!ptr)
-		return (NULL);
-	i = 0;
-	while (i < count * size)
-	{
-		((char *)ptr)[i] = 0;
-		i++;
-	}
-	return (ptr);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -91,7 +74,6 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		ft_exec(subshell);
-		// ft_free_subshell(subshell->cmds);
 		subshell->cmds = NULL;
 	}
 	ft_free_subshell(subshell);

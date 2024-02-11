@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 16:56:52 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/06 18:03:30 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/02/11 20:39:09 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/02/11 20:39:30 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "utils.h"
 
-int	ft_pipe(t_subshell *cmds)
+void	*ft_calloc(size_t count, size_t size)
 {
-	int	pipefd[2];
+	void	*ptr;
+	size_t	i;
 
-	if (pipe(pipefd) < 0)
+	ptr = malloc(count * size);
+	if (!ptr)
+		return (NULL);
+	i = 0;
+	while (i < count * size)
 	{
-		perror("pipe");
-		return (1);
+		((char *)ptr)[i] = 0;
+		i++;
 	}
-	(void)cmds;
-	// cmds->pipe[1] = pipefd[1];
-	// cmds->next->pipe[0] = pipefd[0];
-	return (0);
+	return (ptr);
 }

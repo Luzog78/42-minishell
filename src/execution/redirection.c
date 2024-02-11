@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 19:45:14 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:17:52 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	ft_dup_outfiles(t_out *outfiles, char **env)
 
 char	*ft_get_temp_filename(void)
 {
-	//get a random name for the file that does not exist and its in the /tmp
 	char	*filename;
 	char	*random;
 	int		i;

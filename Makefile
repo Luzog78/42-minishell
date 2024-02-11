@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/11 19:46:16 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/11 20:42:14 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,7 @@ SRC_FILES			= \
 						src/utils/ft_get_parent.c \
 						src/utils/ft_get_value_from_env.c \
 						src/utils/ft_itoa.c \
+						src/utils/ft_calloc.c \
 						src/ft_sig_handling.c \
 						src/main.c
 

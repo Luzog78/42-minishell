@@ -6,11 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:13:53 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/16 01:14:14 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:37:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 size_t	ft_strlen(const char *str)
 {

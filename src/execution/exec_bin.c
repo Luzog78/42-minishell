@@ -6,22 +6,18 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:16:26 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:15:10 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	ft_get_path(char **argv, char **env)
+static void	ft_get_path(char **argv, char **env)
 {
 	char	**path;
 	char	*tmp;
-	// char	*translated;
 	int		i;
 
-	// translated = ft_get_bash_string(argv[0], env);
-	// free(argv[0]);
-	// argv[0] = translated;
 	i = 0;
 	path = ft_split(ft_getenv("PATH", env), ':');
 	while (path[i])
@@ -42,6 +38,30 @@ void	ft_get_path(char **argv, char **env)
 	ft_free_char_array(path);
 }
 
+static void	ft_child_execve_bin(char **argv, t_subshell *cmds)
+{
+	if (access(argv[0], F_OK) == -1)
+	{
+		perror("minishell:");
+		ft_free_char_array(argv);
+		ft_free_cmds(ft_get_parent(cmds));
+		exit(127);
+	}
+	if (access(argv[0], X_OK) == -1)
+	{
+		perror("minishell");
+		ft_free_char_array(argv);
+		ft_free_cmds(ft_get_parent(cmds));
+		exit(126);
+	}
+	ft_close_std(ft_get_parent(cmds));
+	execve(argv[0], argv, cmds->env);
+	perror("minishell");
+	ft_free_char_array(argv);
+	ft_free_cmds(ft_get_parent(cmds));
+	exit(errno);
+}
+
 int	ft_execve_bin(char **argv, t_subshell *cmds)
 {
 	pid_t	pid;
@@ -56,28 +76,7 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 		return (0);
 	}
 	if (!pid)
-	{
-		if (access(argv[0], F_OK) == -1)
-		{
-			perror("minishell:");
-			ft_free_char_array(argv);
-			ft_free_cmds(ft_get_parent(cmds));
-			exit(127);
-		}
-		if (access(argv[0], X_OK) == -1)
-		{
-			perror("minishell");
-			ft_free_char_array(argv);
-			ft_free_cmds(ft_get_parent(cmds));
-			exit(126);
-		}
-		ft_close_std(ft_get_parent(cmds));
-		execve(argv[0], argv, cmds->env);
-		perror("minishell");
-		ft_free_char_array(argv);
-		ft_free_cmds(ft_get_parent(cmds));
-		exit(errno);
-	}
+		ft_child_execve_bin(argv, cmds);
 	else
 	{
 		waitpid(pid, &status, 0);

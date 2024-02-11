@@ -6,11 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 16:09:34 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/21 16:11:19 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 20:35:43 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 void	ft_strcat(char *dest, char *str)
 {

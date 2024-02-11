@@ -6,13 +6,13 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:02:56 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 21:11:31 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_isdigit(char *str)
+static int	ft_isdigit(char *str)
 {
 	int			i;
 	long long	result;
@@ -24,9 +24,10 @@ int	ft_isdigit(char *str)
 		if ((str[i] < '0' || str[i] > '9') && str[i] != '-')
 			return (0);
 		result = (result * 10) + (str[i] - '0');
-		if (result == 922337203685477580 && str[i + 1] >= '8' && str[i + 1] <= '9')
+		if (result == 922337203685477580 && str[i + 1] >= '8'
+			&& str[i + 1] <= '9')
 			return (0);
-		else if(result == -922337203685477580 && str[i + 1] <= '9')
+		else if (result == -922337203685477580 && str[i + 1] <= '9')
 			return (0);
 		else if (result > 922337203685477580 && str[i + 1])
 			return (0);
@@ -37,7 +38,7 @@ int	ft_isdigit(char *str)
 	return (1);
 }
 
-long long	ft_atoi(char *number)
+static long long	ft_atoi(char *number)
 {
 	int			i;
 	int			sign;
@@ -63,25 +64,34 @@ long long	ft_atoi(char *number)
 	return (result * sign);
 }
 
-int	ft_exit(t_subshell *cmds,char **argv)
+static int	get_exit_code(char **argv, t_subshell *cmds)
+{
+	int	exit_code;
+
+	exit_code = 0;
+	if (argv[1][0] != '-' && ft_isdigit(argv[1]) && !argv[2])
+		exit_code = ft_atoi(argv[1]) % 256;
+	else if (argv[1][0] == '-' && ft_isdigit(argv[1]) && !argv[2])
+		exit_code = 256 + (ft_atoi(argv[1]) % 256);
+	else if (argv[1] && !ft_isdigit(argv[1]))
+	{
+		ft_printf_err("exit: p: numeric argument required ('%s')\n", argv[1]);
+		ft_free_cmds(ft_get_parent(cmds));
+		ft_free_char_array(argv);
+		exit(2);
+	}
+	return (exit_code);
+}
+
+int	ft_exit(t_subshell *cmds, char **argv)
 {
 	int	exit_code;
 
 	exit_code = 0;
 	if (argv[1])
 	{
-		if (argv[1][0] != '-' && ft_isdigit(argv[1]) && !argv[2])
-			exit_code = ft_atoi(argv[1]) % 256;
-		else if (argv[1][0] == '-' && ft_isdigit(argv[1]) && !argv[2])
-			exit_code = 256 + (ft_atoi(argv[1]) % 256);
-		else if (argv[1] && !ft_isdigit(argv[1]))
-		{
-			ft_printf_err("exit: p: numeric argument required ('%s')\n", argv[1]);
-			ft_free_cmds(ft_get_parent(cmds));
-			ft_free_char_array(argv);
-			exit(2);
-		}
-		else if (argv[1] && argv[2])
+		exit_code = get_exit_code(argv, cmds);
+		if (argv[1] && argv[2])
 		{
 			ft_print_err("exit: too many arguments\n");
 			return (1);

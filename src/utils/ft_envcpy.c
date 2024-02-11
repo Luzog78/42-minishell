@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_envcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 17:44:51 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:18:29 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/11 20:27:08 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 char	**ft_env_cpy(char **env)
 {
