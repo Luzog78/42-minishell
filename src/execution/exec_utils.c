@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 03:05:22 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/11 03:10:49 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,12 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 	}
 	if (quote) //return error cuz its way too complex to handle
 	{
-		// tmp = ft_get_bash_string(str, env);
-		// free(str);
-		// if (!tmp)
-		// 	return ;
-		// ft_realloc(args, tmp);
-		write(2, "minishell: wildcard not allowed in quotes\n", 42);
+		tmp = ft_get_bash_string(str, env);
+		free(str);
+		if (!tmp)
+			return ;
+		ft_realloc(args, tmp);
+		// write(2, "minishell: wildcard not allowed in quotes\n", 42);
 		return ;
 	}
 	new = ft_get_bash_string(str, env);
