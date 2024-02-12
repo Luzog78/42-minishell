@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 04:10:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:57:35 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void		ft_close_std(t_subshell *subshell);
 t_subshell	*ft_get_parent(t_subshell *cmds);
 char		*ft_get_value_from_env(char *key, char **env);
 char		*ft_getenv(char *name, char **env);
+char		*ft_get_bash_string(char *str, char **env);
 
 /* Libft Functions */
 void		*ft_calloc(size_t count, size_t size);

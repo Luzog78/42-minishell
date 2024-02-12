@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:21:19 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 20:30:25 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:26:31 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ char	*ft_getenv(char *name, char **env)
 	while (env[i])
 	{
 		if (ft_strncmp(name, env[i], len) == 0 && env[i][len] == '=')
+		{
+			if (*(env[i] + len + 1) == '\0')
+				return (NULL);
 			return (env[i] + len + 1);
+		}
 		i++;
 	}
 	return (NULL);
