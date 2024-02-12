@@ -6,6 +6,7 @@ testing_path = './testing'
 souffrance_path = './minishell.souffrance'
 
 test_only: list[int] = []
+test_only_sections: list[int | str] = []
 print_failed_only = False
 
 # Leave None to auto-detect a fixed prompt / heredoc prompt.
@@ -66,6 +67,10 @@ if "-h" in args:
 	p(0, f' {os.sys.argv[0]} ', C_CYAN + C_BOLD)
 	p(1, f'[<flags...>] [<tests...>]', C_CYAN)
 	p(1, '', '')
+	p(1, 'A test is either a plain number (execute nth test),', C_MAGENTA)
+	p(1, '  a number starting with "s" (execute the nth section),', C_MAGENTA)
+	p(1, '  or plain text (execute a section by its ignored case name).', C_MAGENTA)
+	p(1, '', '')
 	p(1, 'Flags:', C_CYAN + C_UNDERLINE + C_BOLD)
 	p(1, '    -h ........... : Display this help message', C_DIM)
 	p(1, '    -b <path> .... : Path to the minishell binary', C_BLUE)
@@ -78,6 +83,11 @@ if "-h" in args:
 	p(1, '       none ...... :   (default) Auto-detect the prompt', C_GREEN)
 	p(1, '    -hp <regex> .. : Regex to detect the heredoc prompt', C_GREEN)
 	p(1, '       none ...... :   (default) Auto-detect the heredoc prompt', C_GREEN)
+	p(1, '', '')
+	p(1, 'Exemples:', C_MAGENTA + C_UNDERLINE)
+	p(1, '  py tester.py  -b ../minishell  -o  1 2 3 4 5', C_MAGENTA)
+	p(1, '  py tester.py  -s custom.souffrance  -o  -f  s5 s6', C_MAGENTA)
+	p(1, '  py tester.py  -f  -o  wildcards', C_MAGENTA)
 	exit(0)
 
 while len(args):
@@ -129,10 +139,15 @@ while len(args):
 		args = args[2:]
 	
 	else:
-		if not args[0].isdigit():
+		if args[0].startswith('-'):
 			print_error(f'Invalid argument: "{args[0]}"')
 			exit(1)
-		test_only.append(int(args[0]))
+		if args[0].isdigit():
+			test_only.append(int(args[0]))
+		elif args[0].startswith('s') and args[0][1:].isdigit():
+			test_only_sections.append(int(args[0][1:]))
+		else:
+			test_only_sections.append(args[0].lower())
 		args = args[1:]
 
 if not bin_path:
@@ -174,7 +189,7 @@ if heredoc_prompt_regex is not None and not isinstance(heredoc_prompt_regex, str
 
 
 if print_repr is None:
-	print_repr = len(test_only) != 1
+	print_repr = len(test_only) != 1 or len(test_only_sections)
 
 
 class Test:
@@ -456,6 +471,16 @@ for line in souffrance.split('\n'):
 if tests[-1].is_empty():
 	del tests[-1]
 
+section_names = [e[0].lower() for e in sections.values()]
+error = False
+for sec in test_only_sections:
+	if isinstance(sec, str):
+		if sec not in section_names:
+			print_error(f'Section "{sec}" not found')
+			error = True
+if error:
+	exit(1)
+
 tests.insert(0, Test())
 tests[0].input = "~CALIB~\n~CALIB~\n~CALIB~\ncat << EOF\n~HCALIB~\n~HCALIB~\n~HCALIB~\n"
 
@@ -482,9 +507,29 @@ os.system(f'rm -rf {testing_path}')
 os.system(f'mkdir -p {testing_path}')
 os.chdir(testing_path)
 
+
+def should_skip(i: int, test: Test):
+	if not i:
+		return False
+	if not test_only and not test_only_sections:
+		return False
+	if i in test_only:
+		return False
+	sec_i = get_section(i)
+	sec = sections.get(sec_i)
+	if sec is None:
+		return True
+	nb = sorted(list(sections.keys())).index(sec_i) + 1
+	if nb in test_only_sections:
+		return False
+	if sections[sec_i][0].lower() in test_only_sections:
+		return False
+	return True
+
+
 first = True
 for i, test in enumerate(tests):
-	if i and test_only and i not in test_only:
+	if should_skip(i, test):
 		continue
 
 	if i:
@@ -522,7 +567,8 @@ for i, test in enumerate(tests):
 		else:
 			stats.failed.append(i)
 
-		if print_failed_only and test.passed and len(test_only) != 1:
+		if print_failed_only and test.passed \
+			and (len(test_only) != 1 or len(test_only_sections)):
 			continue
 
 		if not first:
