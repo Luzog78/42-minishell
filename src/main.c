@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 20:40:01 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 23:25:38 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **env)
 	if (!subshell)
 		return (1);
 	ft_subshell_init(subshell, SUBSHELL, env);
-	ft_sig_init(&subshell);
+	ft_sig_init(TRUE);
 	while (1)
 	{
 		line = readline("minishell $> ");

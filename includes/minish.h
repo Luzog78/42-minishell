@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 04:09:58 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 23:34:04 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,8 @@ void		ft_free_subshell(t_subshell *subshell);
 char		*ft_getenv(char *str, char **env);
 char		*ft_substr(char *s, int start, int len);
 char		*ft_strchr(const char *s, int c);
-void		ft_sig_init(t_subshell **master);
+void		ft_sig_init(t_bool handle);
+void		ft_sig_exit(int status);
 char		*get_next_line(int fd, char *limiter);
 t_subshell	*ft_get_parent(t_subshell *cmds);
 t_subshell	*ft_get_nearest_subshell(t_subshell *cmds);

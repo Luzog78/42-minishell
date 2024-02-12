@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 22:30:44 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:15:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ft_execve_first_pipe(t_subshell *cmds)
 	status = 0;
 	if (pipe(pipefd) == -1)
 		return (ft_perror());
+	// ft_sig_init(FALSE);
 	pid = fork();
 	if (pid == -1)
 		return (ft_perror());
@@ -103,6 +104,7 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	pid = fork();
 	if (pid == -1)
 	{
+		// ft_sig_init(FALSE);
 		ft_perror();
 		return (g_exit);
 	}
@@ -117,7 +119,8 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	waitpid(pid, &status, 0);
 	close(cmds->prev->pipe_read_end);
 	if (!g_exit)
-		g_exit = WEXITSTATUS(status);
+		ft_sig_exit(status);
+	// ft_sig_init(TRUE);
 	cmds->exit_status = g_exit;
 	return (g_exit);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/10 18:03:10 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:16:12 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_exec(t_subshell *subshell)
 {
+	ft_sig_init(FALSE);
 	subshell->stdin_fd = dup(STDIN_FILENO);
 	subshell->stdout_fd = dup(STDOUT_FILENO);
 	if (subshell->cmds && subshell->cmds->type == COMMAND)
@@ -34,4 +35,5 @@ void	ft_exec(t_subshell *subshell)
 	close(subshell->stdin_fd);
 	close(subshell->stdout_fd);
 	ft_free_cmds(subshell->cmds);
+	ft_sig_init(TRUE);
 }

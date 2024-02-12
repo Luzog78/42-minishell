@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 00:07:51 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:15:02 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 
 	status = 0;
 	ft_get_path(argv, cmds->env);
+	// ft_sig_init(FALSE);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -84,7 +85,7 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	{
 		waitpid(pid, &status, 0);
 		cmds->pid = pid;
-		g_exit = WEXITSTATUS(status);
+		ft_sig_exit(status);
 		cmds->exit_status = g_exit;
 	}
 	return (g_exit);
