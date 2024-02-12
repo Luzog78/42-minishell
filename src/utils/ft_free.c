@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 20:27:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 00:07:57 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ t_stdin_lst	*ft_free_stdin_lst(t_stdin_lst *lst)
 	while (lst)
 	{
 		tmp = lst->next;
-		// free(lst->value); already freed in stdin
 		free(lst);
 		lst = tmp;
 	}
@@ -98,12 +97,4 @@ void	ft_free_cmds(t_subshell *subshell)
 		subshell = subshell->next;
 		free(tmp);
 	}
-}
-
-void	ft_close_std(t_subshell *subshell)
-{
-	if (subshell->stdin_fd != STDIN_FILENO)
-		close(subshell->stdin_fd);
-	if (subshell->stdout_fd != STDOUT_FILENO)
-		close(subshell->stdout_fd);
 }

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 19:47:07 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 01:15:43 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ char	*ft_get_bash_string(char *str, char **env)
 		}
 		else if (str[i] == '"')
 		{
+			is_empty = FALSE;
 			while (str[++i] != '"' && str[i] != '\0')
 			{
 				if (str[i] == '$' && str[i + 1] == '?')

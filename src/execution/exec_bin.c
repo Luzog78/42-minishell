@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 21:15:10 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 00:07:51 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ static void	ft_child_execve_bin(char **argv, t_subshell *cmds)
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(126);
 	}
-	ft_close_std(ft_get_parent(cmds));
+	if (ft_get_parent(cmds)->stdin_fd != STDIN_FILENO)
+		close(ft_get_parent(cmds)->stdin_fd);
+	if (ft_get_parent(cmds)->stdout_fd != STDOUT_FILENO)
+		close(ft_get_parent(cmds)->stdout_fd);
 	execve(argv[0], argv, cmds->env);
 	perror("minishell");
 	ft_free_char_array(argv);

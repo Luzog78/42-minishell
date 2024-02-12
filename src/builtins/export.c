@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/08 10:49:15 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/12 01:28:36 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,6 +293,8 @@ int	ft_export(char **argv, t_subshell *cmds)
 				if (!var)
 					var = "(null)";
 				ft_printf_err("minishell: export: `%s': not a valid identifier\n", var);
+				if (var)
+					free(var);
 				var = NULL;
 				exit_status = 1;
 			}
