@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:31:08 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 16:49:46 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 22:24:43 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_bool	ft_wildcard_allow(char *file, char *str)
 		tmpfile++;
 		tmpwild++;
 	}
-	if (!*tmpfile && (!*tmpwild || *tmpwild == '*'))
+	if (!*tmpfile && (!*tmpwild || (*tmpwild == '*' && !*(tmpwild + 1))))
 		return (ret);
 	return (FALSE);
 }
