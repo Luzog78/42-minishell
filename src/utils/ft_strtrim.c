@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:58:22 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 04:14:59 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:39:17 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,21 @@ char	*ft_strtrim(char *str)
 	int		i;
 	int		size;
 
-	i = 0;
-	size = 0;
 	if (!str)
 		return (NULL);
-	while (str[i])
-	{
-		if (!ft_is_whitespaces(str[i]))
-			size++;
-		i++;
-	}
-	new_str = malloc(sizeof(char) * (size + 1));
+	while (ft_is_whitespaces(*str))
+		str++;
+	size = ft_strlen(str);
+	while (ft_is_whitespaces(str[size - 1]))
+		size--;
+	new_str = ft_calloc(sizeof(char), (size + 1));
 	if (!new_str)
 		return (NULL);
 	i = 0;
-	while (*str)
+	while (i < size)
 	{
-		if (!ft_is_whitespaces(*str))
-			new_str[i++] = *str;
-		str++;
+		new_str[i] = str[i];
+		i++;
 	}
 	new_str[i] = '\0';
 	return (new_str);

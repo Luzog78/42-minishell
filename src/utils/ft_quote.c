@@ -6,11 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 01:15:43 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:19:15 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minish.h"
+#include "utils.h"
 
 // TO REMOVE
 // char	*ft_itoa(int i)
@@ -72,6 +72,7 @@ char	*ft_getvar(char *str, int *i, char **env)
 	sub_str[j] = '\0';
 	result = ft_getenv(sub_str, env);
 	free(sub_str);
+	result = ft_strtrim(result);
 	return (result);
 }
 
@@ -90,7 +91,10 @@ void	check_dollar(int *result, int *i, char *str, char **env)
 	{
 		var = ft_getvar(str, i, env);
 		if (var)
+		{
 			*result += ft_strlen(var);
+			free(var);
+		}
 	}
 	else
 		(*result)++;
@@ -182,6 +186,7 @@ char	*ft_get_bash_string(char *str, char **env)
 					{
 						is_empty = FALSE;
 						ft_strcat(bash_string, var);
+						free(var);
 					}
 				}
 				else
@@ -208,6 +213,7 @@ char	*ft_get_bash_string(char *str, char **env)
 				{
 					is_empty = FALSE;
 					ft_strcat(bash_string, var);
+					free(var);
 				}
 			}
 			else
