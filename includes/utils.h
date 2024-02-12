@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 21:46:07 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/12 04:10:03 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ size_t		ft_strlen(const char *str);
 int			ft_strncmp(char *s1, char *s2, int n);
 char		*ft_strstr(const char *haystack, const char *needle);
 char		*ft_substr(char *str, int start, int len);
+char		*ft_strtrim(char *str);
+char		*ft_get_bash_string(char *str, char **env);
 
 /* Print Functions */
 void		ft_print_err(char *str);

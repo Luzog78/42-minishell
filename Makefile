@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/11 20:42:14 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/12 03:59:26 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ SRC_FILES			= \
 						src/execution/exec.c \
 						src/execution/exec_bin.c \
 						src/execution/redirection.c \
-						src/execution/pipe.c \
 						src/execution/exec_cmds.c \
 						src/execution/exec_subshell.c \
 						src/execution/exec_utils.c \
@@ -55,6 +54,7 @@ SRC_FILES			= \
 						src/utils/ft_get_value_from_env.c \
 						src/utils/ft_itoa.c \
 						src/utils/ft_calloc.c \
+						src/utils/ft_strtrim.c \
 						src/ft_sig_handling.c \
 						src/main.c
 
