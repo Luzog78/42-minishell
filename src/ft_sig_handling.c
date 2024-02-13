@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sig_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 02:09:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/13 00:16:59 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/13 01:46:08 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 static void	ft_sig_nothing(int sig)
 {
 	(void)sig;
+}
+
+static void	ft_sig_stop(int sig)
+{
+	(void)sig;
+	printf("\n");
+	exit(130);
 }
 
 static void	ft_sig_handling(int sig)
@@ -34,16 +41,28 @@ static void	ft_sig_handling(int sig)
 	}
 }
 
-void	ft_sig_init(t_bool handle)
+/**
+ * @brief 
+ * 
+ * @param	mode	> 0: no handling,
+ * 					> 1: classic handling,
+ * 					> 2: exit handling,
+ */
+void	ft_sig_init(int mode)
 {
-	if (!handle)
+	if (mode == 0)
 	{
 		signal(SIGINT, ft_sig_nothing);
 		signal(SIGQUIT, ft_sig_nothing);
 	}
-	else
+	else if (mode == 1)
 	{
 		signal(SIGINT, ft_sig_handling);
+		signal(SIGQUIT, ft_sig_handling);
+	}
+	else if (mode == 2)
+	{
+		signal(SIGINT, ft_sig_stop);
 		signal(SIGQUIT, ft_sig_handling);
 	}
 }

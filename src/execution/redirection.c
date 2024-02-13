@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 20:17:52 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 01:43:22 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,45 +150,72 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 
 int	ft_heredoc(char *limiter, char **env)
 {
-	int		fd;
-	char	*filename;
+	// int		fd;
+	// char	*filename;
 	char	*line;
 	t_bool	is_formattable;
+	int		pipefd[2];
+	pid_t	pid;
+	int status;
 
-	filename = ft_get_temp_filename();
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
+	// filename = ft_get_temp_filename();
+	// fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	// if (fd == -1)
+	// {
+	// 	perror("minishell");
+	// 	return (-1);
+	// }
+	if (pipe(pipefd) == -1)
 	{
 		perror("minishell");
 		return (-1);
 	}
 	limiter = get_right_limiter(limiter, &is_formattable);
-	while (1)
+	pid = fork();
+	if (!pid)
 	{
-		line = readline("> ");
-		if (!line || !ft_strcmp(line, limiter) || g_exit)
+		ft_sig_init(2);
+		while (1)
 		{
+			line = readline("> ");
+			if (!line || !ft_strcmp(line, limiter) || g_exit)
+			{
+				free(line);
+				break ;
+			}
+			if (is_formattable)
+				line = ft_get_bash_string(line, env);
+			if (line)
+				ft_putstr_fd(line, pipefd[1]);
+			ft_putstr_fd("\n", pipefd[1]);
 			free(line);
-			break ;
 		}
-		if (is_formattable)
-			line = ft_get_bash_string(line, env);
-		if (line)
-			ft_putstr_fd(line, fd);
-		ft_putstr_fd("\n", fd);
-		free(line);
+		free(limiter);
+		close(pipefd[0]);
+		exit(0);
 	}
-	free(limiter);
-	close(fd);
-	fd = open(filename, O_RDONLY);
-	unlink(filename);
-	free(filename);
-	if (fd == -1)
+	else
 	{
-		perror("minishell");
-		return (-1);
+		waitpid(-1, &status, 0);
+		ft_sig_exit(status);
+		close(pipefd[1]);
+		// dup2(fd, 0);
+		// close(fd);
+		// dup2(pipefd[0], 0);
+		// close(pipefd[0]);
 	}
-	return (fd);
+
+	// ft_sig_init(TRUE);
+	// fd = open(filename, O_RDONLY);
+	// unlink(filename);
+	// free(filename);
+	
+	// if (fd == -1)
+	// {
+	// 	perror("minishell");
+	// 	return (-1);
+	// }
+	return (pipefd[0]);
 }
 
 int	ft_stdin(t_stdin_lst *stdin, char **env)
