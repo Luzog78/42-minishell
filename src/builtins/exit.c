@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 21:11:31 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 05:14:36 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	ft_isdigit(char *str)
 	result = 0;
 	while (str[i])
 	{
-		if ((str[i] < '0' || str[i] > '9') && str[i] != '-')
+		if ((str[i] < '0' || str[i] > '9') && str[i] != '-' && str[i] != '+')
 			return (0);
 		result = (result * 10) + (str[i] - '0');
 		if (result == 922337203685477580 && str[i + 1] >= '8'
