@@ -6,11 +6,37 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 02:09:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/13 01:46:08 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 22:54:32 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minish.h"
+
+void	manage_cmds(t_subshell *cmds, char **array, int pipe[2])
+{
+	static t_subshell	*stored_cmds;
+	static char			**stored_array;
+	static int			stored_pipe[2];
+
+	if (cmds != NULL && cmds->argv != NULL)
+	{
+		stored_cmds = cmds;
+		stored_array = array;
+	}
+	if (cmds != NULL && pipe != NULL)
+	{
+		stored_cmds = cmds;
+		stored_pipe[0] = pipe[0];
+		stored_pipe[1] = pipe[1];
+	}
+	if (cmds == NULL)
+	{
+		ft_free_cmds(stored_cmds);
+		ft_free_char_array(stored_array);
+		close(stored_pipe[0]);
+		close(stored_pipe[1]);
+	}
+}
 
 static void	ft_sig_nothing(int sig)
 {
@@ -21,6 +47,7 @@ static void	ft_sig_stop(int sig)
 {
 	(void)sig;
 	printf("\n");
+	manage_cmds(NULL, NULL, NULL);
 	exit(130);
 }
 
@@ -42,13 +69,13 @@ static void	ft_sig_handling(int sig)
 }
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  * @param	mode	> 0: no handling,
  * 					> 1: classic handling,
  * 					> 2: exit handling,
  */
-void	ft_sig_init(int mode)
+void	ft_sig_init(int mode, t_subshell *cmds, char **array, int pipe[2])
 {
 	if (mode == 0)
 	{
@@ -62,6 +89,7 @@ void	ft_sig_init(int mode)
 	}
 	else if (mode == 2)
 	{
+		manage_cmds(ft_get_parent(cmds), array, pipe);
 		signal(SIGINT, ft_sig_stop);
 		signal(SIGQUIT, ft_sig_handling);
 	}

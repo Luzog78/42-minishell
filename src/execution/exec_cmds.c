@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 03:12:09 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 23:18:02 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void	ft_execve_first_pipe(t_subshell *cmds)
 	status = 0;
 	if (pipe(pipefd) == -1)
 		return (ft_perror());
-	// ft_sig_init(FALSE);
 	pid = fork();
 	if (pid == -1)
 		return (ft_perror());
 	if (pid == 0)
 	{
+		// ft_sig_init(2, cmds, NULL, NULL);
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
@@ -81,6 +81,7 @@ void	ft_execve_pipe(t_subshell *cmds)
 		return (ft_perror());
 	if (!pid)
 	{
+		// ft_sig_init(2, cmds, NULL, NULL);
 		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
 		close(pipefd[0]);
@@ -110,6 +111,7 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	}
 	if (!pid)
 	{
+		// ft_sig_init(2, cmds, NULL, NULL);
 		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
 		status = get_right_cmds(cmds);
