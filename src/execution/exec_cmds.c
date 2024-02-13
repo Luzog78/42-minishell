@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 01:52:54 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 03:12:09 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 void	ft_exec_cmd(t_subshell *cmds)
 {
 	if (!cmds->exit_status && cmds->stdin)
-		cmds->exit_status = ft_stdin(cmds);
+		cmds->exit_status = ft_stdin(cmds, cmds->stdin);
 	if (!cmds->exit_status && cmds->outfiles)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles, cmds->env);
 	if (!cmds->exit_status && cmds->link == PIPE

@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 19:59:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 00:07:57 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 02:45:22 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_stdin_lst	*ft_free_stdin_lst(t_stdin_lst *lst)
 	while (lst)
 	{
 		tmp = lst->next;
+		free(lst->value);
 		free(lst);
 		lst = tmp;
 	}

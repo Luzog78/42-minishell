@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:13 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 01:56:53 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 03:14:20 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 int		ft_dup_infiles(char *infile, char **env);
 int		ft_dup_outfiles(t_out *outfiles, char **env);
-int		ft_heredoc(t_subshell *cmds, char *limiter, char **env);
-int		ft_stdin(t_subshell *cmds);
+int		ft_heredoc(t_subshell *cmds, t_stdin_lst *stdin, char **env);
+int		ft_stdin(t_subshell *cmds, t_stdin_lst *stdin);
 int		ft_execve_bin(char **argv, t_subshell *cmds);
 void	ft_exec_cmd(t_subshell *cmds);
 void	ft_exec_subshell(t_subshell *subshell);

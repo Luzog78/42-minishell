@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 02:03:15 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 03:16:04 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	ft_dup_infiles(char *infile, char **env)
 		perror("minishell");
 		return (-1);
 	}
-	free(infile);
 	return (fd);
 }
 
@@ -149,7 +148,7 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 	return (new);
 }
 
-int	ft_heredoc(t_subshell *cmds, char *limiter, char **env)
+int	ft_heredoc(t_subshell *cmds, t_stdin_lst *stdin, char **env)
 {
 	char	*line;
 	t_bool	is_formattable;
@@ -162,7 +161,7 @@ int	ft_heredoc(t_subshell *cmds, char *limiter, char **env)
 		perror("minishell");
 		return (-1);
 	}
-	limiter = get_right_limiter(limiter, &is_formattable);
+	stdin->value = get_right_limiter(stdin->value, &is_formattable);
 	pid = fork();
 	if (!pid)
 	{
@@ -170,7 +169,7 @@ int	ft_heredoc(t_subshell *cmds, char *limiter, char **env)
 		while (1)
 		{
 			line = readline("> ");
-			if (!line || !ft_strcmp(line, limiter) || g_exit)
+			if (!line || !ft_strcmp(line, stdin->value) || g_exit)
 			{
 				free(line);
 				break ;
@@ -182,7 +181,6 @@ int	ft_heredoc(t_subshell *cmds, char *limiter, char **env)
 			ft_putstr_fd("\n", pipefd[1]);
 			free(line);
 		}
-		free(limiter);
 		close(pipefd[0]);
 		close(pipefd[1]);
 		ft_free_cmds(ft_get_parent(cmds));
@@ -197,20 +195,20 @@ int	ft_heredoc(t_subshell *cmds, char *limiter, char **env)
 	return (pipefd[0]);
 }
 
-int	ft_stdin(t_subshell *cmds)
+int	ft_stdin(t_subshell *cmds, t_stdin_lst *stdin)
 {
 	int	fd;
 
 	fd = 0;
-	while (cmds->stdin)
+	while (stdin)
 	{
 		if (fd != 0)
 			close(fd);
-		if (cmds->stdin->type == HEREDOC)
-			fd = ft_heredoc(cmds, cmds->stdin->value, cmds->env);
-		else if (cmds->stdin->type == INFILE)
-			fd = ft_dup_infiles(cmds->stdin->value, cmds->env);
-		cmds->stdin = cmds->stdin->next;
+		if (stdin->type == HEREDOC)
+			fd = ft_heredoc(cmds, stdin, cmds->env);
+		else if (stdin->type == INFILE)
+			fd = ft_dup_infiles(stdin->value, cmds->env);
+		stdin = stdin->next;
 	}
 	if (fd == -1)
 	{
