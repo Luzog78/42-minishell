@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 01:43:22 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 02:03:15 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,26 +145,18 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 		}
 		i++;
 	}
+	free(limiter);
 	return (new);
 }
 
-int	ft_heredoc(char *limiter, char **env)
+int	ft_heredoc(t_subshell *cmds, char *limiter, char **env)
 {
-	// int		fd;
-	// char	*filename;
 	char	*line;
 	t_bool	is_formattable;
 	int		pipefd[2];
 	pid_t	pid;
-	int status;
+	int		status;
 
-	// filename = ft_get_temp_filename();
-	// fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	// if (fd == -1)
-	// {
-	// 	perror("minishell");
-	// 	return (-1);
-	// }
 	if (pipe(pipefd) == -1)
 	{
 		perror("minishell");
@@ -192,6 +184,8 @@ int	ft_heredoc(char *limiter, char **env)
 		}
 		free(limiter);
 		close(pipefd[0]);
+		close(pipefd[1]);
+		ft_free_cmds(ft_get_parent(cmds));
 		exit(0);
 	}
 	else
@@ -199,39 +193,24 @@ int	ft_heredoc(char *limiter, char **env)
 		waitpid(-1, &status, 0);
 		ft_sig_exit(status);
 		close(pipefd[1]);
-		// dup2(fd, 0);
-		// close(fd);
-		// dup2(pipefd[0], 0);
-		// close(pipefd[0]);
 	}
-
-	// ft_sig_init(TRUE);
-	// fd = open(filename, O_RDONLY);
-	// unlink(filename);
-	// free(filename);
-	
-	// if (fd == -1)
-	// {
-	// 	perror("minishell");
-	// 	return (-1);
-	// }
 	return (pipefd[0]);
 }
 
-int	ft_stdin(t_stdin_lst *stdin, char **env)
+int	ft_stdin(t_subshell *cmds)
 {
 	int	fd;
 
 	fd = 0;
-	while (stdin)
+	while (cmds->stdin)
 	{
 		if (fd != 0)
 			close(fd);
-		if (stdin->type == HEREDOC)
-			fd = ft_heredoc(stdin->value, env);
-		else if (stdin->type == INFILE)
-			fd = ft_dup_infiles(stdin->value, env);
-		stdin = stdin->next;
+		if (cmds->stdin->type == HEREDOC)
+			fd = ft_heredoc(cmds, cmds->stdin->value, cmds->env);
+		else if (cmds->stdin->type == INFILE)
+			fd = ft_dup_infiles(cmds->stdin->value, cmds->env);
+		cmds->stdin = cmds->stdin->next;
 	}
 	if (fd == -1)
 	{
