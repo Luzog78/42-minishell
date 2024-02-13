@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/13 00:26:42 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/13 06:01:10 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -624,19 +624,19 @@ $ cat 3
 
 ---
 
-$ rm -rf io
-$ mkdir io
-$ cd io
-$ echo $?
-
-$ <mdr a | >lol < mdr b > mdr | <mdr c
-$ echo $?
-$ ls
-
-###
-@ 0
-@ 1
-@ lol
+~ $ rm -rf io
+~ $ mkdir io
+~ $ cd io
+~ $ echo $?
+~ 
+~ $ <mdr a | >lol < mdr b > mdr | <mdr c
+~ $ echo $?
+~ $ ls
+~ 
+~ ###
+~ @ 0
+~ @ 1
+~ @ lol
 
 ---
 
