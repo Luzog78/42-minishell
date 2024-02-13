@@ -22,6 +22,7 @@ vsupp
 # ========= Minishell =========
 
 minishell
+.suppressed
 !tester
 !*.py
 !*.souffrance

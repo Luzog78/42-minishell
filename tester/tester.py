@@ -1,5 +1,6 @@
 import os, traceback, re
 from threading import Thread
+from enum import Enum, auto
 
 bin_path = '/usr/bin/bash'
 testing_path = './testing'
@@ -9,6 +10,9 @@ test_only: list[int] = []
 test_only_sections: list[int | str] = []
 print_failed_only = False
 
+valgrind: bool = False
+valgrind_leak_chek_full: bool = False
+
 # Leave None to auto-detect a fixed prompt / heredoc prompt.
 prompt_regex: str | None = None
 heredoc_prompt_regex: str | None = None
@@ -16,6 +20,25 @@ heredoc_prompt_regex: str | None = None
 # Set to False to print the detailed output of all tests.
 # None to auto-detect.
 print_repr: bool | None = None
+
+suppressed_path = './.suppressed'
+suppressed_default_config: str | None = """
+{
+	readline
+	Memcheck:Leak
+	...
+	fun:readline
+	...
+	}
+
+	{
+	readline
+	Memcheck:Leak
+	...
+	fun:add_history
+	...
+}
+"""
 
 # -------
 
@@ -77,6 +100,8 @@ if "-h" in args:
 	p(1, '    -s <path> .... : Path to the minishell.souffrance file', C_BLUE)
 	p(1, '    -t <path> .... : Path to the testing directory', C_BLUE)
 	p(1, '    -o ........... : Print only failed tests', C_YELLOW)
+	p(1, '    -v ........... : Do memory leak checks too', C_YELLOW + C_BOLD)
+	p(1, '    -vv .......... : Add complete valgrind args', C_YELLOW + C_BOLD)
 	p(1, '    -f ........... : Print full detailed tests results', C_YELLOW)
 	p(1, '    -ff .......... : Print sumed-up tests results', C_YELLOW)
 	p(1, '    -p <regex> ... : Regex to detect the prompt', C_GREEN)
@@ -111,6 +136,15 @@ while len(args):
 			exit(1)
 		testing_path = args[1]
 		args = args[2:]
+
+	elif args[0] == '-v':
+		valgrind = True
+		args = args[1:]
+	
+	elif args[0] == '-vv':
+		valgrind = True
+		valgrind_leak_chek_full = True
+		args = args[1:]
 	
 	elif args[0] == '-o':
 		print_failed_only = True
@@ -187,9 +221,29 @@ if heredoc_prompt_regex is not None and not isinstance(heredoc_prompt_regex, str
 	print_error('heredoc_prompt_regex must be a string or None')
 	exit(1)
 
+if valgrind:
+	try:
+		with open(suppressed_path, 'r') as f:
+			f.read()
+	except:
+		if suppressed_default_config is not None:
+			with open(suppressed_path, 'w') as f:
+				f.write(suppressed_default_config)
+		else:
+			print_error(f'Could not read "{suppressed_path}"')
+			exit(1)
+
 
 if print_repr is None:
 	print_repr = len(test_only) != 1 or len(test_only_sections)
+
+
+class ExitState(Enum):
+	PASSED = auto()
+	FAILED = auto()
+	TIMEOUT = auto()
+	MEMORY = auto()
+	CRASHED = auto()
 
 
 class Test:
@@ -201,27 +255,54 @@ class Test:
 
 		self.result_output: str | None = None
 		self.result_error: str | None = None
+		self.result_valgrind: str | None = None
 
-		self.timed_out: bool = False
-		self.passed: bool | None = None
+		self.state: ExitState | None = None
 	
 	def timeout(self) -> None:
-		self.timed_out = True
+		self.state = ExitState.TIMEOUT
 	
 	def check(self) -> None:
-		self.passed = True
+		if self.state is not None:
+			return
+
+		self.state = ExitState.PASSED
+
 		if self.should_error:
 			if self.result_error == "":
-				self.passed = False
+				self.state = ExitState.FAILED
 				return
 		else:
 			if self.result_error != "":
-				self.passed = False
+				self.state = ExitState.FAILED
 				return
 		
 		if self.expected != self.result_output:
-			self.passed = False
+			self.state = ExitState.FAILED
 	
+	def check_leaks(self) -> None:
+		valgrind_entries = []
+		error_entries = []
+
+		for line in self.result_error.split('\n'):
+			if re.match(r'^==\d+==\s+', line):
+				valgrind_entries.append(line)
+			else:
+				error_entries.append(line)
+
+		self.result_valgrind = self.result_error[:]
+		self.result_error = '\n'.join(error_entries)
+
+		for line in valgrind_entries:
+			if re.findall(r'by\s+\w+:\s*[a-zA-Z0-9_]', line) \
+				or re.findall(r'definitely lost:\s*[1-9]', line) \
+				or re.findall(r'indirectly lost:\s*[1-9]', line) \
+				or re.findall(r'possibly lost:\s*[1-9]', line) \
+				or re.findall(r'still reachable:\s*[1-9]', line) \
+				or re.findall(r'FATAL:\s*', line):
+				self.state = ExitState.MEMORY
+				break
+
 	def is_empty(self) -> bool:
 		return self.input == "" \
 			and self.expected == "" \
@@ -233,17 +314,22 @@ class Test:
 		s += get_text('    Expected', self.expected, C_BLUE, 8)
 		err = "Yes" if self.should_error else "No"
 		s += f'    {C_YELLOW}Should error:{C_RESET} {C_YELLOW}{err}{C_RESET}\n'
-		if self.passed is not None:
+		if self.state is not None:
 			s += '\n'
 			s += get_text('    Standard Output', self.result_output, C_WHITE, 8)
-			s += get_text('    Standard Error', self.result_error, C_RED, 8)
+			r_err = self.result_valgrind if valgrind and (self.state == ExitState.MEMORY or self.state == ExitState.CRASHED) else self.result_error
+			s += get_text('    Standard Error', r_err, C_RED, 8)
 			s += '\n'
-			if self.timed_out:
-				s += f'    {C_RED}{C_BOLD}>>> [Timed out] <<<{C_RESET}\n'
-			elif self.passed:
+			if self.state == ExitState.PASSED:
 				s += f'    {C_GREEN}{C_BOLD}>>> [Passed] <<<{C_RESET}\n'
-			else:
+			elif self.state == ExitState.TIMEOUT:
+				s += f'    {C_RED}{C_BOLD}>>> [Timed out] <<<{C_RESET}\n'
+			elif self.state == ExitState.FAILED:
 				s += f'    {C_RED}{C_BOLD}>>> [Failed] <<<{C_RESET}\n'
+			elif self.state == ExitState.MEMORY:
+				s += f'    {C_RED}{C_BOLD}>>> [Memory] <<<{C_RESET}\n'
+			elif self.state == ExitState.CRASHED:
+				s += f'    {C_RED}{C_BOLD}>>> [Crashed] <<<{C_RESET}\n'
 		return s[:-1]
 
 	def __repr__(self) -> str:
@@ -252,19 +338,23 @@ class Test:
 		s = f'    {C_MAGENTA}{C_BOLD}Input:{C_RESET} {C_MAGENTA}{input}{C_RESET}\n' \
 			+ f'    {C_BLUE}{C_BOLD}Expected:{C_RESET} {C_BLUE}{expected}{C_RESET}\n' \
 			+ f'    {C_YELLOW}{C_BOLD}Should error:{C_RESET} {C_YELLOW}{self.should_error}{C_RESET}\n'
-		if self.passed is not None:
+		if self.state is not None:
 			std_out = self.result_output.split('\n')
 			std_err = self.result_error.split('\n')
 			s += '\n'
 			s += f'    {C_WHITE}{C_BOLD}Standard Output:{C_RESET} {C_WHITE}{std_out}{C_RESET}\n' \
 				+ f'    {C_RED}{C_BOLD}Standard Error:{C_RESET} {C_RED}{std_err}{C_RESET}\n'
 			s += '\n'
-			if self.timed_out:
-				s += f'    {C_RED}{C_BOLD}>>> [Timed out] <<<{C_RESET}\n'
-			elif self.passed:
+			if self.state == ExitState.PASSED:
 				s += f'    {C_GREEN}{C_BOLD}>>> [Passed] <<<{C_RESET}\n'
-			else:
+			elif self.state == ExitState.TIMEOUT:
+				s += f'    {C_RED}{C_BOLD}>>> [Timed out] <<<{C_RESET}\n'
+			elif self.state == ExitState.FAILED:
 				s += f'    {C_RED}{C_BOLD}>>> [Failed] <<<{C_RESET}\n'
+			elif self.state == ExitState.MEMORY:
+				s += f'    {C_RED}{C_BOLD}>>> [Memory] <<<{C_RESET}\n'
+			elif self.state == ExitState.CRASHED:
+				s += f'    {C_RED}{C_BOLD}>>> [Crashed] <<<{C_RESET}\n'
 		return s[:-1]
 
 
@@ -502,6 +592,9 @@ cwd = os.getcwd()
 bin_path = bin_path.strip()
 if not bin_path.startswith('/') and not bin_path.startswith('~'):
 	bin_path = "../" + bin_path
+suppressed_path = suppressed_path.strip()
+if not suppressed_path.startswith('/') and not suppressed_path.startswith('~'):
+	suppressed_path = "../" + suppressed_path
 
 os.system(f'rm -rf {testing_path}')
 os.system(f'mkdir -p {testing_path}')
@@ -541,7 +634,11 @@ for i, test in enumerate(tests):
 		with open('.in.tmp', 'w') as f:
 			f.write(test.input)
 
-		t = Thread(target=lambda: os.system(f'{bin_path} < .in.tmp > .out.tmp 2> .err.tmp'))
+		val_args = f'valgrind --suppressions={suppressed_path} '
+		if valgrind_leak_chek_full:
+			val_args += '--leak-check=full --show-leak-kinds=all --track-origins=yes '
+		t = Thread(target=lambda: os.system(
+			f' < .in.tmp > .out.tmp 2> .err.tmp {val_args if i and valgrind else ""}{bin_path}'))
 
 		t.start()
 		t.join(3)
@@ -560,14 +657,16 @@ for i, test in enumerate(tests):
 				calibrate_prompts(test.result_output)
 			continue
 
+		if valgrind:
+			test.check_leaks()
 		test.check()
 
-		if test.passed:
+		if test.state == ExitState.PASSED:
 			stats.passed.append(i)
 		else:
 			stats.failed.append(i)
 
-		if print_failed_only and test.passed \
+		if print_failed_only and test.state == ExitState.PASSED \
 			and (len(test_only) != 1 or len(test_only_sections)):
 			continue
 
