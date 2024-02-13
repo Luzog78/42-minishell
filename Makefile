@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/12 03:59:26 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/13 03:42:19 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ SRC_FILES			= \
 						src/utils/ft_itoa.c \
 						src/utils/ft_calloc.c \
 						src/utils/ft_strtrim.c \
+						src/utils/ft_isalnum.c \
 						src/ft_sig_handling.c \
 						src/main.c
 

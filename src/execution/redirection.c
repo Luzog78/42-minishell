@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 03:16:04 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 03:26:29 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,23 @@ int	ft_dup_infiles(char *infile, char **env)
 
 int	ft_dup_outfiles(t_out *outfiles, char **env)
 {
-	int	fd;
+	int		fd;
+	char	*path;
 
 	while (outfiles)
 	{
 		fd = -1;
+		path = ft_get_bash_string(outfiles->to, env);
 		if (outfiles->type == REPLACE)
-			fd = open(ft_get_bash_string(outfiles->to, env), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (outfiles->type == APPEND)
-			fd = open(ft_get_bash_string(outfiles->to, env), O_WRONLY | O_CREAT | O_APPEND, 0644);
+			fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
 		{
 			perror("minishell");
 			return (1);
 		}
+		free(path);
 		dup2(fd, outfiles->from);
 		close(fd);
 		outfiles = outfiles->next;
