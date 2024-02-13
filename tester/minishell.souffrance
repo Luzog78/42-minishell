@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/13 06:01:10 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/13 07:49:36 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -357,9 +357,9 @@ $ echo $?
 
 === Built-ins: env ===
 
-$ env | grep -E "^(PATH|HOME|USER|LOGNAME|SHLVL|PWD|OLDPWD|_)=" | wc -l
+$ env | grep -E "^(PATH|HOME|USER|LOGNAME|SHLVL|PWD|_)=" | wc -l
 
-@ 8
+@ 7
 
 ---
 
@@ -464,7 +464,7 @@ $ echo $?
 @ 1
 
 
-=== Basics ===
+=== Basic Errors ===
 
 $ doesnotexist
 $ echo $?

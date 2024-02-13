@@ -260,6 +260,9 @@ class Test:
 		self.state: ExitState | None = None
 	
 	def timeout(self) -> None:
+		if self.state is not None:
+			return
+
 		self.state = ExitState.TIMEOUT
 	
 	def check(self) -> None:
@@ -281,6 +284,9 @@ class Test:
 			self.state = ExitState.FAILED
 	
 	def check_leaks(self) -> None:
+		if self.state is not None:
+			return
+
 		valgrind_entries = []
 		error_entries = []
 
