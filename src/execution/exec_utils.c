@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 01:16:30 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 05:51:12 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 		if (!tmp)
 			return ;
 		ft_realloc(args, tmp);
+		free(tmp);
 		// write(2, "minishell: wildcard not allowed in quotes\n", 42);
 		return ;
 	}

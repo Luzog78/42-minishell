@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 01:28:36 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/13 05:58:00 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,8 +236,10 @@ char	*ft_var_concat(char *var, char **env)
 	new_var_value = ft_substr(var, i + 2, ft_strlen(var) - i - 2);
 	new_var = ft_strjoin(var_name, "=");
 	free(var_name);
-	new_var = ft_strjoin(new_var, var_value);
-	new_var = ft_strjoin(new_var, new_var_value);
+	var_name = ft_strjoin(new_var, var_value);
+	free(new_var);
+	new_var = ft_strjoin(var_name, new_var_value);
+	free(var_name);
 	free(new_var_value);
 	//free(var);
 	return (new_var);
