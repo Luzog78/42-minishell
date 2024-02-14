@@ -6,11 +6,18 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:00:21 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/13 10:52:45 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 04:39:38 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+
+static void	ft_set_new_out(t_out *new_out, int from, char *to, t_out_type type)
+{
+	new_out->from = from;
+	new_out->to = to;
+	new_out->type = type;
+}
 
 t_out	*ft_out_add(t_out **out, int from, char *to, t_out_type type)
 {
@@ -20,15 +27,14 @@ t_out	*ft_out_add(t_out **out, int from, char *to, t_out_type type)
 	if (!to)
 		return (NULL);
 	if (!*to)
+	{
 		free(to);
-	if (!*to)
 		return (NULL);
+	}
 	new_out = ft_calloc(1, sizeof(t_out));
 	if (!new_out)
 		return (NULL);
-	new_out->from = from;
-	new_out->to = to;
-	new_out->type = type;
+	ft_set_new_out(new_out, from, to, type);
 	if (!*out)
 	{
 		*out = new_out;
