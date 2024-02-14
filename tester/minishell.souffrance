@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/13 07:49:36 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/14 06:13:09 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -454,6 +454,68 @@ $ echo $?
 @ declare -x a=">\"<"
 @ 0
 
+=== Combining echo and $ ===
+
+$ echo $?
+
+@ 0
+
+---
+
+$ echo '$?'
+
+@ $?
+
+---
+
+$ echo $
+
+@ $
+
+---
+
+$ echo $""
+
+@ 
+
+---
+
+$ echo "$"
+
+@ $
+
+---
+
+$ echo "$"?
+
+@ $?
+
+---
+
+$ echo $"?"
+
+@ ?
+
+---
+
+$ echo "$''"?
+
+@ $''?
+
+---
+
+$ unset a
+$ echo "$a"?
+
+@ ?
+
+---
+
+$ export a=42
+$ echo $"a"
+
+@ a
+
 
 === Built-ins: exit ===
 
@@ -621,22 +683,6 @@ $ cat 3
 @ 2
 @ abc
 @ 3
-
----
-
-~ $ rm -rf io
-~ $ mkdir io
-~ $ cd io
-~ $ echo $?
-~ 
-~ $ <mdr a | >lol < mdr b > mdr | <mdr c
-~ $ echo $?
-~ $ ls
-~ 
-~ ###
-~ @ 0
-~ @ 1
-~ @ lol
 
 ---
 
@@ -930,6 +976,7 @@ $ <<><>><>>>>
 === wildcards ===
 
 
+$ rm -rf wild
 $ mkdir wild
 $ cd ./wild
 $ touch infile.d
@@ -938,14 +985,13 @@ $ export wild=file
 $ echo "infile" > infile.d
 $ echo "outfile" > outfile.d
 $ cat *$wild*.d
-$ cd ..
-$ rm -r ./wild
 
 @ infile
 @ outfile
 
 ---
 
+$ rm -rf wild
 $ mkdir wild
 $ cd ./wild
 $ touch infile.d
@@ -954,19 +1000,16 @@ $ export wild=file
 $ echo "infile" > infile.d
 $ echo "outfile" > outfile.d
 $ cat *'$wild'*.d
-$ cd ..
-$ rm -r wild
 
 ###
 
 ---
 
+$ rm -rf wild
 $ mkdir wild
 $ cd ./wild
 $ touch infile outfile file podwal ilesf dsfiless files
 $ ls *file
-$ cd ..
-$ rm -r wild
 
 @ file
 @ infile
@@ -974,14 +1017,13 @@ $ rm -r wild
 
 ---
 
+$ rm -rf wild
 $ mkdir wild
 $ cd ./wild
 $ echo "helloooooooo" > infile
 $ echo "niceeee" > infile2
 $ echo "test" > infile3
 $ cat *
-$ cd ..
-$ rm -r ./wild
 
 @ helloooooooo
 @ niceeee
@@ -989,6 +1031,7 @@ $ rm -r ./wild
 
 ---
 
+$ rm -rf wild
 $ mkdir wild
 $ cd ./wild
 $ touch infile.d outfile.d
@@ -996,12 +1039,11 @@ $ export wild=file
 $ echo "infile" > infile.d
 $ echo "outfile" > outfile.d
 $ cat *'$w'ild*.d
-$ cd ..
-$ rm -r wild
 ###
 
 ---
 
+$ rm -rf wild
 $ mkdir wild
 $ cd ./wild
 $ touch infile.d outfile.d
@@ -1009,10 +1051,206 @@ $ export wile=file
 $ echo "infile" > infile.d
 $ echo "outfile" > outfile.d
 $ cat *"$w"ile*.d
-$ cd ..
-$ rm -r wild
 
 @ infile
 @ outfile
 
 ---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch f
+$ touch b
+$ touch a
+$ touch d
+$ touch e
+$ touch c
+$ echo *
+
+@ a b c d e f
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch .hidden
+$ echo *
+
+@ *
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch  a .hidden b
+$ echo *
+
+@ a b
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *
+
+@ >..< header.h include infile.d infiles main.c Makefile outfile.d outfiles src tester tester.py >.U.<
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo ******************************************
+
+@ >..< header.h include infile.d infiles main.c Makefile outfile.d outfiles src tester tester.py >.U.<
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo M*
+
+@ Makefile
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *e
+
+@ include Makefile
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *a*
+
+@ header.h main.c Makefile
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo ***.c
+
+@ main.c
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *file
+$ echo *file*
+
+@ Makefile
+@ infile.d infiles Makefile outfile.d outfiles
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *.d
+$ echo *.d*
+
+@ infile.d outfile.d
+@ infile.d outfile.d
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *e*
+$ echo *********************e*********************
+
+@ header.h include infile.d infiles Makefile outfile.d outfiles tester tester.py
+@ header.h include infile.d infiles Makefile outfile.d outfiles tester tester.py
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo z*
+$ echo *z
+
+@ z*
+@ *z
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo .*
+
+@ .hidden .U.
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *.
+
+@ *.
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *.*
+
+@ >..< header.h infile.d main.c outfile.d tester.py >.U.<
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *..*
+$ echo *.*.*
+
+@ >..<
+@ >..< >.U.<
+
