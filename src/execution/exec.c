@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 22:52:52 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:32:45 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_exec(t_subshell *subshell)
 {
-	ft_sig_init(0, subshell, NULL, NULL);
+	ft_sig_init(0, subshell, NULL);
 	subshell->stdin_fd = dup(STDIN_FILENO);
 	subshell->stdout_fd = dup(STDOUT_FILENO);
 	if (subshell->cmds && subshell->cmds->type == COMMAND)
@@ -35,5 +35,5 @@ void	ft_exec(t_subshell *subshell)
 	close(subshell->stdin_fd);
 	close(subshell->stdout_fd);
 	ft_free_cmds(subshell->cmds);
-	ft_sig_init(1, subshell, NULL, NULL);
+	ft_sig_init(1, subshell, NULL);
 }

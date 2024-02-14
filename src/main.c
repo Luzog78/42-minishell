@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 22:51:49 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:32:54 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **env)
 	if (!subshell)
 		return (1);
 	ft_subshell_init(subshell, SUBSHELL, env);
-	ft_sig_init(1, subshell, NULL, NULL);
+	ft_sig_init(1, subshell, NULL);
 	while (1)
 	{
 		line = readline("minishell $> ");
