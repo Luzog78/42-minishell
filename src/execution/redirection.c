@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 22:53:05 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:32:48 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int	ft_heredoc(t_subshell *cmds, t_stdin_lst *stdin, char **env)
 	pid = fork();
 	if (!pid)
 	{
-		ft_sig_init(2, cmds, NULL, pipefd);
+		ft_sig_init(2, cmds, pipefd);
 		while (1)
 		{
 			line = readline("> ");

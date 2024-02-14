@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 23:24:33 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:26:17 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	ft_get_path(char **argv, char **env)
 
 static void	ft_child_execve_bin(char **argv, t_subshell *cmds)
 {
-	ft_sig_init(2, cmds, argv, NULL);
+	// ft_sig_init(0, cmds, argv, NULL);
 	if (access(argv[0], F_OK) == -1)
 	{
 		perror("minishell:");

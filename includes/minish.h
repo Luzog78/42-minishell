@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 22:33:00 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:32:31 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void		ft_free_subshell(t_subshell *subshell);
 char		*ft_getenv(char *str, char **env);
 char		*ft_substr(char *s, int start, int len);
 char		*ft_strchr(const char *s, int c);
-void		ft_sig_init(int mode, t_subshell *cmds, char **argv, int pipe[2]);
+void		ft_sig_init(int mode, t_subshell *cmds, int pipe[2]);
 void		ft_sig_exit(int status);
 char		*get_next_line(int fd, char *limiter);
 t_subshell	*ft_get_parent(t_subshell *cmds);

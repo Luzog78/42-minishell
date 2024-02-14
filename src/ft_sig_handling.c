@@ -6,23 +6,17 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 02:09:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/13 22:54:32 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:32:14 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minish.h"
 
-void	manage_cmds(t_subshell *cmds, char **array, int pipe[2])
+void	manage_cmds(t_subshell *cmds, int pipe[2])
 {
 	static t_subshell	*stored_cmds;
-	static char			**stored_array;
 	static int			stored_pipe[2];
 
-	if (cmds != NULL && cmds->argv != NULL)
-	{
-		stored_cmds = cmds;
-		stored_array = array;
-	}
 	if (cmds != NULL && pipe != NULL)
 	{
 		stored_cmds = cmds;
@@ -32,7 +26,6 @@ void	manage_cmds(t_subshell *cmds, char **array, int pipe[2])
 	if (cmds == NULL)
 	{
 		ft_free_cmds(stored_cmds);
-		ft_free_char_array(stored_array);
 		close(stored_pipe[0]);
 		close(stored_pipe[1]);
 	}
@@ -41,13 +34,14 @@ void	manage_cmds(t_subshell *cmds, char **array, int pipe[2])
 static void	ft_sig_nothing(int sig)
 {
 	(void)sig;
+	manage_cmds(NULL, NULL);
 }
 
 static void	ft_sig_stop(int sig)
 {
 	(void)sig;
 	printf("\n");
-	manage_cmds(NULL, NULL, NULL);
+	manage_cmds(NULL, NULL);
 	exit(130);
 }
 
@@ -75,12 +69,14 @@ static void	ft_sig_handling(int sig)
  * 					> 1: classic handling,
  * 					> 2: exit handling,
  */
-void	ft_sig_init(int mode, t_subshell *cmds, char **array, int pipe[2])
+void	ft_sig_init(int mode, t_subshell *cmds, int pipe[2])
 {
 	if (mode == 0)
 	{
+		manage_cmds(ft_get_parent(cmds), pipe);
 		signal(SIGINT, ft_sig_nothing);
 		signal(SIGQUIT, ft_sig_nothing);
+		signal(SIGPIPE, ft_sig_nothing);
 	}
 	else if (mode == 1)
 	{
@@ -89,7 +85,7 @@ void	ft_sig_init(int mode, t_subshell *cmds, char **array, int pipe[2])
 	}
 	else if (mode == 2)
 	{
-		manage_cmds(ft_get_parent(cmds), array, pipe);
+		manage_cmds(ft_get_parent(cmds), pipe);
 		signal(SIGINT, ft_sig_stop);
 		signal(SIGQUIT, ft_sig_handling);
 	}
