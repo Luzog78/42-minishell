@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/13 03:42:19 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/14 01:58:14 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,32 @@ NAME				= minishell
 BUILD_DIR			= ./build
 INCLUDES			= ./includes
 SRC_FILES			= \
+						src/parsing/subshell/ft_on_redir.c \
+						src/parsing/subshell/ft_on_separator.c \
+						src/parsing/subshell/ft_on_subshell.c \
+						src/parsing/subshell/ft_parse_subshell.c \
+						src/parsing/ft_check_parenthesis_and_quotes.c \
+						src/parsing/ft_concat_lst.c \
+						src/parsing/ft_error.c \
+						src/parsing/ft_free_str_list.c \
+						src/parsing/ft_get_next_int.c \
+						src/parsing/ft_get_next_word.c \
+						src/parsing/ft_get_out_redirection.c \
+						src/parsing/ft_is_empty.c \
+						src/parsing/ft_is_next_a_fd.c \
+						src/parsing/ft_is_whitespace.c \
+						src/parsing/ft_out_add.c \
+						src/parsing/ft_parse_redirection.c \
+						src/parsing/ft_set_parents.c \
+						src/parsing/ft_set_prevs.c \
+						src/parsing/ft_skip_parenthesis.c \
+						src/parsing/ft_skip_whitespace.c \
+						src/parsing/ft_starts_with.c \
+						src/parsing/ft_stdin_add.c \
+						src/parsing/ft_str_lst_add.c \
+						src/parsing/ft_subshell_add.c \
 						src/parsing/parse.c \
+						\
 						src/execution/exec.c \
 						src/execution/exec_bin.c \
 						src/execution/redirection.c \
@@ -25,6 +50,7 @@ SRC_FILES			= \
 						src/execution/exec_subshell.c \
 						src/execution/exec_utils.c \
 						src/execution/wildcards.c \
+						\
 						src/builtins/cd.c \
 						src/builtins/echo.c \
 						src/builtins/env.c \
@@ -32,6 +58,7 @@ SRC_FILES			= \
 						src/builtins/export.c \
 						src/builtins/pwd.c \
 						src/builtins/unset.c \
+						\
 						src/utils/ft_strdup.c \
 						src/utils/ft_strlen.c \
 						src/utils/ft_strcmp.c \
@@ -56,6 +83,7 @@ SRC_FILES			= \
 						src/utils/ft_calloc.c \
 						src/utils/ft_strtrim.c \
 						src/utils/ft_isalnum.c \
+						\
 						src/ft_sig_handling.c \
 						src/main.c
 
