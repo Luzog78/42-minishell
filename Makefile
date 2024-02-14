@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/14 04:01:20 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/14 06:22:16 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,9 @@ SRC_FILES			= \
 						src/utils/ft_strtrim.c \
 						src/utils/ft_isalnum.c \
 						\
-						src/ft_sig_handling.c \
+						src/signals/ft_sig_handlers.c \
+						src/signals/ft_sig_activer.c \
+						\
 						src/main.c
 
 C_RESET				= \033[0m
