@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_is_whitespace.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 08:51:53 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/13 08:52:06 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 04:55:44 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "utils.h"
 
 t_bool	ft_is_whitespace(char c)
 {

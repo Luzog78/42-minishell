@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 03:32:56 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 04:55:57 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char		*ft_substr(char *str, int start, int len);
 char		*ft_strtrim(char *str);
 int			ft_isalnum(int c);
 char		*ft_get_bash_string(char *str, char **env);
+t_bool		ft_is_whitespace(char c);
 
 /* Print Functions */
 void		ft_print_err(char *str);

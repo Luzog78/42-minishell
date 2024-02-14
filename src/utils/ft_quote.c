@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 05:21:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 05:24:31 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	check_dollar(int *result, int *i, char *str, char **env)
 		free(var);
 		(*i)++;
 	}
-	else if (str[*i] == '$' && str[*i + 1] != '\0' && str[*i + 1] != ' ')
+	else if (str[*i] == '$' && str[*i + 1] != '\0' && ft_is_whitespace(str[*i + 1]) == FALSE && str[*i + 1] != '"')
 	{
 		var = ft_getvar(str, i, env);
 		if (var)
@@ -176,7 +176,7 @@ char	*ft_get_bash_string(char *str, char **env)
 					free(var);
 					i++;
 				}
-				else if (str[i] == '$' && str[i + 1] != '\0' && str[i + 1] != ' ')
+				else if (str[i] == '$' && str[i + 1] != '\0' && !ft_is_whitespace(str[i + 1]) && str[i + 1] != '"')
 				{
 					var = ft_getvar(str, &i, env);
 					if (var)
@@ -203,7 +203,7 @@ char	*ft_get_bash_string(char *str, char **env)
 				free(var);
 				i++;
 			}
-			else if (str[i] == '$' && str[i + 1] != '\0' && str[i + 1] != ' ')
+			else if (str[i] == '$' && str[i + 1] != '\0' && ft_is_whitespace(str[i + 1]) == FALSE)
 			{
 				var = ft_getvar(str, &i, env);
 				if (var)

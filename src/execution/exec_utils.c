@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:19:31 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 04:51:06 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,11 @@ void	ft_sort_args(char ***args)
 	}
 }
 
-void	ft_append_wildkartttt(char ***args, char *str, char **env)
+t_bool	is_star_between_quote(char *tmp)
 {
 	char	quote;
-	char	*tmp;
-	DIR		*dir;
-	char	*new;
-	t_bool	is_matched;
 
 	quote = 0;
-	tmp = str;
 	while (*tmp && *tmp != '*')
 	{
 		if (*tmp == '\'' || *tmp == '"')
@@ -109,7 +104,21 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 		}
 		tmp++;
 	}
-	if (quote)
+	//*e"*"
+
+	//*e\*
+	return (quote != 0);
+}
+
+void	ft_append_wildkartttt(char ***args, char *str, char **env)
+{
+	DIR		*dir;
+	char	*new;
+	t_bool	is_matched;
+	char	*tmp;
+
+	tmp = str;
+	if (is_star_between_quote(tmp))
 	{
 		tmp = ft_get_bash_string(str, env);
 		free(str);

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:35 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:14:24 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 05:22:49 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "minish.h"
+# include "utils.h"
 
 /**
  * @param	parsing_state	0: start, 1: argv, 2: redirections
@@ -42,7 +42,6 @@ char		*ft_get_next_word(char **str);
 t_out_type	ft_get_out_redirection(char *str);
 t_bool		ft_is_empty(char *str);
 t_bool		ft_is_next_a_fd(char *str);
-t_bool		ft_is_whitespace(char c);
 t_out		*ft_out_add(t_out **out, int from, char *to, t_out_type type);
 void		ft_parse_redirection(t_subshell *subshell, char **str);
 void		ft_set_parents(t_subshell *subshell);
