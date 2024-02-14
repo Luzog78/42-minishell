@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 03:42:02 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:32:56 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "minish.h"
 
+void		ft_arr_char_cpy(char **src, char **dst);
+char		**ft_sort_env(char **env);
 
 /* Execution Utils Functions */
 char		**ft_env_owrite(char **env, char **new_env);

@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/14 01:58:14 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/14 04:01:20 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,14 @@ SRC_FILES			= \
 						src/execution/exec_utils.c \
 						src/execution/wildcards.c \
 						\
+						src/builtins/misc/bi_add_double_quotes.c \
+						src/builtins/misc/bi_add_env.c \
+						src/builtins/misc/bi_check_var.c \
+						src/builtins/misc/bi_get_var.c \
+						src/builtins/misc/bi_is_var_in_env.c \
+						src/builtins/misc/bi_printenv.c \
+						src/builtins/misc/bi_update_env.c \
+						src/builtins/misc/bi_var_concat.c \
 						src/builtins/cd.c \
 						src/builtins/echo.c \
 						src/builtins/env.c \
@@ -59,6 +67,7 @@ SRC_FILES			= \
 						src/builtins/pwd.c \
 						src/builtins/unset.c \
 						\
+						src/utils/ft_arr_char_cpy.c \
 						src/utils/ft_strdup.c \
 						src/utils/ft_strlen.c \
 						src/utils/ft_strcmp.c \
@@ -74,6 +83,7 @@ SRC_FILES			= \
 						src/utils/ft_free.c \
 						src/utils/ft_split.c \
 						src/utils/ft_quote.c \
+						src/utils/ft_sort_env.c \
 						src/utils/ft_getenv.c \
 						src/utils/ft_substr.c \
 						src/utils/ft_strchr.c \

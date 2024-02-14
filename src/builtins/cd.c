@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 21:07:56 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 03:31:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static void	update_path(t_subshell *cmds)
 	pwd = ft_strjoin("PWD=", cwd);
 	value_envp = ft_get_value_from_env("PWD", cmds->env);
 	if (!value_envp)
-		cmds->env = ft_add_env(pwd, cmds->env);
+		cmds->env = bi_add_env(pwd, cmds->env);
 	else
 	{
-		cmds->env = ft_update_env(pwd, cmds->env);
+		cmds->env = bi_update_env(pwd, cmds->env);
 		free(value_envp);
 	}
 	free(pwd);
@@ -53,7 +53,7 @@ static int	ft_home_cd(t_subshell *cmds)
 	free(home);
 	pwd = ft_get_value_from_env("PWD", cmds->env);
 	oldpwd = ft_strjoin("OLDPWD=", pwd);
-	cmds->env = ft_update_env(oldpwd, cmds->env);
+	cmds->env = bi_update_env(oldpwd, cmds->env);
 	free(pwd);
 	free(oldpwd);
 	update_path(cmds);
@@ -105,7 +105,7 @@ static int	ft_change_dir(char *path, char *cwd, t_subshell *cmds)
 		perror("minishell");
 		return (1);
 	}
-	cmds->env = ft_update_env(oldpwd, cmds->env);
+	cmds->env = bi_update_env(oldpwd, cmds->env);
 	free(oldpwd);
 	free(path);
 	free(cwd);
