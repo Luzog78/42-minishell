@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/14 06:22:16 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/14 07:08:35 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,9 +43,11 @@ SRC_FILES			= \
 						src/parsing/ft_subshell_add.c \
 						src/parsing/parse.c \
 						\
+						src/execution/redirections/ft_heredoc.c \
+						src/execution/redirections/ft_redirection.c \
+						src/execution/redirections/ft_get_right_limiter.c \
 						src/execution/exec.c \
 						src/execution/exec_bin.c \
-						src/execution/redirection.c \
 						src/execution/exec_cmds.c \
 						src/execution/exec_subshell.c \
 						src/execution/exec_utils.c \

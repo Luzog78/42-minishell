@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 22:46:42 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 03:32:45 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 06:29:54 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	ft_exec(t_subshell *subshell)
 	close(subshell->stdin_fd);
 	close(subshell->stdout_fd);
 	ft_free_cmds(subshell->cmds);
+	subshell->cmds = NULL;
 	ft_sig_init(1, subshell, NULL);
 }

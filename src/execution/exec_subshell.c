@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 22:43:13 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 06:35:38 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,10 @@ void	ft_exec_middle_subshell(t_subshell *subshell)
 		ft_free_cmds(ft_get_parent(subshell));
 		exit(g_exit);
 	}
-	else
-	{
-		close(subshell->prev->pipe_read_end);
-		close(pipefd[1]);
-		subshell->pipe_read_end = pipefd[0];
-		subshell->pid = pid;
-	}
+	close(subshell->prev->pipe_read_end);
+	close(pipefd[1]);
+	subshell->pipe_read_end = pipefd[0];
+	subshell->pid = pid;
 }
 
 int	ft_exec_last_subshell(t_subshell *subshell)

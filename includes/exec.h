@@ -3,23 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:13 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 03:14:20 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 07:08:11 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
 
-# include "minish.h"
 # include "builtins.h"
-# include "utils.h"
+
+typedef struct s_heredoc
+{
+	t_subshell	*cmds;
+	t_stdin_lst	*stdin;
+	char		**env;
+	int			*pipefd;
+	t_bool		is_formattable;
+}	t_heredoc;
 
 int		ft_dup_infiles(char *infile, char **env);
 int		ft_dup_outfiles(t_out *outfiles, char **env);
 int		ft_heredoc(t_subshell *cmds, t_stdin_lst *stdin, char **env);
+char	*ft_get_right_limiter(char *limiter, t_bool *is_formattable);
 int		ft_stdin(t_subshell *cmds, t_stdin_lst *stdin);
 int		ft_execve_bin(char **argv, t_subshell *cmds);
 void	ft_exec_cmd(t_subshell *cmds);

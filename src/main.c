@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 03:32:54 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 06:34:04 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,8 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->pid = 0;
 }
 
-int	main(int argc, char **argv, char **env)
+static void	ft_wait_line(char *line, t_subshell	*subshell)
 {
-	t_subshell	*subshell;
-	char		*line;
-
-	(void)argc;
-	(void)argv;
-	subshell = ft_calloc(sizeof(t_subshell), 1);
-	if (!subshell)
-		return (1);
-	ft_subshell_init(subshell, SUBSHELL, env);
-	ft_sig_init(1, subshell, NULL);
 	while (1)
 	{
 		line = readline("minishell $> ");
@@ -74,8 +64,21 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		ft_exec(subshell);
-		subshell->cmds = NULL;
 	}
-	ft_free_subshell(subshell);
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_subshell	*subshell;
+
+	(void)argc;
+	(void)argv;
+	subshell = ft_calloc(sizeof(t_subshell), 1);
+	if (!subshell)
+		return (1);
+	ft_subshell_init(subshell, SUBSHELL, env);
+	ft_sig_init(1, subshell, NULL);
+	ft_wait_line(NULL, subshell);
+	ft_free_cmds(subshell);
 	return (g_exit);
 }

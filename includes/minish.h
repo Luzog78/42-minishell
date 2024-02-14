@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:16:22 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 06:33:19 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,6 @@ int			ft_strncmp(char *s1, char *s2, int n);
 void		ft_free_cmds(t_subshell *subshell);
 char		**ft_free_char_array(char **array);
 int			ft_error(int err, char *str, t_subshell *subshell_to_free);
-void		ft_free_subshell(t_subshell *subshell);
 char		*ft_getenv(char *str, char **env);
 char		*ft_substr(char *s, int start, int len);
 char		*ft_strchr(const char *s, int c);
