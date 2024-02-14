@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 05:51:12 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 04:19:31 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 		}
 		tmp++;
 	}
-	if (quote) //return error cuz its way too complex to handle
+	if (quote)
 	{
 		tmp = ft_get_bash_string(str, env);
 		free(str);
@@ -117,13 +117,11 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 			return ;
 		ft_realloc(args, tmp);
 		free(tmp);
-		// write(2, "minishell: wildcard not allowed in quotes\n", 42);
 		return ;
 	}
 	new = ft_get_bash_string(str, env);
 	free(str);
 	is_matched = FALSE;
-	// There is a wild card. So we need to find all the files that is IN THE CURRENT DIRECTORY
 	dir = opendir(".");
 	if (!dir)
 		return ;

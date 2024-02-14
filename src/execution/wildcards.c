@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:31:08 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 02:28:40 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 04:19:01 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ t_bool	ft_wildcard_allow(char *file, char *str)
 			tmpwild++;
 			if (!*tmpwild)
 				return (TRUE);
-			while (*tmpfile &&
-				ft_strncmp(tmpfile, tmpwild, get_index(tmpwild)) != 0)
+			while (*tmpfile
+				&& ft_strncmp(tmpfile, tmpwild, get_index(tmpwild)) != 0)
 				tmpfile++;
- 			if (!*tmpfile)
+			if (!*tmpfile)
 				return (FALSE);
 			ret = TRUE;
 		}

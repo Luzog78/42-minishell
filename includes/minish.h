@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minish.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 00:53:11 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 03:32:31 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 04:16:22 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,23 @@ typedef struct s_str_lst
 	struct s_str_lst	*next;
 }	t_str_lst;
 
+/**
+ * @param	env			Reserved for the SUBSHELL type
+ * @param	cmds		Reserved for the SUBSHELL type
+ *
+ * @param	argv		Reserved for the COMMAND type
+ * @param	stdin		Reserved for the COMMAND type
+ * @param	outfiles	Reserved for the COMMAND type
+*/
 typedef struct s_subshell
 {
 	t_cmd_type			type;
 	int					exit_status;
 	pid_t				pid;
 
-	// SUBSHELL
 	char				**env;
 	struct s_subshell	*cmds;
 
-	// COMMAND
 	t_str_lst			*argv;
 	t_stdin_lst			*stdin;
 	t_out				*outfiles;

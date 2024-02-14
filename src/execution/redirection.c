@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 03:32:48 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 04:20:38 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ char	*get_right_limiter(char *limiter, t_bool *is_formattable)
 			new[ft_strlen(new)] = limiter[i];
 			i++;
 			while (limiter[i] && (limiter[i] == '_'
-				|| (limiter[i] >= 'a' && limiter[i] <= 'z')
-				|| (limiter[i] >= 'A' && limiter[i] <= 'Z')
-				|| (limiter[i] >= '0' && limiter[i] <= '9')))
+					|| (limiter[i] >= 'a' && limiter[i] <= 'z')
+					|| (limiter[i] >= 'A' && limiter[i] <= 'Z')
+					|| (limiter[i] >= '0' && limiter[i] <= '9')))
 			{
 				new = realloc(new, ft_strlen(new) + 2);
 				if (!new)

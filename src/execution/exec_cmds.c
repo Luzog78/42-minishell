@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmds.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 23:18:02 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 04:17:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ft_execve_first_pipe(t_subshell *cmds)
 		return (ft_perror());
 	if (pid == 0)
 	{
-		// ft_sig_init(2, cmds, NULL, NULL);
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
@@ -81,7 +80,6 @@ void	ft_execve_pipe(t_subshell *cmds)
 		return (ft_perror());
 	if (!pid)
 	{
-		// ft_sig_init(2, cmds, NULL, NULL);
 		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
 		close(pipefd[0]);
@@ -105,13 +103,11 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	pid = fork();
 	if (pid == -1)
 	{
-		// ft_sig_init(FALSE);
 		ft_perror();
 		return (g_exit);
 	}
 	if (!pid)
 	{
-		// ft_sig_init(2, cmds, NULL, NULL);
 		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
 		status = get_right_cmds(cmds);
@@ -122,11 +118,9 @@ int	ft_execve_last_pipe(t_subshell *cmds)
 	close(cmds->prev->pipe_read_end);
 	if (!g_exit)
 		ft_sig_exit(status);
-	// ft_sig_init(TRUE);
 	cmds->exit_status = g_exit;
 	return (g_exit);
 }
-
 
 void	ft_exec_cmd(t_subshell *cmds)
 {

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:35 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 01:59:09 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/14 04:14:24 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "minish.h"
 
+/**
+ * @param	parsing_state	0: start, 1: argv, 2: redirections
+*/
 typedef struct s_parsing_object
 {
 	t_subshell	*curr_cmd;
@@ -22,7 +25,7 @@ typedef struct s_parsing_object
 	t_bool		ret;
 
 	char		*tmp;
-	int			parsing_state; // 0: start, 1: argv, 2: redirections
+	int			parsing_state;
 }	t_parsing_object;
 
 t_bool		ft_on_redir(t_subshell *subshell, t_parsing_object *po);

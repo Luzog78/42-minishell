@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_sig_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 02:09:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/14 03:32:14 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 04:16:42 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,4 @@ void	ft_sig_exit(int status)
 	}
 	else
 		g_exit = WEXITSTATUS(status);
-	// ft_sig_init(TRUE);
 }
