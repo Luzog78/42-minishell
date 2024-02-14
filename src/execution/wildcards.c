@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:31:08 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 22:24:43 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/14 02:28:40 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	get_index(char *s)
 	i = 0;
 	while (s[i] && s[i] != '*')
 		i++;
+	if (!s[i])
+		return (i + 1);
 	return (i);
 }
 
