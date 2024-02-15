@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/14 06:13:09 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/15 17:38:40 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -1254,3 +1254,90 @@ $ echo *.*.*
 @ >..<
 @ >..< >.U.<
 
+=== Wildcards2 ===
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo $w
+
+@ abc bcd cde def *wild
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo "$w"
+
+@ *
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo $w$w
+
+@ abc bcd cde def *wild
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo a$w
+
+@ abc
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo $w""$w''e
+
+@ cde
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo $w"$w"e
+
+@ **e
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo "$w"$w
+
+@ *wild
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch abc bcd cde def "*wild"
+$ export w=*
+$ echo "$w""$w"
+
+@ **
