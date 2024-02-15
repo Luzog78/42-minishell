@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    tester.py                                          :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/02/07 03:17:43 by ysabik            #+#    #+#              #
+#    Updated: 2024/02/15 18:05:08 by ysabik           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 import os, traceback, re
 from threading import Thread
 from enum import Enum, auto
@@ -541,7 +553,7 @@ sections: dict[int, list[str, bool]] = {}
 i = 0
 for line in souffrance.split('\n'):
 	if line.startswith('=== ') and line.endswith(' ==='):
-		sections[i + 2] = [line[4:-4], False]
+		sections[i + 1] = [line[4:-4], False]
 		if tests[i].is_empty():
 			continue
 		tests.append(Test())
