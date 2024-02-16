@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 15:26:51 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 19:36:19 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	ft_double_quote(char *str, char *bash_string, int *i, char **env)
 		free(var);
 		(*i)++;
 	}
-	else if (str[*i] == '$' && str[*i + 1] != '\0' && str[*i + 1] != '\''
-		&& !ft_is_whitespace(str[*i + 1]) && str[*i + 1] != '"')
+	else if (str[*i] == '$' && ft_isalnum(str[*i + 1]))
 	{
 		var = ft_getvar(str, i, env);
 		if (var)
@@ -56,8 +55,8 @@ void	ft_no_quote(char *str, char *bash_string, int *i, char **env)
 		free(var);
 		(*i)++;
 	}
-	else if (str[*i] == '$' && str[*i + 1] != '\0'
-		&& ft_is_whitespace(str[*i + 1]) == FALSE)
+	else if (str[*i] == '$' && (ft_isalnum(str[*i + 1])
+			|| str[*i + 1] == '\'' || str[*i + 1] == '\"'))
 	{
 		var = ft_getvar(str, i, env);
 		if (var)

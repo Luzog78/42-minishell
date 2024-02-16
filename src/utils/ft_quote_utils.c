@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 03:37:29 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 15:25:46 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 19:37:35 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ void	check_dollar(int *result, int *i, char *str, char **env)
 		free(var);
 		(*i)++;
 	}
-	else if (str[*i] == '$' && str[*i + 1] != '\0' && str[*i + 1] != '\''
-		&& !ft_is_whitespace(str[*i + 1]) && str[*i + 1] != '"')
+	else if (str[*i] == '$' && ft_isalnum(str[*i + 1]))
 	{
 		var = ft_getvar(str, i, env);
 		if (var)
