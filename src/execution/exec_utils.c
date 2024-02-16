@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 14:00:01 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 14:55:13 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,8 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 		entry = readdir(dir);
 		if (!entry)
 			break ;
-		if (entry->d_name[0] != '.' && ft_wildcard_allow(entry->d_name, new))
+		// printf("entry->d_name: %s\n", entry->d_name);
+		if ((entry->d_name[0] != '.' || new[0] == '.') && ft_wildcard_allow(entry->d_name, new))
 		{
 			is_matched = TRUE;
 			tmp = ft_strdup(entry->d_name);

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:31:08 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 14:01:10 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 14:55:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ t_bool	ft_wildcard_allow(char *file, char *str)
 		tmpfile++;
 		tmpwild++;
 	}
+	if (!*tmpfile && *tmpwild == '*')
+		return (TRUE);
 	if (!*tmpfile && (!*tmpwild || (*tmpwild == '*' && !*(tmpwild + 1))))
 		return (ret);
 	return (FALSE);
