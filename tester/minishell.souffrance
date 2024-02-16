@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 15:03:33 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 17:47:14 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -1422,3 +1422,122 @@ $ export w=*
 $ echo "$w""$w"
 
 @ **
+
+
+=== Logic ===
+
+$ echo abc && echo def
+
+@ abc
+@ def
+
+---
+
+$ echo abc > out1
+$ echo def > out2
+$ cat out2 || cat out1
+
+@ def
+
+---
+
+$ rm -rf io
+$ echo success > out
+$ cat io && cat out
+###
+
+---
+
+$ echo 42 > out
+$ cat out && ls out && rm out && rm out && echo success
+$ echo $?
+
+###
+@ 42
+@ out
+@ 1
+
+---
+
+$ echo 42 > out
+$ cat out && rm out && rm out || echo $? && echo success || echo $?
+
+###
+@ 42
+@ 1
+@ success
+
+
+=== Parentheses ===
+
+$ (echo abc)
+
+@ abc
+
+---
+
+$ (echo abc) | cat -e
+
+@ abc$
+
+---
+
+$ (echo abc) > out1
+$ (echo def)>out2
+$ cat out1 out2
+
+@ abc
+@ def
+
+---
+
+$ (echo abc | cat) | cat > in && (echo def | cat) | cat >> in
+$ cat in
+$ (cat | cat | cat | cat | wc -l) <in >out && echo $? | cat | cat -e
+$ cat out || echo failure
+$ rm in out
+$ cat out || echo failure
+
+###
+@ abc
+@ def
+@ 0$
+@ 2
+@ failure
+
+---
+
+$ ((blublublu || ((echo abc || echo def) && echo ghi)) && blobloblo) || echo $?
+
+###
+@ abc
+@ ghi
+@ 127
+
+---
+
+$ (blableblibloblu && echo abc) || echo $?
+
+###
+@ 127
+
+---
+
+$ (echo abc && bliblebloblubla) || echo $?
+
+###
+@ abc
+@ 127
+
+---
+
+$ (blableblibloblu || echo abc) || echo $?
+
+###
+@ abc
+
+---
+
+$ (echo abc || bliblebloblubla) || echo $?
+
+@ abc
