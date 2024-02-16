@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:17:25 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 18:41:06 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ static void	ft_get_path(char **argv, char **env)
 	int		i;
 
 	i = 0;
-	path = ft_split(ft_getenv("PATH", env), ':');
+	tmp = ft_getenv("PATH", env);
+	if (!tmp)
+		return ;
+	path = ft_split(tmp, ':');
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");

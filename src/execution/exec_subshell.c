@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 06:35:38 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 18:17:36 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,10 @@ int	ft_exec_last_subshell(t_subshell *subshell)
 
 void	ft_exec_subshell(t_subshell *subshell)
 {
+	if (subshell->stdin)
+		ft_stdin(subshell, subshell->stdin);
+	if (subshell->outfiles)
+		ft_dup_outfiles(subshell->outfiles, subshell->env);
 	if (subshell->link == PIPE
 		&& (!subshell->prev || subshell->prev->link != PIPE))
 		ft_exec_first_subshell(subshell);
@@ -136,6 +140,8 @@ void	ft_exec_subshell(t_subshell *subshell)
 		ft_exec_last_subshell(subshell);
 	else
 		ft_get_right_subshell(subshell);
+	dup2(ft_get_parent(subshell)->stdin_fd, STDIN_FILENO);
+	dup2(ft_get_parent(subshell)->stdout_fd, STDOUT_FILENO);
 	if (subshell->next && subshell->next->type == COMMAND
 		&& allow_next(subshell))
 	{
@@ -148,5 +154,4 @@ void	ft_exec_subshell(t_subshell *subshell)
 		subshell->next->env = ft_env_cpy(subshell->env);
 		ft_exec_subshell(subshell->next);
 	}
-	g_exit = subshell->exit_status;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 16:27:16 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 17:54:32 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	allow_next(t_subshell *cmds)
 {
 	if (cmds->link == PIPE || cmds->link == PIPE_AND)
 		return (1);
-	if (cmds->link == AND && cmds->exit_status == 0)
+	if (cmds->link == AND && g_exit == 0)
 		return (1);
-	if (cmds->link == OR && cmds->exit_status != 0)
+	if (cmds->link == OR && g_exit != 0)
 		return (1);
 	return (0);
 }
