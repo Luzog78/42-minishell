@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 03:13:30 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/14 03:47:47 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 19:24:16 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	ft_create_new_line(char **env, char *tmp, int i, int k)
 			k++;
 			while (env[i][j])
 			{
-				if (env[i][j] == '"')
+				if (env[i][j] == '"' || env[i][j] == '$' || env[i][j] == '\\')
 					tmp[k++] = '\\';
 				tmp[k++] = env[i][j++];
 			}
@@ -53,7 +53,7 @@ static void	ft_format_line(char **env, int i)
 	k = 0;
 	while (env[i][j])
 	{
-		if (env[i][j] == '"')
+		if (env[i][j] == '"' || env[i][j] == '$' || env[i][j] == '\\')
 			k++;
 		j++;
 	}
