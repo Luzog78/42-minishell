@@ -6,39 +6,11 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 05:24:31 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/16 03:37:55 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-// TO REMOVE
-// char	*ft_itoa(int i)
-// {
-// 	char	*result;
-// 	int		j;
-// 	int		save;
-
-// 	if (i == 0)
-// 		return (ft_strdup("0"));
-// 	save = i;
-// 	j = 0;
-// 	while (i)
-// 	{
-// 		i /= 10;
-// 		j++;
-// 	}
-// 	result = ft_calloc(sizeof(char), (j + 1));
-// 	if (!result)
-// 		return (NULL);
-// 	result[j] = '\0';
-// 	while (j)
-// 	{
-// 		result[--j] = save % 10 + '0';
-// 		save /= 10;
-// 	}
-// 	return (result);
-// }
 
 /*Faire une fonction qui renvoie un char * qui a été malloc
  *Avec les " ' $ avec getenv pour $
@@ -46,183 +18,80 @@
  *Ex: '"""'$PWD'"""' -> """/nfs/home/..."""
 */
 
-char	*ft_getvar(char *str, int *i, char **env)
-{
-	int		j;
-	int		save;
-	char	*sub_str;
-	char	*result;
-
-	(*i)++;
-	save = *i;
-	j = *i;
-	while (ft_isalnum(str[*i]))
-		(*i)++;
-	j = *i - j;
-	(*i)--;
-	sub_str = ft_calloc(sizeof(char), (j + 1));
-	if (!sub_str)
-		return (NULL);
-	j = 0;
-	while (ft_isalnum(str[save]))
-		sub_str[j++] = str[save++];
-	sub_str[j] = '\0';
-	result = ft_getenv(sub_str, env);
-	free(sub_str);
-	result = ft_strtrim(result);
-	return (result);
-}
-
-void	check_dollar(int *result, int *i, char *str, char **env)
+void	ft_double_quote(char *str, char *bash_string, int *i, char **env)
 {
 	char	*var;
 
+	var = NULL;
 	if (str[*i] == '$' && str[*i + 1] == '?')
 	{
 		var = ft_itoa(g_exit);
-		*result += ft_strlen(var);
+		ft_strcat(bash_string, var);
 		free(var);
-		(*i)++;
+		i++;
 	}
-	else if (str[*i] == '$' && str[*i + 1] != '\0' && ft_is_whitespace(str[*i + 1]) == FALSE && str[*i + 1] != '"')
+	else if (str[*i] == '$' && str[*i + 1] != '\0' && str[*i + 1] != '\''
+		&& !ft_is_whitespace(str[*i + 1]) && str[*i + 1] != '"')
 	{
 		var = ft_getvar(str, i, env);
 		if (var)
 		{
-			*result += ft_strlen(var);
+			ft_strcat(bash_string, var);
 			free(var);
 		}
 	}
 	else
-		(*result)++;
-}
-int	get_bash_string_size(char *str, char **env)
-{
-	int		result;
-	int		i;
-
-	i = 0;
-	result = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-		{
-			while (str[++i] != '\'' && str[i] != '\0')
-				result++;
-		}
-		else if (str[i] == '"')
-		{
-			while (str[++i] != '"' && str[i] != '\0')
-				check_dollar(&result, &i, str, env);
-		}
-		else
-			check_dollar(&result, &i, str, env);
-		i++;
-	}
-	return (result);
+		bash_string[ft_strlen(bash_string)] = str[*i];
 }
 
-char	*ft_addchar(char *dest, char character)
+void	ft_no_quote(char *str, char *bash_string, int *i, char **env)
 {
-	int		i;
-	char	*result;
+	char	*var;
 
-	i = 0;
-	result = ft_calloc(sizeof(char), (ft_strlen(dest) + 2));
-	if (!result)
-		return (NULL);
-	while (dest[i])
+	var = NULL;
+	if (str[*i] == '$' && str[*i + 1] == '?')
 	{
-		result[i] = dest[i];
-		i++;
+		var = ft_itoa(g_exit);
+		ft_strcat(bash_string, var);
+		free(var);
+		*i++;
 	}
-	result[i] = character;
-	result[i + 1] = '\0';
-	free(dest);
-	return (result);
+	else if (str[*i] == '$' && str[*i + 1] != '\0'
+		&& ft_is_whitespace(str[*i + 1]) == FALSE)
+	{
+		var = ft_getvar(str, i, env);
+		if (var)
+		{
+			ft_strcat(bash_string, var);
+			free(var);
+		}
+	}
+	else
+		bash_string[ft_strlen(bash_string)] = str[*i];
 }
 
 char	*ft_get_bash_string(char *str, char **env)
 {
 	int		i;
 	char	*bash_string;
-	char	*var;
-	t_bool	is_empty;
 
-	is_empty = TRUE;
-	i = 0;
-	int size = get_bash_string_size(str, env);
-	bash_string = ft_calloc((size + 1), sizeof(char));
+	i = -1;
+	bash_string = ft_calloc((ft_get_bash_string(str, env) + 1), sizeof(char));
 	if (!bash_string)
 		return (NULL);
-	while (str[i])
+	while (str[++i])
 	{
 		if (str[i] == '\'')
-		{
-			is_empty = FALSE;
 			while (str[++i] != '\'' && str[i] != '\0')
 				bash_string[ft_strlen(bash_string)] = str[i];
-		}
 		else if (str[i] == '"')
-		{
-			is_empty = FALSE;
 			while (str[++i] != '"' && str[i] != '\0')
-			{
-				if (str[i] == '$' && str[i + 1] == '?')
-				{
-					is_empty = FALSE;
-					var = ft_itoa(g_exit);
-					ft_strcat(bash_string, var);
-					free(var);
-					i++;
-				}
-				else if (str[i] == '$' && str[i + 1] != '\0' && !ft_is_whitespace(str[i + 1]) && str[i + 1] != '"')
-				{
-					var = ft_getvar(str, &i, env);
-					if (var)
-					{
-						is_empty = FALSE;
-						ft_strcat(bash_string, var);
-						free(var);
-					}
-				}
-				else
-				{
-					is_empty = FALSE;
-					bash_string[ft_strlen(bash_string)] = str[i];
-				}
-			}
-		}
+				ft_double_quote(str, bash_string, &i, env);
 		else
-		{
-			if (str[i] == '$' && str[i + 1] == '?')
-			{
-				is_empty = FALSE;
-				var = ft_itoa(g_exit);
-				ft_strcat(bash_string, var);
-				free(var);
-				i++;
-			}
-			else if (str[i] == '$' && str[i + 1] != '\0' && ft_is_whitespace(str[i + 1]) == FALSE)
-			{
-				var = ft_getvar(str, &i, env);
-				if (var)
-				{
-					is_empty = FALSE;
-					ft_strcat(bash_string, var);
-					free(var);
-				}
-			}
-			else
-			{
-				is_empty = FALSE;
-				bash_string[ft_strlen(bash_string)] = str[i];
-			}
-		}
-		i++;
+			ft_no_quote(str, bash_string, &i, env);
 	}
 	bash_string[get_bash_string_size(str, env)] = '\0';
-	if (is_empty)
+	if (bash_string && bash_string[0] == '\0')
 	{
 		free(bash_string);
 		return (NULL);

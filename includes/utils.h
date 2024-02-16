@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:55:57 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/16 03:38:35 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ t_subshell	*ft_get_parent(t_subshell *cmds);
 char		*ft_get_value_from_env(char *key, char **env);
 char		*ft_getenv(char *name, char **env);
 char		*ft_get_bash_string(char *str, char **env);
+int			get_bash_string_size(char *str, char **env);
+void		check_dollar(int *result, int *i, char *str, char **env);
+char		*ft_getvar(char *str, int *i, char **env);
 
 /* Libft Functions */
 void		*ft_calloc(size_t count, size_t size);
