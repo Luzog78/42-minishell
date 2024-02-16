@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/14 07:08:35 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 11:06:36 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,6 +84,7 @@ SRC_FILES			= \
 						src/utils/ft_strncmp.c \
 						src/utils/ft_free.c \
 						src/utils/ft_split.c \
+						src/utils/ft_quote_utils.c \
 						src/utils/ft_quote.c \
 						src/utils/ft_sort_env.c \
 						src/utils/ft_getenv.c \

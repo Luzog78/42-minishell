@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 03:17:43 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/15 18:05:08 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 11:25:03 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -495,10 +495,11 @@ def clean_output(output: str) -> str:
 		i = 0
 		while i < len(output) and not output[i:].startswith(prompt):
 			i += 1
-		output = output[i:]
+		if i:
+			output = output[i:]
 		
 		t = output.split('\n')
-		t = [line for line in t if not line.startswith(prompt)]
+		t = [line for line in t if not line.startswith(prompt) and not line.startswith('\x1b[')]
 		output = '\n'.join(t)
 
 		return output

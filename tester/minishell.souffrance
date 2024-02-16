@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/15 17:38:40 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 11:43:48 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -1213,9 +1213,27 @@ $ echo *z
 $ rm -rf wild
 $ mkdir wild
 $ cd ./wild
+$ echo *
+
+@ *
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ echo ******************************************
+
+@ ******************************************
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
 $ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
 $ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
-$ echo .*
+$ echo .* | sed -e 's/^\. \.\. //;'
 
 @ .hidden .U.
 

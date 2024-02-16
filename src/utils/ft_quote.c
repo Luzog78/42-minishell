@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_quote.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 03:37:55 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:20:00 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_double_quote(char *str, char *bash_string, int *i, char **env)
 		var = ft_itoa(g_exit);
 		ft_strcat(bash_string, var);
 		free(var);
-		i++;
+		(*i)++;
 	}
 	else if (str[*i] == '$' && str[*i + 1] != '\0' && str[*i + 1] != '\''
 		&& !ft_is_whitespace(str[*i + 1]) && str[*i + 1] != '"')
@@ -54,7 +54,7 @@ void	ft_no_quote(char *str, char *bash_string, int *i, char **env)
 		var = ft_itoa(g_exit);
 		ft_strcat(bash_string, var);
 		free(var);
-		*i++;
+		(*i)++;
 	}
 	else if (str[*i] == '$' && str[*i + 1] != '\0'
 		&& ft_is_whitespace(str[*i + 1]) == FALSE)
@@ -76,7 +76,7 @@ char	*ft_get_bash_string(char *str, char **env)
 	char	*bash_string;
 
 	i = -1;
-	bash_string = ft_calloc((ft_get_bash_string(str, env) + 1), sizeof(char));
+	bash_string = ft_calloc((get_bash_string_size(str, env) + 1), sizeof(char));
 	if (!bash_string)
 		return (NULL);
 	while (str[++i])
