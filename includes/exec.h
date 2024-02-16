@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:13 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 07:08:11 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 00:53:58 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ typedef struct s_heredoc
 	t_bool		is_formattable;
 }	t_heredoc;
 
+typedef struct s_wc_token
+{
+	char		*start;
+	char		*end;
+	t_str_lst	*tks;
+}	t_wc_token;
+
 int		ft_dup_infiles(char *infile, char **env);
 int		ft_dup_outfiles(t_out *outfiles, char **env);
 int		ft_heredoc(t_subshell *cmds, t_stdin_lst *stdin, char **env);
@@ -38,4 +45,9 @@ size_t	ft_lstsize(t_str_lst *lst);
 void	ft_append_wildkartttt(char ***args, char *str, char **env);
 t_bool	ft_is_wildcard(char *str);
 t_bool	ft_wildcard_allow(char *file, char *str);
+void	ft_wc_tokenize(t_wc_token *tk, char *wc);
+t_bool	ft_wc_allow_start(t_wc_token *tk, char *file);
+t_bool	ft_wc_allow_end(t_wc_token *tk, char *file);
+t_bool	ft_wc_allow_middle(t_wc_token *tk, char *file);
+
 #endif

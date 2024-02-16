@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 20:38:23 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/17 00:48:24 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -1309,6 +1309,39 @@ $ echo *.*.*
 $ rm -rf wild
 $ mkdir wild
 $ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U." exaxexddeeaed
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo e*a*e*d
+
+@ exaxexddeeaed
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.*.<" ">.U.<" ".U." exaxexddeeaed
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *."*".*
+
+@ >.*.<
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U." exaxexddeeaed
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo *f*i*
+
+@ infile.d infiles Makefile outfile.d outfiles
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
 $ touch infile.d
 $ touch outfile.d
 $ export wild=file
@@ -1319,7 +1352,6 @@ $ cat *$wild*.d
 @ infile
 @ outfile
 
----
 
 === Wildcards2 ===
 

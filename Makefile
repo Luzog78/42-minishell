@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 12:42:31 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/17 00:15:36 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRC_FILES			= \
 						src/execution/exec_cmds.c \
 						src/execution/exec_subshell.c \
 						src/execution/exec_utils.c \
+						src/execution/wc_tokens.c \
 						src/execution/wildcards.c \
 						\
 						src/builtins/misc/bi_add_double_quotes.c \
@@ -84,6 +85,8 @@ SRC_FILES			= \
 						src/utils/ft_free.c \
 						src/utils/ft_split.c \
 						src/utils/ft_str_lst_add.c \
+						src/utils/ft_str_lst_add_back.c \
+						src/utils/ft_str_lst_pop_back.c \
 						src/utils/ft_quote_utils.c \
 						src/utils/ft_quote.c \
 						src/utils/ft_sort_env.c \

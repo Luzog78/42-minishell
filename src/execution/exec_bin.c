@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_bin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 18:41:06 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:42:51 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	ft_child_execve_bin(char **argv, t_subshell *cmds)
 {
 	if (access(argv[0], F_OK) == -1)
 	{
-		perror("minishell:");
+		perror("minishell");
 		ft_free_char_array(argv);
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(127);
