@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 18:50:24 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 19:04:50 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -564,6 +564,12 @@ $ cat -e out
 
 @ -nn'nn'nn 42$
 @ $
+
+---
+
+$ export test1='export test2=echo' && $test1 && $test2
+
+@ 
 
 
 === Built-ins: exit ===
