@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 03:17:43 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 11:25:03 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 18:21:33 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -292,6 +292,11 @@ class Test:
 				self.state = ExitState.FAILED
 				return
 		
+		if self.result_error \
+			and re.findall(r'(FATAL:\s*)|([Cc]ore [Dd]umped)', self.result_error):
+			self.state = ExitState.CRASHED
+			return
+		
 		if self.expected != self.result_output:
 			self.state = ExitState.FAILED
 	
@@ -554,11 +559,11 @@ sections: dict[int, list[str, bool]] = {}
 i = 0
 for line in souffrance.split('\n'):
 	if line.startswith('=== ') and line.endswith(' ==='):
-		sections[i + 1] = [line[4:-4], False]
 		if tests[i].is_empty():
 			continue
 		tests.append(Test())
 		i += 1
+		sections[i + 1] = [line[4:-4], False]
 
 	elif line == '---':
 		if tests[i].is_empty():

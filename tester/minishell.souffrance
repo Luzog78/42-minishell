@@ -6,12 +6,28 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 17:47:14 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 18:20:35 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-=== Custom Tests ===
+=== First Impressions ===
+
+---
+
+$ 
+$ 
+$ 
+$ 
+
+---
+
+$              
+$              
+$              
+$              
+
+---
 
 $ echo abc
 
@@ -22,6 +38,12 @@ $ echo abc
 $ echo "Hello, World!" You"are"'my'"friend"
 
 @ Hello, World! Youaremyfriend
+
+---
+
+$ echo   "Hello, World!"    You"are"'my'"friend"     | cat -e
+
+@ Hello, World! Youaremyfriend$
 
 ---
 
@@ -453,6 +475,14 @@ $ echo $?
 @ 0
 @ declare -x a=">\"<"
 @ 0
+
+---
+
+$ unset PATH
+$ ls
+
+###
+
 
 === Combining echo and $ ===
 
