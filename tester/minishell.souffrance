@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 19:04:50 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 19:26:10 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -478,6 +478,32 @@ $ echo $?
 
 ---
 
+$ export a=42 b='$a'
+$ echo $?
+$ export | grep -E "^(declare -x a=)"
+$ echo $?
+$ export | grep -E "^(declare -x b=)"
+$ echo $?
+
+@ 0
+@ declare -x a="42"
+@ 0
+@ declare -x b="\$a"
+@ 0
+
+---
+
+$ export c='\\'
+$ echo $?
+$ export | grep -E "^(declare -x c=)" | sed -r "s/(\\\\\\\\)/\\\\/g"
+$ echo $?
+
+@ 0
+@ declare -x c="\\"
+@ 0
+
+---
+
 $ unset PATH
 $ ls
 
@@ -545,6 +571,12 @@ $ export a=42
 $ echo $"a"
 
 @ a
+
+---
+
+$ echo $:
+
+@ $:
 
 ---
 
