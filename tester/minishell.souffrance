@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 19:26:10 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 20:38:23 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -297,6 +297,12 @@ $ ec''h"o"  "Hello, World!"  '$?'   You"are"$?'my$?'"friend$?"$?
 $ echo "    # haha"
 
 @     # haha
+
+---
+
+$ "echo abc"
+###
+
 
 === Built-ins: cd / pwd ===
 
