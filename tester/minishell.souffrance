@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 11:43:48 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 13:28:49 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -975,88 +975,6 @@ $ <<><>><>>>>
 
 === wildcards ===
 
-
-$ rm -rf wild
-$ mkdir wild
-$ cd ./wild
-$ touch infile.d
-$ touch outfile.d
-$ export wild=file
-$ echo "infile" > infile.d
-$ echo "outfile" > outfile.d
-$ cat *$wild*.d
-
-@ infile
-@ outfile
-
----
-
-$ rm -rf wild
-$ mkdir wild
-$ cd ./wild
-$ touch infile.d
-$ touch outfile.d
-$ export wild=file
-$ echo "infile" > infile.d
-$ echo "outfile" > outfile.d
-$ cat *'$wild'*.d
-
-###
-
----
-
-$ rm -rf wild
-$ mkdir wild
-$ cd ./wild
-$ touch infile outfile file podwal ilesf dsfiless files
-$ ls *file
-
-@ file
-@ infile
-@ outfile
-
----
-
-$ rm -rf wild
-$ mkdir wild
-$ cd ./wild
-$ echo "helloooooooo" > infile
-$ echo "niceeee" > infile2
-$ echo "test" > infile3
-$ cat *
-
-@ helloooooooo
-@ niceeee
-@ test
-
----
-
-$ rm -rf wild
-$ mkdir wild
-$ cd ./wild
-$ touch infile.d outfile.d
-$ export wild=file
-$ echo "infile" > infile.d
-$ echo "outfile" > outfile.d
-$ cat *'$w'ild*.d
-###
-
----
-
-$ rm -rf wild
-$ mkdir wild
-$ cd ./wild
-$ touch infile.d outfile.d
-$ export wile=file
-$ echo "infile" > infile.d
-$ echo "outfile" > outfile.d
-$ cat *"$w"ile*.d
-
-@ infile
-@ outfile
-
----
-
 $ rm -rf wild
 $ mkdir wild
 $ cd ./wild
@@ -1069,6 +987,16 @@ $ touch c
 $ echo *
 
 @ a b c d e f
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch a b c d e f
+$ echo "*"
+
+@ *
 
 ---
 
@@ -1095,11 +1023,22 @@ $ echo *
 $ rm -rf wild
 $ mkdir wild
 $ cd ./wild
-$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ".U."
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ">.K.<" ".U."
 $ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
 $ echo *
 
-@ >..< header.h include infile.d infiles main.c Makefile outfile.d outfiles src tester tester.py >.U.<
+@ >..< header.h include infile.d infiles >.K.< main.c Makefile outfile.d outfiles src tester tester.py >.U.<
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ mkdir src include infiles outfiles tester ">..<" ">.U.<" ">.K.<" ".U."
+$ touch Makefile main.c header.h infile.d outfile.d tester.py .hidden
+$ echo * *
+
+@ >..< header.h include infile.d infiles >.K.< main.c Makefile outfile.d outfiles src tester tester.py >.U.< >..< header.h include infile.d infiles >.K.< main.c Makefile outfile.d outfiles src tester tester.py >.U.<
 
 ---
 
@@ -1272,7 +1211,91 @@ $ echo *.*.*
 @ >..<
 @ >..< >.U.<
 
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d
+$ touch outfile.d
+$ export wild=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *$wild*.d
+
+@ infile
+@ outfile
+
+---
+
 === Wildcards2 ===
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d
+$ touch outfile.d
+$ export wild=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *'$wild'*.d
+
+###
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch infile outfile file podwal ilesf dsfiless files
+$ ls *file
+
+@ file
+@ infile
+@ outfile
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ echo "helloooooooo" > infile
+$ echo "niceeee" > infile2
+$ echo "test" > infile3
+$ cat *
+
+@ helloooooooo
+@ niceeee
+@ test
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d outfile.d
+$ export wild=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *'$w'ild*.d
+###
+
+---
+
+$ rm -rf wild
+$ mkdir wild
+$ cd ./wild
+$ touch infile.d outfile.d
+$ export wile=file
+$ echo "infile" > infile.d
+$ echo "outfile" > outfile.d
+$ cat *"$w"ile*.d
+
+@ infile
+@ outfile
+
+
+=== Wildcards3 ===
 
 $ rm -rf wild
 $ mkdir wild

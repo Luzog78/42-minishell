@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:51:06 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/16 13:35:47 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,97 @@ static void	ft_realloc(char ***args, char *str)
 	*args = new;
 }
 
-void	ft_sort_args(char ***args)
+void	ft_reallocs(char ***args, t_str_lst **lst)
 {
+	t_str_lst	*cursor;
+	t_str_lst	*tmp;
+
+	cursor = *lst;
+	while (cursor)
+	{
+		ft_realloc(args, cursor->value);
+		free(cursor->value);
+		tmp = cursor->next;
+		free(cursor);
+		cursor = tmp;
+	}
+	*lst = NULL;
+}
+
+char	*ft_tolower(const char *str)
+{
+	char	*new;
 	int		i;
 	int		j;
-	char	*tmp;
 
-	i = 1;
-	while (*args && (*args)[i])
+	i = -1;
+	j = 0;
+	while (str[++i])
 	{
-		j = i + 1;
-		while (*args && (*args)[j])
-		{
-			if (ft_strcmp((*args)[i], (*args)[j]) > 0)
-			{
-				tmp = (*args)[i];
-				(*args)[i] = (*args)[j];
-				(*args)[j] = tmp;
-			}
+		if ((str[i] >= 'A' && str[i] <= 'Z')
+			|| (str[i] >= 'a' && str[i] <= 'z')
+			|| (str[i] >= '0' && str[i] <= '9'))
 			j++;
+	}
+	new = ft_calloc(sizeof(char), j + 1);
+	if (!new)
+		return (NULL);
+	i = -1;
+	j = 0;
+	while (str[++i])
+	{
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			new[j++] = str[i] + 32;
+		else if ((str[i] >= 'a' && str[i] <= 'z')
+			|| (str[i] >= '0' && str[i] <= '9'))
+			new[j++] = str[i];
+	}
+	return (new);
+}
+
+int	ft_strcmp_ignore_case(const char *s1, const char *s2)
+{
+	const char	*str1;
+	const char	*str2;
+	size_t		i;
+	int			result;
+
+	result = 0;
+	str1 = ft_tolower(s1);
+	str2 = ft_tolower(s2);
+	if (str1 && str2)
+	{
+		i = 0;
+		while (str1[i] && str2[i] && str1[i] == str2[i])
+			i++;
+		result = (unsigned char)str1[i] - (unsigned char)str2[i];
+	}
+	free((char *)str1);
+	free((char *)str2);
+	return (result);
+}
+
+void	ft_sort_list(t_str_lst **lst)
+{
+	t_str_lst	*cursor;
+	t_str_lst	*tmp;
+	char		*tmp_str;
+
+	cursor = *lst;
+	while (cursor)
+	{
+		tmp = cursor->next;
+		while (tmp)
+		{
+			if (ft_strcmp_ignore_case(cursor->value, tmp->value) > 0)
+			{
+				tmp_str = cursor->value;
+				cursor->value = tmp->value;
+				tmp->value = tmp_str;
+			}
+			tmp = tmp->next;
 		}
-		i++;
+		cursor = cursor->next;
 	}
 }
 
@@ -112,10 +182,11 @@ t_bool	is_star_between_quote(char *tmp)
 
 void	ft_append_wildkartttt(char ***args, char *str, char **env)
 {
-	DIR		*dir;
-	char	*new;
-	t_bool	is_matched;
-	char	*tmp;
+	DIR			*dir;
+	char		*new;
+	t_bool		is_matched;
+	char		*tmp;
+	t_str_lst	*tmp_args;
 
 	tmp = str;
 	if (is_star_between_quote(tmp))
@@ -130,6 +201,7 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 	}
 	new = ft_get_bash_string(str, env);
 	free(str);
+	tmp_args = NULL;
 	is_matched = FALSE;
 	dir = opendir(".");
 	if (!dir)
@@ -145,14 +217,16 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 			is_matched = TRUE;
 			tmp = ft_strdup(entry->d_name);
 			if (tmp)
-			{
-				ft_realloc(args, tmp);
-				free(tmp);
-			}
+				ft_str_lst_add(&tmp_args, tmp);
 		}
 	}
 	if (!is_matched)
 		ft_realloc(args, new);
+	else
+	{
+		ft_sort_list(&tmp_args);
+		ft_reallocs(args, &tmp_args);
+	}
 	free(new);
 	closedir(dir);
 }
@@ -177,7 +251,6 @@ void	ft_append_str(char ***args, char *str, char **env)
 		return ;
 	}
 	ft_append_wildkartttt(args, str, env);
-	ft_sort_args(args);
 	free(new);
 }
 

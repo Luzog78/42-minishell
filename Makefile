@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 11:06:36 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 12:42:31 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,6 @@ SRC_FILES			= \
 						src/parsing/ft_skip_whitespace.c \
 						src/parsing/ft_starts_with.c \
 						src/parsing/ft_stdin_add.c \
-						src/parsing/ft_str_lst_add.c \
 						src/parsing/ft_subshell_add.c \
 						src/parsing/parse.c \
 						\
@@ -84,6 +83,7 @@ SRC_FILES			= \
 						src/utils/ft_strncmp.c \
 						src/utils/ft_free.c \
 						src/utils/ft_split.c \
+						src/utils/ft_str_lst_add.c \
 						src/utils/ft_quote_utils.c \
 						src/utils/ft_quote.c \
 						src/utils/ft_sort_env.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 03:38:35 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:42:03 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 void		ft_arr_char_cpy(char **src, char **dst);
 char		**ft_sort_env(char **env);
+t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str);
 
 /* Execution Utils Functions */
 char		**ft_env_owrite(char **env, char **new_env);

@@ -6,11 +6,11 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 08:54:55 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/13 09:55:17 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 12:41:21 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "utils.h"
 
 t_str_lst	*ft_str_lst_add(t_str_lst **lst, char *str)
 {
