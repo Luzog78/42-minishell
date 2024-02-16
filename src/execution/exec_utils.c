@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 16:03:40 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 16:27:16 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,26 +188,29 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 	char		*tmp;
 	t_str_lst	*tmp_args;
 
-	tmp = ft_get_bash_string(str, env, TRUE);
-	if (tmp && is_star_between_quote(tmp))
-	{
-		free(tmp);
-		tmp = ft_get_bash_string(str, env, FALSE);
-		free(str);
-		if (!tmp)
-			return ;
-		ft_realloc(args, tmp);
-		free(tmp);
-		return ;
-	}
-	free(tmp);
-	new = ft_get_bash_string(str, env, FALSE);
-	free(str);
+	// tmp = ft_get_bash_string(str, env, TRUE);
+	// if (tmp && is_star_between_quote(tmp))
+	// {
+	// 	free(tmp);
+	// 	tmp = ft_get_bash_string(str, env, FALSE);
+	// 	free(str);
+	// 	if (!tmp)
+	// 		return ;
+	// 	ft_realloc(args, tmp);
+	// 	free(tmp);
+	// 	return ;
+	// }
+	// free(tmp);
+	new = ft_get_bash_string(str, env, TRUE);
 	tmp_args = NULL;
 	is_matched = FALSE;
 	dir = opendir(".");
 	if (!dir)
+	{
+		free(new);
+		free(str);
 		return ;
+	}
 	while (1)
 	{
 		struct dirent	*entry;
@@ -224,13 +227,19 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 		}
 	}
 	if (!is_matched)
-		ft_realloc(args, new);
+	{
+		free(new);
+		new = ft_get_bash_string(str, env, FALSE);
+		if (new)
+			ft_realloc(args, new);
+	}
 	else
 	{
 		ft_sort_list(&tmp_args);
 		ft_reallocs(args, &tmp_args);
 	}
 	free(new);
+	free(str);
 	closedir(dir);
 }
 
@@ -240,7 +249,7 @@ void	ft_append_str(char ***args, char *str, char **env)
 
 	if (!str)
 		return ;
-	new = ft_get_bash_string(str, env, FALSE);
+	new = ft_get_bash_string(str, env, TRUE);
 	if (!new)
 	{
 		free(str);
@@ -248,6 +257,8 @@ void	ft_append_str(char ***args, char *str, char **env)
 	}
 	if (!ft_is_wildcard(new))
 	{
+		free(new);
+		new = ft_get_bash_string(str, env, FALSE);
 		free(str);
 		if (new)
 			ft_realloc(args, new);
