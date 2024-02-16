@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:31:08 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:19:01 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 14:01:10 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ t_bool	ft_wildcard_allow(char *file, char *str)
 	{
 		if (*tmpwild == '*')
 		{
-			tmpwild++;
+			while (*tmpwild == '*')
+				tmpwild++;
 			if (!*tmpwild)
 				return (TRUE);
 			while (*tmpfile
