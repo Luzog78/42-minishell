@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 18:20:35 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/16 18:50:24 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -545,6 +545,25 @@ $ export a=42
 $ echo $"a"
 
 @ a
+
+---
+
+$ export n="-nn"
+$ echo $n 42 > out
+$ /usr/bin/echo >> out
+$ cat -e out
+
+@ 42$
+
+---
+
+$ export n="-nn'nn'nn"
+$ echo $n 42 > out
+$ /usr/bin/echo >> out
+$ cat -e out
+
+@ -nn'nn'nn 42$
+@ $
 
 
 === Built-ins: exit ===
