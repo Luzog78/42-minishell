@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 14:55:13 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 16:03:40 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,11 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 	char		*tmp;
 	t_str_lst	*tmp_args;
 
-	if (is_star_between_quote(str))
+	tmp = ft_get_bash_string(str, env, TRUE);
+	if (tmp && is_star_between_quote(tmp))
 	{
-		tmp = ft_get_bash_string(str, env);
+		free(tmp);
+		tmp = ft_get_bash_string(str, env, FALSE);
 		free(str);
 		if (!tmp)
 			return ;
@@ -198,7 +200,8 @@ void	ft_append_wildkartttt(char ***args, char *str, char **env)
 		free(tmp);
 		return ;
 	}
-	new = ft_get_bash_string(str, env);
+	free(tmp);
+	new = ft_get_bash_string(str, env, FALSE);
 	free(str);
 	tmp_args = NULL;
 	is_matched = FALSE;
@@ -237,7 +240,7 @@ void	ft_append_str(char ***args, char *str, char **env)
 
 	if (!str)
 		return ;
-	new = ft_get_bash_string(str, env);
+	new = ft_get_bash_string(str, env, FALSE);
 	if (!new)
 	{
 		free(str);
@@ -246,12 +249,13 @@ void	ft_append_str(char ***args, char *str, char **env)
 	if (!ft_is_wildcard(new))
 	{
 		free(str);
-		ft_realloc(args, new);
+		if (new)
+			ft_realloc(args, new);
 		free(new);
 		return ;
 	}
-	ft_append_wildkartttt(args, str, env);
 	free(new);
+	ft_append_wildkartttt(args, str, env);
 }
 
 char	**ft_lststr_to_char_array(t_str_lst *lst, char **env)

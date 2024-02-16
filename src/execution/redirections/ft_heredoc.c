@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 06:38:30 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/14 07:08:11 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 15:19:29 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	ft_here_child(t_heredoc hd)
 			break ;
 		}
 		if (hd.is_formattable)
-			line = ft_get_bash_string(line, hd.env);
+			line = ft_get_bash_string(line, hd.env, FALSE);
 		if (line)
 			ft_putstr_fd(line, hd.pipefd[1]);
 		ft_putstr_fd("\n", hd.pipefd[1]);

@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 11:20:00 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 15:26:51 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,21 @@ void	ft_no_quote(char *str, char *bash_string, int *i, char **env)
 		bash_string[ft_strlen(bash_string)] = str[*i];
 }
 
-char	*ft_get_bash_string(char *str, char **env)
+char	*ft_get_bash_string(char *str, char **env, t_bool keep_quotes)
 {
 	int		i;
 	char	*bash_string;
+	int 	size;
 
 	i = -1;
-	bash_string = ft_calloc((get_bash_string_size(str, env) + 1), sizeof(char));
+	size = get_bash_string_size(str, env, keep_quotes);
+	bash_string = ft_calloc(size + 1, sizeof(char));
 	if (!bash_string)
 		return (NULL);
 	while (str[++i])
 	{
+		if (keep_quotes && (str[i] == '\'' || str[i] == '"'))
+			bash_string[ft_strlen(bash_string)] = str[i];
 		if (str[i] == '\'')
 			while (str[++i] != '\'' && str[i] != '\0')
 				bash_string[ft_strlen(bash_string)] = str[i];
@@ -89,8 +93,10 @@ char	*ft_get_bash_string(char *str, char **env)
 				ft_double_quote(str, bash_string, &i, env);
 		else
 			ft_no_quote(str, bash_string, &i, env);
+		if (keep_quotes && (str[i] == '\'' || str[i] == '"'))
+			bash_string[ft_strlen(bash_string)] = str[i];
 	}
-	bash_string[get_bash_string_size(str, env)] = '\0';
+	bash_string[size] = '\0';
 	if (bash_string && bash_string[0] == '\0')
 	{
 		free(bash_string);

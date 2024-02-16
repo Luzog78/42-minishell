@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 06:53:17 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 15:19:24 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_dup_infiles(char *infile, char **env)
 	int		fd;
 	char	*path;
 
-	path = ft_get_bash_string(infile, env);
+	path = ft_get_bash_string(infile, env, FALSE);
 	if (!path)
 		return (-1);
 	fd = open(path, O_RDONLY);
@@ -39,7 +39,7 @@ int	ft_dup_outfiles(t_out *outfiles, char **env)
 	while (outfiles)
 	{
 		fd = -1;
-		path = ft_get_bash_string(outfiles->to, env);
+		path = ft_get_bash_string(outfiles->to, env, FALSE);
 		if (outfiles->type == REPLACE)
 			fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (outfiles->type == APPEND)

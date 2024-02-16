@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 12:42:03 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/16 15:25:03 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void		ft_close_std(t_subshell *subshell);
 t_subshell	*ft_get_parent(t_subshell *cmds);
 char		*ft_get_value_from_env(char *key, char **env);
 char		*ft_getenv(char *name, char **env);
-char		*ft_get_bash_string(char *str, char **env);
-int			get_bash_string_size(char *str, char **env);
+char		*ft_get_bash_string(char *str, char **env, t_bool keep_quotes);
+int			get_bash_string_size(char *str, char **env, t_bool keep_quotes);
 void		check_dollar(int *result, int *i, char *str, char **env);
 char		*ft_getvar(char *str, int *i, char **env);
 
@@ -53,7 +53,6 @@ char		*ft_strstr(const char *haystack, const char *needle);
 char		*ft_substr(char *str, int start, int len);
 char		*ft_strtrim(char *str);
 int			ft_isalnum(int c);
-char		*ft_get_bash_string(char *str, char **env);
 t_bool		ft_is_whitespace(char c);
 
 /* Print Functions */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_quote_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 03:37:29 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 03:37:47 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:25:46 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	check_dollar(int *result, int *i, char *str, char **env)
 		(*result)++;
 }
 
-int	get_bash_string_size(char *str, char **env)
+int	get_bash_string_size(char *str, char **env, t_bool keep_quotes)
 {
 	int		result;
 	int		i;
@@ -73,6 +73,8 @@ int	get_bash_string_size(char *str, char **env)
 	result = 0;
 	while (str[i])
 	{
+		if (keep_quotes && (str[i] == '\'' || str[i] == '"'))
+			result += 2;
 		if (str[i] == '\'')
 		{
 			while (str[++i] != '\'' && str[i] != '\0')
