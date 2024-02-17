@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 03:17:43 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/16 18:21:33 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/17 02:07:01 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -286,11 +286,9 @@ class Test:
 		if self.should_error:
 			if self.result_error == "":
 				self.state = ExitState.FAILED
-				return
 		else:
 			if self.result_error != "":
 				self.state = ExitState.FAILED
-				return
 		
 		if self.result_error \
 			and re.findall(r'(FATAL:\s*)|([Cc]ore [Dd]umped)', self.result_error):
@@ -644,6 +642,10 @@ def should_skip(i: int, test: Test):
 	return True
 
 
+message = ' ' * 50
+test_len = len(tests) - 1
+
+
 first = True
 for i, test in enumerate(tests):
 	if should_skip(i, test):
@@ -664,20 +666,24 @@ for i, test in enumerate(tests):
 		t = Thread(target=lambda: os.system(
 			f' < .in.tmp > .out.tmp 2> .err.tmp {val_args if i and valgrind else ""}{bin_path}'))
 
+		message = f'{C_RESET}{C_DIM}Running test n°{C_RESET}{C_CYAN}{i}{C_RESET}{C_DIM}/{test_len}...{C_RESET}'
+		print(message, end='\r')
 		t.start()
 		t.join(3)
 
 		if t.is_alive():
 			test.timeout()
 
-		with open('.out.tmp', 'r') as f:
-			test.result_output = clean_output(f.read()) if i else f.read()
+		else:
+			with open('.out.tmp', 'r') as f:
+				test.result_output = clean_output(f.read()) if i else f.read()
 
-		with open('.err.tmp', 'r') as f:
-			test.result_error = f.read()
+			with open('.err.tmp', 'r') as f:
+				test.result_error = f.read()
 
 		if i == 0:
 			if prompt_regex is None or heredoc_prompt_regex is None:
+				print(' ' * len(message), end='\r')
 				calibrate_prompts(test.result_output)
 			continue
 
@@ -687,43 +693,22 @@ for i, test in enumerate(tests):
 
 		if test.state == ExitState.PASSED:
 			stats.passed.append(i)
+		elif test.state == ExitState.CRASHED:
+			stats.crashed.append(i)
 		else:
 			stats.failed.append(i)
 
 		if print_failed_only and test.state == ExitState.PASSED \
 			and (len(test_only) != 1 or len(test_only_sections)):
 			continue
+		
+		print(' ' * len(message), end='\r')
 
 		if not first:
 			print('\n')
 		sec = get_section(i)
 		if sections.get(sec) is not None and not sections[sec][1]:
 			c = lambda s, c_: f'{c_}{s}{C_RESET}'
-
-			'''
-			line1 = f'Section {sec}:'
-			len1 = len(line1)
-
-			line2 = f'{sections[sec][0]}'
-			len2 = len(line2)
-
-			lenn = max(len1, len2) + 10
-			extra = 4
-
-			line1 = c(f'{line1:^{lenn}}', C_WHITE + C_BOLD)
-			line2 = c(f'{line2:^{lenn}}', C_WHITE + C_ITALIC)
-
-			border = c('-' * (lenn + extra * 2), C_BOLD)
-			side = c('-' * extra, C_BOLD)
-			line1 = side + c(line1, C_WHITE) + side
-			line2 = side + c(line2, C_WHITE) + side
-
-			print(border)
-			print(line1)
-			print(line2)
-			print(border)
-			print()
-			'''
 
 			nb = sorted(list(sections.keys())).index(sec) + 1
 
@@ -741,6 +726,7 @@ for i, test in enumerate(tests):
 		print(f'{C_CYAN}{C_UNDERLINE}Test {C_BOLD}{i}:{C_RESET}')
 		print(repr(test) if print_repr else test)
 	except Exception as e:
+		print(' ' * len(message), end='\r')
 		print(f'{C_RED}{C_BOLD}{C_UNDERLINE}Error while running test {i}:{C_RESET}' \
 			+ f'{C_RESET} {C_RED}{C_BOLD}{e}{C_RESET}{C_RED}')
 		traceback.print_exc()
@@ -755,6 +741,7 @@ for i, test in enumerate(tests):
 os.chdir(cwd)
 os.system(f'rm -rf {testing_path}')
 
+print(' ' * len(message), end='\r')
 if not first:
 	print(f'\n================================\n')
 
