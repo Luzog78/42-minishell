@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_redirection.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 03:35:32 by ysabik           ###   ########.fr       */
+/*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/02/17 02:46:55 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define MAIN_FILE
-#include "minish.h"
-#undef MAIN_FILE
-#include "utils.h"
+#include "exec.h"
+#include "builtins.h"
 
-int	g_exit = 0;
-
-int	main(int argc, char **argv, char **env)
+int	ft_stdin(t_subshell *cmds, t_stdin_lst *stdin)
 {
-	t_subshell	*subshell;
+	int	fd;
 
-	(void)argc;
-	(void)argv;
-	subshell = ft_calloc(sizeof(t_subshell), 1);
-	if (!subshell)
-		return (1);
-	ft_subshell_init(subshell, SUBSHELL, env);
-	ft_sig_init(1, subshell, NULL);
-	ft_wait_line(NULL, subshell);
-	ft_free_cmds(subshell);
+	fd = 0;
+	while (stdin)
+	{
+		if (fd != 0)
+			close(fd);
+		if (stdin->type == HEREDOC)
+			fd = ft_heredoc(cmds, stdin, cmds->env);
+		else if (stdin->type == INFILE)
+			fd = ft_dup_infiles(stdin->value, cmds->env);
+		stdin = stdin->next;
+	}
+	if (fd == -1)
+	{
+		g_exit = 1;
+		return (g_exit);
+	}
+	dup2(fd, 0);
+	close(fd);
 	return (g_exit);
 }

@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.h                                          :+:      :+:    :+:   */
+/*   ft_dup_infiles.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 06:19:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/17 03:27:43 by ysabik           ###   ########.fr       */
+/*   Created: 2024/02/17 02:46:29 by ysabik            #+#    #+#             */
+/*   Updated: 2024/02/17 02:46:37 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNALS_H
-# define SIGNALS_H
+#include "exec.h"
 
-# include "minish.h"
+int	ft_dup_infiles(char *infile, char **env)
+{
+	int		fd;
+	char	*path;
 
-/* *************************** */
-/* ********  Handler  ******** */
-/* *************************** */
-
-void	manage_cmds(t_subshell *cmds, int pipe[2]);
-void	ft_sig_nothing(int sig);
-void	ft_sig_stop(int sig);
-void	ft_sig_handling(int sig);
-
-#endif
+	path = ft_get_bash_string(infile, env, FALSE);
+	if (!path)
+		return (-1);
+	fd = open(path, O_RDONLY);
+	free(path);
+	if (fd == -1)
+	{
+		perror("minishell");
+		return (-1);
+	}
+	return (fd);
+}

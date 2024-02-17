@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 00:15:36 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/17 03:32:12 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,6 @@ SRC_FILES			= \
 						src/parsing/ft_get_out_redirection.c \
 						src/parsing/ft_is_empty.c \
 						src/parsing/ft_is_next_a_fd.c \
-						src/parsing/ft_is_whitespace.c \
 						src/parsing/ft_out_add.c \
 						src/parsing/ft_parse_redirection.c \
 						src/parsing/ft_set_parents.c \
@@ -42,16 +41,27 @@ SRC_FILES			= \
 						src/parsing/ft_subshell_add.c \
 						src/parsing/parse.c \
 						\
+						src/execution/redirections/ft_dup_infiles.c \
+						src/execution/redirections/ft_dup_outfiles.c \
 						src/execution/redirections/ft_heredoc.c \
-						src/execution/redirections/ft_redirection.c \
 						src/execution/redirections/ft_get_right_limiter.c \
-						src/execution/exec.c \
-						src/execution/exec_bin.c \
-						src/execution/exec_cmds.c \
-						src/execution/exec_subshell.c \
-						src/execution/exec_utils.c \
-						src/execution/wc_tokens.c \
-						src/execution/wildcards.c \
+						src/execution/redirections/ft_stdin.c \
+						src/execution/utils/ft_allow_next_cmd.c \
+						src/execution/utils/ft_args_append_str.c \
+						src/execution/utils/ft_args_realloc.c \
+						src/execution/utils/ft_args_reallocs.c \
+						src/execution/utils/ft_str_lst_to_args.c \
+						src/execution/wildcards/ft_append_wildcard.c \
+						src/execution/wildcards/wc_allow.c \
+						src/execution/wildcards/wc_allow_start.c \
+						src/execution/wildcards/wc_allow_middle.c \
+						src/execution/wildcards/wc_allow_end.c \
+						src/execution/wildcards/wc_is_wildcard.c \
+						src/execution/wildcards/wc_tokenize.c \
+						src/execution/ft_exec.c \
+						src/execution/ft_execve_bin.c \
+						src/execution/ft_exec_cmd.c \
+						src/execution/ft_exec_subshell.c \
 						\
 						src/builtins/misc/bi_add_double_quotes.c \
 						src/builtins/misc/bi_add_env.c \
@@ -69,40 +79,46 @@ SRC_FILES			= \
 						src/builtins/pwd.c \
 						src/builtins/unset.c \
 						\
+						src/utils/libft/ft_calloc.c \
+						src/utils/libft/ft_isalnum.c \
+						src/utils/libft/ft_is_whitespace.c \
+						src/utils/libft/ft_itoa.c \
+						src/utils/libft/ft_split.c \
+						src/utils/libft/ft_strcat.c \
+						src/utils/libft/ft_strchr.c \
+						src/utils/libft/ft_strcmp.c \
+						src/utils/libft/ft_strcmp_ignore_case.c \
+						src/utils/libft/ft_strcpy.c \
+						src/utils/libft/ft_strdup.c \
+						src/utils/libft/ft_strjoin.c \
+						src/utils/libft/ft_strlen.c \
+						src/utils/libft/ft_str_lst_add_back.c \
+						src/utils/libft/ft_str_lst_add.c \
+						src/utils/libft/ft_str_lst_pop_back.c \
+						src/utils/libft/ft_strncmp.c \
+						src/utils/libft/ft_strstr.c \
+						src/utils/libft/ft_strtrim.c \
+						src/utils/libft/ft_substr.c \
+						src/utils/libft/ft_tolower.c \
 						src/utils/ft_arr_char_cpy.c \
-						src/utils/ft_strdup.c \
-						src/utils/ft_strlen.c \
-						src/utils/ft_strcmp.c \
 						src/utils/ft_envcpy.c \
 						src/utils/ft_env_overwrite.c \
-						src/utils/ft_strcpy.c \
-						src/utils/ft_strcat.c \
-						src/utils/ft_printf_err.c \
-						src/utils/ft_putstr_fd.c \
-						src/utils/ft_strstr.c \
-						src/utils/ft_strjoin.c \
-						src/utils/ft_strncmp.c \
 						src/utils/ft_free.c \
-						src/utils/ft_split.c \
-						src/utils/ft_str_lst_add.c \
-						src/utils/ft_str_lst_add_back.c \
-						src/utils/ft_str_lst_pop_back.c \
-						src/utils/ft_quote_utils.c \
-						src/utils/ft_quote.c \
-						src/utils/ft_sort_env.c \
 						src/utils/ft_getenv.c \
-						src/utils/ft_substr.c \
-						src/utils/ft_strchr.c \
 						src/utils/ft_get_parent.c \
 						src/utils/ft_get_value_from_env.c \
-						src/utils/ft_itoa.c \
-						src/utils/ft_calloc.c \
-						src/utils/ft_strtrim.c \
-						src/utils/ft_isalnum.c \
+						src/utils/ft_printf_err.c \
+						src/utils/ft_putstr_fd.c \
+						src/utils/ft_quote.c \
+						src/utils/ft_quote_utils.c \
+						src/utils/ft_sort_env.c \
+						src/utils/ft_sort_list.c \
+						src/utils/ft_subshell_init.c \
 						\
 						src/signals/ft_sig_handlers.c \
 						src/signals/ft_sig_activer.c \
 						\
+						src/ft_wait_line.c \
 						src/main.c
 
 C_RESET				= \033[0m

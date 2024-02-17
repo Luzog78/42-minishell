@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmds.c                                        :+:      :+:    :+:   */
+/*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:17:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 02:55:32 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	get_right_cmds(t_subshell *cmds)
+static int	get_right_cmds(t_subshell *cmds)
 {
 	char	**argv;
 	int		exit_status;
 
-	argv = ft_lststr_to_char_array(cmds->argv, cmds->env);
+	argv = ft_str_lst_to_args(cmds->argv, cmds->env);
 	if (!argv)
 		exit_status = g_exit;
 	else if (ft_strcmp(argv[0], "echo") == 0)
@@ -41,7 +41,7 @@ int	get_right_cmds(t_subshell *cmds)
 	return (exit_status);
 }
 
-void	ft_execve_first_pipe(t_subshell *cmds)
+static void	ft_execve_first_pipe(t_subshell *cmds)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -66,7 +66,7 @@ void	ft_execve_first_pipe(t_subshell *cmds)
 	cmds->pipe_read_end = pipefd[0];
 }
 
-void	ft_execve_pipe(t_subshell *cmds)
+static void	ft_execve_pipe(t_subshell *cmds)
 {
 	pid_t	pid;
 	int		status;
@@ -94,7 +94,7 @@ void	ft_execve_pipe(t_subshell *cmds)
 	cmds->pipe_read_end = pipefd[0];
 }
 
-int	ft_execve_last_pipe(t_subshell *cmds)
+static int	ft_execve_last_pipe(t_subshell *cmds)
 {
 	pid_t	pid;
 	int		status;
@@ -141,8 +141,8 @@ void	ft_exec_cmd(t_subshell *cmds)
 	if (cmds->next == NULL)
 		return ;
 	cmds->next->env = ft_env_cpy(cmds->env);
-	if (cmds->next->type == COMMAND && allow_next(cmds))
+	if (cmds->next->type == COMMAND && ft_allow_next_cmd(cmds))
 		ft_exec_cmd(cmds->next);
-	if (cmds->next->type == SUBSHELL && allow_next(cmds))
+	if (cmds->next->type == SUBSHELL && ft_allow_next_cmd(cmds))
 		ft_exec_subshell(cmds->next);
 }

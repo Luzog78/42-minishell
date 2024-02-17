@@ -1,34 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_args_realloc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 03:35:32 by ysabik           ###   ########.fr       */
+/*   Created: 2024/02/17 02:33:56 by ysabik            #+#    #+#             */
+/*   Updated: 2024/02/17 02:34:14 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define MAIN_FILE
-#include "minish.h"
-#undef MAIN_FILE
-#include "utils.h"
+#include "exec.h"
 
-int	g_exit = 0;
-
-int	main(int argc, char **argv, char **env)
+void	ft_args_realloc(char ***args, char *str)
 {
-	t_subshell	*subshell;
+	char	**new;
+	int		i;
 
-	(void)argc;
-	(void)argv;
-	subshell = ft_calloc(sizeof(t_subshell), 1);
-	if (!subshell)
-		return (1);
-	ft_subshell_init(subshell, SUBSHELL, env);
-	ft_sig_init(1, subshell, NULL);
-	ft_wait_line(NULL, subshell);
-	ft_free_cmds(subshell);
-	return (g_exit);
+	i = 0;
+	while (*args && (*args)[i])
+		i++;
+	new = ft_calloc(sizeof(char *), (i + 2));
+	if (!new)
+		return ;
+	i = 0;
+	while (*args && (*args)[i])
+	{
+		new[i] = ft_strdup((*args)[i]);
+		i++;
+	}
+	new[i] = ft_strdup(str);
+	i = 0;
+	while (*args && (*args)[i])
+	{
+		free((*args)[i]);
+		i++;
+	}
+	free(*args);
+	*args = new;
 }

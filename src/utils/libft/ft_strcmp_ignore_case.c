@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp_ignore_case.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 03:35:32 by ysabik           ###   ########.fr       */
+/*   Created: 2024/02/17 02:29:34 by ysabik            #+#    #+#             */
+/*   Updated: 2024/02/17 02:29:43 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define MAIN_FILE
-#include "minish.h"
-#undef MAIN_FILE
 #include "utils.h"
 
-int	g_exit = 0;
-
-int	main(int argc, char **argv, char **env)
+int	ft_strcmp_ignore_case(const char *s1, const char *s2)
 {
-	t_subshell	*subshell;
+	const char	*str1;
+	const char	*str2;
+	size_t		i;
+	int			result;
 
-	(void)argc;
-	(void)argv;
-	subshell = ft_calloc(sizeof(t_subshell), 1);
-	if (!subshell)
-		return (1);
-	ft_subshell_init(subshell, SUBSHELL, env);
-	ft_sig_init(1, subshell, NULL);
-	ft_wait_line(NULL, subshell);
-	ft_free_cmds(subshell);
-	return (g_exit);
+	result = 0;
+	str1 = ft_tolower(s1);
+	str2 = ft_tolower(s2);
+	if (str1 && str2)
+	{
+		i = 0;
+		while (str1[i] && str2[i] && str1[i] == str2[i])
+			i++;
+		result = (unsigned char)str1[i] - (unsigned char)str2[i];
+	}
+	free((char *)str1);
+	free((char *)str2);
+	return (result);
 }

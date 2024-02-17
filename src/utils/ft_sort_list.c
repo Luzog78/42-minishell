@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_sort_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 01:24:46 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 03:35:32 by ysabik           ###   ########.fr       */
+/*   Created: 2024/02/17 02:28:54 by ysabik            #+#    #+#             */
+/*   Updated: 2024/02/17 02:29:11 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define MAIN_FILE
-#include "minish.h"
-#undef MAIN_FILE
 #include "utils.h"
 
-int	g_exit = 0;
-
-int	main(int argc, char **argv, char **env)
+void	ft_sort_list(t_str_lst **lst)
 {
-	t_subshell	*subshell;
+	t_str_lst	*cursor;
+	t_str_lst	*tmp;
+	char		*tmp_str;
 
-	(void)argc;
-	(void)argv;
-	subshell = ft_calloc(sizeof(t_subshell), 1);
-	if (!subshell)
-		return (1);
-	ft_subshell_init(subshell, SUBSHELL, env);
-	ft_sig_init(1, subshell, NULL);
-	ft_wait_line(NULL, subshell);
-	ft_free_cmds(subshell);
-	return (g_exit);
+	cursor = *lst;
+	while (cursor)
+	{
+		tmp = cursor->next;
+		while (tmp)
+		{
+			if (ft_strcmp_ignore_case(cursor->value, tmp->value) > 0)
+			{
+				tmp_str = cursor->value;
+				cursor->value = tmp->value;
+				tmp->value = tmp_str;
+			}
+			tmp = tmp->next;
+		}
+		cursor = cursor->next;
+	}
 }

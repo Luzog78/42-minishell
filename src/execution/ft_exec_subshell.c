@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_subshell.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 18:17:36 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 02:40:46 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-void	ft_get_right_subshell(t_subshell *subshell)
+static void	ft_get_right_subshell(t_subshell *subshell)
 {
 	pid_t	pid;
 
@@ -41,7 +41,7 @@ void	ft_get_right_subshell(t_subshell *subshell)
 	}
 }
 
-void	ft_exec_first_subshell(t_subshell *subshell)
+static void	ft_exec_first_subshell(t_subshell *subshell)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -68,7 +68,7 @@ void	ft_exec_first_subshell(t_subshell *subshell)
 	}
 }
 
-void	ft_exec_middle_subshell(t_subshell *subshell)
+static void	ft_exec_middle_subshell(t_subshell *subshell)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -95,7 +95,7 @@ void	ft_exec_middle_subshell(t_subshell *subshell)
 	subshell->pid = pid;
 }
 
-int	ft_exec_last_subshell(t_subshell *subshell)
+static int	ft_exec_last_subshell(t_subshell *subshell)
 {
 	pid_t	pid;
 	int		status;
@@ -124,34 +124,30 @@ int	ft_exec_last_subshell(t_subshell *subshell)
 	return (g_exit);
 }
 
-void	ft_exec_subshell(t_subshell *subshell)
+void	ft_exec_subshell(t_subshell *ssh)
 {
-	if (subshell->stdin)
-		ft_stdin(subshell, subshell->stdin);
-	if (subshell->outfiles)
-		ft_dup_outfiles(subshell->outfiles, subshell->env);
-	if (subshell->link == PIPE
-		&& (!subshell->prev || subshell->prev->link != PIPE))
-		ft_exec_first_subshell(subshell);
-	else if (subshell->link == PIPE
-		&& subshell->prev && subshell->prev->link == PIPE)
-		ft_exec_middle_subshell(subshell);
-	else if (subshell->prev && subshell->prev->link == PIPE)
-		ft_exec_last_subshell(subshell);
+	if (ssh->stdin)
+		ft_stdin(ssh, ssh->stdin);
+	if (ssh->outfiles)
+		ft_dup_outfiles(ssh->outfiles, ssh->env);
+	if (ssh->link == PIPE && (!ssh->prev || ssh->prev->link != PIPE))
+		ft_exec_first_subshell(ssh);
+	else if (ssh->link == PIPE && ssh->prev && ssh->prev->link == PIPE)
+		ft_exec_middle_subshell(ssh);
+	else if (ssh->prev && ssh->prev->link == PIPE)
+		ft_exec_last_subshell(ssh);
 	else
-		ft_get_right_subshell(subshell);
-	dup2(ft_get_parent(subshell)->stdin_fd, STDIN_FILENO);
-	dup2(ft_get_parent(subshell)->stdout_fd, STDOUT_FILENO);
-	if (subshell->next && subshell->next->type == COMMAND
-		&& allow_next(subshell))
+		ft_get_right_subshell(ssh);
+	dup2(ft_get_parent(ssh)->stdin_fd, STDIN_FILENO);
+	dup2(ft_get_parent(ssh)->stdout_fd, STDOUT_FILENO);
+	if (ssh->next && ssh->next->type == COMMAND && ft_allow_next_cmd(ssh))
 	{
-		subshell->next->env = ft_env_cpy(subshell->env);
-		ft_exec_cmd(subshell->next);
+		ssh->next->env = ft_env_cpy(ssh->env);
+		ft_exec_cmd(ssh->next);
 	}
-	else if (subshell->next && subshell->next->type == SUBSHELL
-		&& allow_next(subshell))
+	else if (ssh->next && ssh->next->type == SUBSHELL && ft_allow_next_cmd(ssh))
 	{
-		subshell->next->env = ft_env_cpy(subshell->env);
-		ft_exec_subshell(subshell->next);
+		ssh->next->env = ft_env_cpy(ssh->env);
+		ft_exec_subshell(ssh->next);
 	}
 }

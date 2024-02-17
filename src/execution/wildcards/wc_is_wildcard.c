@@ -6,29 +6,13 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:31:08 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 01:52:33 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 02:26:08 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-t_bool	ft_wildcard_allow(char *file, char *str)
-{
-	t_wc_token	tk;
-	t_bool		ret;
-
-	tk = (t_wc_token){0};
-	ft_wc_tokenize(&tk, str);
-	ret = TRUE;
-	if (!ft_wc_allow_start(&tk, file) || !ft_wc_allow_end(&tk, file) || !ft_wc_allow_middle(&tk, file))
-		ret = FALSE;
-	free(tk.start);
-	free(tk.end);
-	ft_free_str_lst(tk.tks);
-	return (ret);
-}
-
-t_bool	ft_is_wildcard(char *str)
+t_bool	wc_is_wildcard(char *str)
 {
 	char	quote;
 

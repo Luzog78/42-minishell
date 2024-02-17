@@ -6,19 +6,13 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 00:37:18 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 19:36:19 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 03:22:57 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-/*Faire une fonction qui renvoie un char * qui a été malloc
- *Avec les " ' $ avec getenv pour $
- *La premiere quote est connecte a la quote la plus proche
- *Ex: '"""'$PWD'"""' -> """/nfs/home/..."""
-*/
-
-void	ft_double_quote(char *str, char *bash_string, int *i, char **env)
+static void	ft_double_quote(char *str, char *bash_string, int *i, char **env)
 {
 	char	*var;
 
@@ -43,7 +37,7 @@ void	ft_double_quote(char *str, char *bash_string, int *i, char **env)
 		bash_string[ft_strlen(bash_string)] = str[*i];
 }
 
-void	ft_no_quote(char *str, char *bash_string, int *i, char **env)
+static void	ft_no_quote(char *str, char *bash_string, int *i, char **env)
 {
 	char	*var;
 

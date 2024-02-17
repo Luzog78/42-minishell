@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:40 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 03:31:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 02:58:47 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	ft_home_cd(t_subshell *cmds)
 	return (0);
 }
 
-char	*ft_get_translated_path(char *path, t_subshell *cmds)
+static char	*ft_get_translated_path(char *path, t_subshell *cmds)
 {
 	char	*home;
 	char	*translated_path;

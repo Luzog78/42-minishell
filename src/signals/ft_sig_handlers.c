@@ -6,11 +6,12 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 06:18:29 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/14 06:21:35 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 03:32:45 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "signals.h"
+#include "utils.h"
 
 void	manage_cmds(t_subshell *cmds, int pipe[2])
 {

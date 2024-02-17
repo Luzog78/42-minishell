@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.h                                          :+:      :+:    :+:   */
+/*   ft_args_reallocs.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 06:19:36 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/17 03:27:43 by ysabik           ###   ########.fr       */
+/*   Created: 2024/02/17 02:34:25 by ysabik            #+#    #+#             */
+/*   Updated: 2024/02/17 02:34:38 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SIGNALS_H
-# define SIGNALS_H
+#include "exec.h"
 
-# include "minish.h"
+void	ft_args_reallocs(char ***args, t_str_lst **lst)
+{
+	t_str_lst	*cursor;
+	t_str_lst	*tmp;
 
-/* *************************** */
-/* ********  Handler  ******** */
-/* *************************** */
-
-void	manage_cmds(t_subshell *cmds, int pipe[2]);
-void	ft_sig_nothing(int sig);
-void	ft_sig_stop(int sig);
-void	ft_sig_handling(int sig);
-
-#endif
+	cursor = *lst;
+	while (cursor)
+	{
+		ft_args_realloc(args, cursor->value);
+		free(cursor->value);
+		tmp = cursor->next;
+		free(cursor);
+		cursor = tmp;
+	}
+	*lst = NULL;
+}
