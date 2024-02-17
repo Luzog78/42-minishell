@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:36:33 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/14 02:00:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 03:58:52 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,6 @@ t_bool	ft_on_argv(t_subshell *subshell, t_parsing_object *po)
 	subshell->type = COMMAND;
 	if (po->parsing_state == 0)
 		po->parsing_state = 1;
-	if (po->parsing_state == 2)
-		subshell->exit_status = ft_error(2,
-				"syntax error: missing a separator", NULL);
 	po->tmp = ft_get_next_word(&po->cursor);
 	ft_str_lst_add(&subshell->argv, po->tmp);
 	return (FALSE);
