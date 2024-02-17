@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:05:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 17:54:32 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 01:46:08 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,14 +269,57 @@ void	ft_append_str(char ***args, char *str, char **env)
 	ft_append_wildkartttt(args, str, env);
 }
 
+int	get_last_elem(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array && array[i])
+		i++;
+	return (i - 1);
+}
+
 char	**ft_lststr_to_char_array(t_str_lst *lst, char **env)
 {
-	char	**array;
+	char		**array;
+	char		**tmp_array;
+	int			i;
+	int			j;
 
 	array = NULL;
+	i = 0;
 	while (lst)
 	{
+		j = 0;
 		ft_append_str(&array, ft_strdup(lst->value), env);
+		if (lst->value[0] == '$')
+		{
+			if (!array || !array[i])
+			{
+				lst = lst->next;
+				continue ;
+			}
+			tmp_array = NULL;
+			tmp_array = ft_split(array[i], ' ');
+			if (strcmp(tmp_array[0], array[i]) == 0)
+			{
+				ft_free_char_array(tmp_array);
+				lst = lst->next;
+				continue ;
+			}
+			free(array[i]);
+			array[i] = NULL;
+			while (tmp_array && tmp_array[j])
+			{
+				ft_append_str(&array, ft_strdup(tmp_array[j]), env);
+				free(tmp_array[j]);
+				j++;
+				if (tmp_array[j])
+					i++;
+			}
+			free(tmp_array);
+		}
+		i++;
 		lst = lst->next;
 	}
 	return (array);
