@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 09:19:00 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 12:14:14 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,5 @@ void	ft_exec_cmd(t_subshell *cmds)
 		cmds->exit_status = ft_execve_last_pipe(cmds);
 	else if (!cmds->exit_status && cmds->argv)
 		cmds->exit_status = get_right_cmds(cmds, NULL, 0, 0);
-	if (cmds->next == NULL)
-		return ;
-	cmds->next->env = ft_env_cpy(cmds->env);
-	if (cmds->next->type == COMMAND && ft_allow_next_cmd(cmds))
-		ft_exec_cmd(cmds->next);
-	if (cmds->next->type == SUBSHELL && ft_allow_next_cmd(cmds))
-		ft_exec_subshell(cmds->next);
+	ft_exec_next(cmds);
 }

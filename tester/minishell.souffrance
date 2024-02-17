@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    minishell.souffrance                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 07:52:25 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/17 12:21:30 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -1656,6 +1656,27 @@ $ (blableblibloblu || echo abc) || echo $?
 $ (echo abc || bliblebloblubla) || echo $?
 
 @ abc
+
+
+---
+
+$ (cat | echo abc)
+$ sadfasfsadfsafsafsafsafd
+
+@ abc
+
+---
+
+$ rm -rf io
+$ mkdir io
+$ cd io
+$ echo 123456789 > Makefile
+$ (cat | cat Makefile) && echo abc || ls -e && echo haha
+$ sadfasfsadfsafsafsafsafd
+
+@ 123456789
+@ abc
+@ haha
 
 
 === ... ===

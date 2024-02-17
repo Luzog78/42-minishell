@@ -6,7 +6,7 @@
 #    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 10:11:42 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/17 12:14:49 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,7 @@ SRC_FILES			= \
 						src/execution/ft_execve_bin.c \
 						src/execution/ft_exec_cmd.c \
 						src/execution/ft_exec_subshell.c \
+						src/execution/ft_exec_next.c \
 						\
 						src/builtins/misc/bi_add_double_quotes.c \
 						src/builtins/misc/bi_add_env.c \

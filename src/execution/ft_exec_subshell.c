@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 11:53:21 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:13:59 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,14 +139,5 @@ void	ft_exec_subshell(t_subshell *ssh)
 		ft_get_right_subshell(ssh);
 	dup2(ft_get_parent(ssh)->stdin_fd, STDIN_FILENO);
 	dup2(ft_get_parent(ssh)->stdout_fd, STDOUT_FILENO);
-	if (ssh->next && ssh->next->type == COMMAND && ft_allow_next_cmd(ssh))
-	{
-		ssh->next->env = ft_env_cpy(ssh->env);
-		ft_exec_cmd(ssh->next);
-	}
-	else if (ssh->next && ssh->next->type == SUBSHELL && ft_allow_next_cmd(ssh))
-	{
-		ssh->next->env = ft_env_cpy(ssh->env);
-		ft_exec_subshell(ssh->next);
-	}
+	ft_exec_next(ssh);
 }

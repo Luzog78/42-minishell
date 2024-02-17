@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 03:39:13 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 04:24:13 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:13:51 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_wc_token
 void	ft_exec_cmd(t_subshell *cmds);
 void	ft_exec_subshell(t_subshell *subshell);
 int		ft_execve_bin(char **argv, t_subshell *cmds);
+void	ft_exec_next(t_subshell *subshell);
 
 /* ***************************** */
 /* ********  Wildcards  ******** */
