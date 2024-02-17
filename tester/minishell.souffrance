@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    minishell.souffrance                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 01:38:45 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/17 06:11:12 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -1666,3 +1666,13 @@ $ (blableblibloblu || echo abc) || echo $?
 $ (echo abc || bliblebloblubla) || echo $?
 
 @ abc
+
+
+=== ... ===
+
+$ export a="    a      b       c      "
+$ echo "$a"
+$ echo $a
+
+@     a      b       c      
+@ a b c
