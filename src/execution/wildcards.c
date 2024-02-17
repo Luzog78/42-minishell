@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 16:31:08 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 01:45:09 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 01:52:33 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_bool	ft_wildcard_allow(char *file, char *str)
 	ret = TRUE;
 	if (!ft_wc_allow_start(&tk, file) || !ft_wc_allow_end(&tk, file) || !ft_wc_allow_middle(&tk, file))
 		ret = FALSE;
-	free(str);
 	free(tk.start);
 	free(tk.end);
 	ft_free_str_lst(tk.tks);
