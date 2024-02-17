@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_subshell.c                                    :+:      :+:    :+:   */
+/*   ft_exec_subshell.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 19:04:14 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 02:40:46 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 11:53:21 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,12 @@ static void	ft_get_right_subshell(t_subshell *subshell)
 			ft_exec_subshell(subshell->cmds);
 		}
 		ft_free_cmds(ft_get_parent(subshell));
+		while (waitpid(-1, NULL, WNOHANG) != -1)
+			;
 		exit(g_exit);
 	}
-	else
-	{
-		waitpid(pid, &g_exit, 0);
-		g_exit = WEXITSTATUS(g_exit);
-	}
+	waitpid(pid, &g_exit, 0);
+	g_exit = WEXITSTATUS(g_exit);
 }
 
 static void	ft_exec_first_subshell(t_subshell *subshell)
