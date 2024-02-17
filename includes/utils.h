@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 03:30:59 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 04:46:17 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char		*ft_get_value_from_env(char *key, char **env);
 char		*ft_getenv(char *name, char **env);
 void		ft_print_err(char *str);
 void		ft_perror(void);
+int			ft_perror_ret(void);
 void		ft_printf_err(char *str, char *err);
 void		ft_putstr_fd(char *str, int fd);
 char		*ft_getvar(char *str, int *i, char **env);

@@ -32,7 +32,6 @@ char	**ft_str_lst_to_args(t_str_lst *lst, char **env)
 				lst = lst->next;
 				continue ;
 			}
-			tmp_array = NULL;
 			tmp_array = ft_split(array[i], ' ');
 			if (strcmp(tmp_array[0], array[i]) == 0)
 			{

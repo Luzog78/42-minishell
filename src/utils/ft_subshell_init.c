@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_subshell_init.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 03:30:27 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/17 03:30:43 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 04:06:28 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,3 @@ void	ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env)
 	subshell->stdout_fd = 1;
 	subshell->pid = 0;
 }
-

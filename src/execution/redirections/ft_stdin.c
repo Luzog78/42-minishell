@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_redirection.c                                   :+:      :+:    :+:   */
+/*   ft_stdin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:15:30 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 02:46:55 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 04:39:37 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_stdin(t_subshell *cmds, t_stdin_lst *stdin)
 	int	fd;
 
 	fd = 0;
-	while (stdin)
+	while (stdin && fd != -1)
 	{
 		if (fd != 0)
 			close(fd);

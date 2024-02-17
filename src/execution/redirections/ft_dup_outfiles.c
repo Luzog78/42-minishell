@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_dup_outfiles.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 02:46:46 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/17 02:46:57 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 04:56:28 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ int	ft_dup_outfiles(t_out *outfiles, char **env)
 		if (fd == -1)
 		{
 			perror("minishell");
-			return (1);
+			g_exit = 1;
+			return (g_exit);
 		}
-		free(path);
 		dup2(fd, outfiles->from);
 		close(fd);
+		free(path);
 		outfiles = outfiles->next;
 	}
 	return (0);

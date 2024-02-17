@@ -26,4 +26,4 @@ minishell
 !tester
 !*.py
 !*.souffrance
-
+minishell_tester

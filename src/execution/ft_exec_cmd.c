@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 02:55:32 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 05:05:07 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ static void	ft_execve_first_pipe(t_subshell *cmds)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
-		status = get_right_cmds(cmds);
+		if (cmds->outfiles)
+			ft_dup_outfiles(cmds->outfiles, cmds->env);
+		if (!cmds->exit_status)
+			status = get_right_cmds(cmds);
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
@@ -102,19 +105,18 @@ static int	ft_execve_last_pipe(t_subshell *cmds)
 	status = 0;
 	pid = fork();
 	if (pid == -1)
-	{
-		ft_perror();
-		return (g_exit);
-	}
+		return (ft_perror_ret());
 	if (!pid)
 	{
-		dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
+		if (!cmds->stdin)
+			dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
 		status = get_right_cmds(cmds);
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
 	waitpid(pid, &status, 0);
+	g_exit = WEXITSTATUS(status);
 	close(cmds->prev->pipe_read_end);
 	if (!g_exit)
 		ft_sig_exit(status);
@@ -128,7 +130,7 @@ void	ft_exec_cmd(t_subshell *cmds)
 		cmds->exit_status = ft_stdin(cmds, cmds->stdin);
 	if (!cmds->exit_status && cmds->outfiles)
 		cmds->exit_status = ft_dup_outfiles(cmds->outfiles, cmds->env);
-	if (!cmds->exit_status && cmds->link == PIPE
+	if (cmds->link == PIPE
 		&& (!cmds->prev || cmds->prev->link != PIPE))
 		ft_execve_first_pipe(cmds);
 	else if (!cmds->exit_status && cmds->link == PIPE

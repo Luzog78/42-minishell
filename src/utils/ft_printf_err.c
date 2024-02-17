@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 03:02:38 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/11 21:45:57 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 04:46:48 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ void	ft_perror(void)
 {
 	perror("minishell");
 	g_exit = 1;
+}
+
+int	ft_perror_ret(void)
+{
+	ft_perror();
+	return (g_exit);
 }
 
 void	ft_print_err(char *str)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wc_tokenize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 23:43:33 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/17 02:24:34 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 04:24:28 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,3 @@ void	wc_tokenize(t_wc_token *tk, char *wc)
 	if (state == 2 && tk->tks)
 		tk->end = ft_str_lst_pop_back(&tk->tks);
 }
-
