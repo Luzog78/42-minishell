@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_right_limiter.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 06:52:51 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/14 07:09:01 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 11:00:21 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+static void	*ft_realloc(void *ptr, size_t origial, size_t extra)
+{
+	void	*new;
+
+	new = ft_calloc(origial + extra, 1);
+	if (!new)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	if (ptr)
+	{
+		ft_memcpy(new, ptr, origial);
+		free(ptr);
+	}
+	return (new);
+}
 
 static t_bool	ft_r_quote(char *limiter, char **new,
 	char *quote, int *i)
@@ -19,7 +37,7 @@ static t_bool	ft_r_quote(char *limiter, char **new,
 	(*i)++;
 	while (limiter[*i] && limiter[*i] != *quote)
 	{
-		*new = realloc(*new, ft_strlen(*new) + 2);
+		*new = ft_realloc(*new, ft_strlen(*new), 2);
 		if (!*new)
 			break ;
 		(*new)[ft_strlen(*new) + 1] = 0;
@@ -32,7 +50,7 @@ static t_bool	ft_r_quote(char *limiter, char **new,
 
 static t_bool	ft_r_text(char *limiter, char **new, int *i)
 {
-	*new = realloc(*new, ft_strlen(*new) + 2);
+	*new = ft_realloc(*new, ft_strlen(*new), 2);
 	if (!*new)
 		return (FALSE);
 	(*new)[ft_strlen(*new) + 1] = 0;
@@ -43,7 +61,7 @@ static t_bool	ft_r_text(char *limiter, char **new, int *i)
 
 static void	ft_r_value(char *limiter, char **new, int *i)
 {
-	*new = realloc(*new, ft_strlen(*new) + 2);
+	*new = ft_realloc(*new, ft_strlen(*new), 2);
 	if (!*new)
 		return ;
 	(*new)[ft_strlen(*new) + 1] = 0;
@@ -54,7 +72,7 @@ static void	ft_r_value(char *limiter, char **new, int *i)
 			|| (limiter[*i] >= 'A' && limiter[*i] <= 'Z')
 			|| (limiter[*i] >= '0' && limiter[*i] <= '9')))
 	{
-		*new = realloc(*new, ft_strlen(*new) + 2);
+		*new = ft_realloc(*new, ft_strlen(*new), 2);
 		if (!*new)
 			return ;
 		(*new)[ft_strlen(*new) + 1] = 0;

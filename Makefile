@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
+#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 08:15:04 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/17 10:11:42 by bcarolle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,6 +100,7 @@ SRC_FILES			= \
 						src/utils/libft/ft_strtrim.c \
 						src/utils/libft/ft_substr.c \
 						src/utils/libft/ft_tolower.c \
+						src/utils/libft/ft_memcpy.c \
 						src/utils/ft_arr_char_cpy.c \
 						src/utils/ft_envcpy.c \
 						src/utils/ft_env_overwrite.c \

@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_args_realloc.c                                  :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/17 02:33:56 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/17 10:36:16 by bcarolle         ###   ########.fr       */
+/*   Created: 2024/02/17 10:10:30 by bcarolle          #+#    #+#             */
+/*   Updated: 2024/02/17 10:56:46 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "utils.h"
 
-void	ft_args_realloc(char ***args, char *str)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	char	**new;
-	int		i;
+	size_t	i;
 
+	if (!dst || !src)
+		return (NULL);
 	i = 0;
-	while (*args && (*args)[i])
-		i++;
-	new = ft_calloc(sizeof(char *), (i + 2));
-	if (!new)
-		return ;
-	i = 0;
-	while (*args && (*args)[i])
+	while (i < n)
 	{
-		new[i] = ft_strdup((*args)[i]);
+		((unsigned char *)dst)[i] = ((unsigned char *)src)[i];
 		i++;
 	}
-	new[i] = ft_strdup(str);
-	i = 0;
-	while (*args && (*args)[i])
-	{
-		free((*args)[i]);
-		i++;
-	}
-	free(*args);
-	*args = new;
+	return (dst);
 }

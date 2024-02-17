@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_add_double_quotes.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 03:13:30 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/16 19:24:16 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 10:27:55 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	ft_format_line(char **env, int i)
 		j++;
 	}
 	tmp = ft_calloc(sizeof(char), ft_strlen(env[i]) + k + 3);
+	if (!tmp)
+		return ;
 	ft_create_new_line(env, tmp, i, k);
 	free(env[i]);
 	env[i] = tmp;

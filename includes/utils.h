@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 07:03:41 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 10:11:04 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char		*ft_strstr(const char *haystack, const char *needle);
 char		*ft_strtrim(char *str);
 char		*ft_substr(char *str, int start, int len);
 char		*ft_tolower(const char *str);
+void		*ft_memcpy(void *dst, const void *src, size_t n);
 
 /* ************************* */
 /* ********  Utils  ******** */
