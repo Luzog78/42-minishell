@@ -6,7 +6,7 @@
 #    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 03:32:12 by ysabik           ###   ########.fr        #
+#    Updated: 2024/02/17 08:15:04 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,7 +109,8 @@ SRC_FILES			= \
 						src/utils/ft_get_value_from_env.c \
 						src/utils/ft_printf_err.c \
 						src/utils/ft_putstr_fd.c \
-						src/utils/ft_quote.c \
+						src/utils/ft_get_bash_string.c \
+						src/utils/ft_get_bash_lst.c \
 						src/utils/ft_quote_utils.c \
 						src/utils/ft_sort_env.c \
 						src/utils/ft_sort_list.c \
