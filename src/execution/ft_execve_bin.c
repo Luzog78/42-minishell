@@ -6,22 +6,24 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 05:28:04 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 08:43:20 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static void	ft_get_path(char **argv, char **env)
+static t_bool	ft_get_path(char **argv, char **env)
 {
 	char	**path;
 	char	*tmp;
 	int		i;
 
 	i = 0;
+	if (argv[0][0] == '.' || argv[0][0] == '/' || argv[0][0] == '~')
+		return (TRUE);
 	tmp = ft_getenv("PATH", env);
 	if (!tmp)
-		return ;
+		return (FALSE);
 	path = ft_split(tmp, ':');
 	while (path[i])
 	{
@@ -34,11 +36,12 @@ static void	ft_get_path(char **argv, char **env)
 			free(argv[0]);
 			argv[0] = ft_strdup(path[i]);
 			ft_free_char_array(path);
-			return ;
+			return (TRUE);
 		}
 		i++;
 	}
 	ft_free_char_array(path);
+	return (FALSE);
 }
 
 static void	ft_bin_error_handling(char **argv, t_subshell *cmds)
@@ -48,7 +51,7 @@ static void	ft_bin_error_handling(char **argv, t_subshell *cmds)
 	status = 0;
 	if (access(argv[0], F_OK) == -1)
 		status = 127;
-	if (access(argv[0], X_OK) == -1)
+	else if (access(argv[0], X_OK) == -1)
 		status = 126;
 	if (access(argv[0], X_OK) == -1 && (argv[0][0] != '/' && argv[0][0] != '.'))
 		status = 127;
@@ -63,20 +66,6 @@ static void	ft_bin_error_handling(char **argv, t_subshell *cmds)
 
 static void	ft_child_execve_bin(char **argv, t_subshell *cmds)
 {
-	if (access(argv[0], F_OK) == -1)
-	{
-		perror("minishell");
-		ft_free_char_array(argv);
-		ft_free_cmds(ft_get_parent(cmds));
-		exit(127);
-	}
-	if (access(argv[0], X_OK) == -1)
-	{
-		perror("minishell");
-		ft_free_char_array(argv);
-		ft_free_cmds(ft_get_parent(cmds));
-		exit(126);
-	}
 	if (ft_get_parent(cmds)->stdin_fd != STDIN_FILENO)
 		close(ft_get_parent(cmds)->stdin_fd);
 	if (ft_get_parent(cmds)->stdout_fd != STDOUT_FILENO)
@@ -92,8 +81,12 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	int		status;
 
 	status = 0;
-	if (access(argv[0], F_OK) == -1)
-		ft_get_path(argv, cmds->env);
+	if (!ft_get_path(argv, cmds->env))
+	{
+		ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
+		g_exit = 127;
+		return (g_exit);
+	}
 	pid = fork();
 	if (pid == -1)
 	{

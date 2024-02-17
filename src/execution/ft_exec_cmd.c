@@ -6,7 +6,7 @@
 /*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 05:05:07 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 08:28:46 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ static int	get_right_cmds(t_subshell *cmds)
 	char	**argv;
 	int		exit_status;
 
+	if (!cmds->exit_status && cmds->stdin)
+		cmds->exit_status = ft_stdin(cmds, cmds->stdin);
+	if (!cmds->exit_status && cmds->outfiles)
+		cmds->exit_status = ft_dup_outfiles(cmds->outfiles, cmds->env);
+	if (cmds->exit_status)
+		return (cmds->exit_status);
 	argv = ft_str_lst_to_args(cmds->argv, cmds->env);
 	if (!argv)
 		exit_status = g_exit;
@@ -126,10 +132,6 @@ static int	ft_execve_last_pipe(t_subshell *cmds)
 
 void	ft_exec_cmd(t_subshell *cmds)
 {
-	if (!cmds->exit_status && cmds->stdin)
-		cmds->exit_status = ft_stdin(cmds, cmds->stdin);
-	if (!cmds->exit_status && cmds->outfiles)
-		cmds->exit_status = ft_dup_outfiles(cmds->outfiles, cmds->env);
 	if (cmds->link == PIPE
 		&& (!cmds->prev || cmds->prev->link != PIPE))
 		ft_execve_first_pipe(cmds);
