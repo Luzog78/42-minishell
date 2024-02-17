@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 02:36:45 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/17 02:36:58 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 07:05:01 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	ft_args_append_str(char ***args, char *str, char **env)
 {
-	char	*new;
+	char		*new;
+	t_str_lst	*lst;
 
 	if (!str)
 		return ;
@@ -27,11 +28,11 @@ void	ft_args_append_str(char ***args, char *str, char **env)
 	if (!wc_is_wildcard(new))
 	{
 		free(new);
-		new = ft_get_bash_string(str, env, FALSE);
+		lst = ft_get_bash_lst(str, env, FALSE);
 		free(str);
-		if (new)
-			ft_args_realloc(args, new);
-		free(new);
+		if (lst)
+			ft_args_reallocs(args, &lst);
+		ft_free_str_lst(lst);
 		return ;
 	}
 	free(new);

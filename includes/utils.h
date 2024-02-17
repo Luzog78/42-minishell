@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 20:26:06 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 04:46:17 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 07:03:41 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char		*ft_getvar(char *str, int *i, char **env);
 void		check_dollar(int *result, int *i, char *str, char **env);
 int			get_bash_string_size(char *str, char **env, t_bool keep_quotes);
 char		*ft_get_bash_string(char *str, char **env, t_bool keep_quotes);
+t_str_lst	*ft_get_bash_lst(char *str, char **env, t_bool keep_quotes);
 char		**ft_sort_env(char **env);
 void		ft_sort_list(t_str_lst **lst);
 void		ft_subshell_init(t_subshell *subshell, t_cmd_type type, char **env);

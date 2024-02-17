@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 03:37:29 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/16 19:37:35 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 07:51:34 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*ft_getvar(char *str, int *i, char **env)
 	sub_str[j] = '\0';
 	result = ft_getenv(sub_str, env);
 	free(sub_str);
-	result = ft_strtrim(result);
+	if (result)
+		result = ft_strdup(result);
 	return (result);
 }
 
