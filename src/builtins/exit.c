@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/13 05:14:36 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 08:54:04 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	get_exit_code(char **argv, t_subshell *cmds)
 	return (exit_code);
 }
 
-int	ft_exit(t_subshell *cmds, char **argv)
+int	ft_exit(char **argv, t_subshell *cmds)
 {
 	int	exit_code;
 

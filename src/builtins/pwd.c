@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:58:25 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/01/30 02:01:03 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 08:53:47 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_pwd(char **env)
+int	ft_pwd(char **argv, t_subshell *cmds)
 {
 	char	*pwd;
 
-	(void)env;
+	(void)argv;
+	(void)cmds;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exec_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:57:48 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 08:28:46 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 09:19:00 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int	get_right_cmds(t_subshell *cmds)
+static int	get_right_cmds(t_subshell *cmds, char **argv,
+	int exit_status, int i)
 {
-	char	**argv;
-	int		exit_status;
+	static int	(*arr[8])(char **, t_subshell *) = {ft_execve_bin, ft_echo,
+		ft_cd, ft_pwd, ft_export, ft_unset, ft_env, ft_exit};
+	static char	*c[7] = {"echo", "cd", "pwd", "export", "unset", "env", "exit"};
 
 	if (!cmds->exit_status && cmds->stdin)
 		cmds->exit_status = ft_stdin(cmds, cmds->stdin);
@@ -26,22 +28,15 @@ static int	get_right_cmds(t_subshell *cmds)
 	argv = ft_str_lst_to_args(cmds->argv, cmds->env);
 	if (!argv)
 		exit_status = g_exit;
-	else if (ft_strcmp(argv[0], "echo") == 0)
-		exit_status = ft_echo(argv, cmds->env);
-	else if (ft_strcmp(argv[0], "cd") == 0)
-		exit_status = ft_cd(argv, cmds);
-	else if (ft_strcmp(argv[0], "pwd") == 0)
-		exit_status = ft_pwd(cmds->env);
-	else if (ft_strcmp(argv[0], "export") == 0)
-		exit_status = ft_export(argv + 1, cmds);
-	else if (ft_strcmp(argv[0], "unset") == 0)
-		exit_status = ft_unset(argv, cmds);
-	else if (ft_strcmp(argv[0], "env") == 0)
-		exit_status = ft_env(argv, cmds->env);
-	else if (ft_strcmp(argv[0], "exit") == 0)
-		exit_status = ft_exit(cmds, argv);
-	else
-		exit_status = ft_execve_bin(argv, cmds);
+	while (argv && ++i <= 8)
+	{
+		if (i == 8)
+			exit_status = (*arr[0])(argv, cmds);
+		else if (!ft_strcmp(argv[0], c[i - 1]))
+			exit_status = (*arr[i])(argv, cmds);
+		if (!ft_strcmp(argv[0], c[i - 1]))
+			break ;
+	}
 	g_exit = exit_status;
 	ft_free_char_array(argv);
 	return (exit_status);
@@ -67,7 +62,7 @@ static void	ft_execve_first_pipe(t_subshell *cmds)
 		if (cmds->outfiles)
 			ft_dup_outfiles(cmds->outfiles, cmds->env);
 		if (!cmds->exit_status)
-			status = get_right_cmds(cmds);
+			status = get_right_cmds(cmds, NULL, 0, 0);
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
@@ -94,7 +89,7 @@ static void	ft_execve_pipe(t_subshell *cmds)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
-		status = get_right_cmds(cmds);
+		status = get_right_cmds(cmds, NULL, 0, 0);
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
@@ -117,7 +112,7 @@ static int	ft_execve_last_pipe(t_subshell *cmds)
 		if (!cmds->stdin)
 			dup2(cmds->prev->pipe_read_end, STDIN_FILENO);
 		close(cmds->prev->pipe_read_end);
-		status = get_right_cmds(cmds);
+		status = get_right_cmds(cmds, NULL, 0, 0);
 		ft_free_cmds(ft_get_parent(cmds));
 		exit(status);
 	}
@@ -141,7 +136,7 @@ void	ft_exec_cmd(t_subshell *cmds)
 	else if (!cmds->exit_status && cmds->prev && cmds->prev->link == PIPE)
 		cmds->exit_status = ft_execve_last_pipe(cmds);
 	else if (!cmds->exit_status && cmds->argv)
-		cmds->exit_status = get_right_cmds(cmds);
+		cmds->exit_status = get_right_cmds(cmds, NULL, 0, 0);
 	if (cmds->next == NULL)
 		return ;
 	cmds->next->env = ft_env_cpy(cmds->env);

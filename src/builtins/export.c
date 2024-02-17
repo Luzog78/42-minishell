@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:05 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/14 04:03:03 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 08:55:27 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	ft_export(char **argv, t_subshell *cmds)
 	char	*var;
 	int		exit_status;
 
+	argv++;
 	exit_status = 0;
 	if (!argv[0])
 		bi_printenv(cmds->env);

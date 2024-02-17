@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:59:49 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/12 01:36:33 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 08:52:01 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	ft_env(char **argv, char **env)
+int	ft_env(char **argv, t_subshell *cmds)
 {
 	int	i;
 
@@ -27,10 +27,10 @@ int	ft_env(char **argv, char **env)
 		ft_print_err("env: too many arguments\n");
 		return (127);
 	}
-	while (env[i])
+	while (cmds->env[i])
 	{
-		if (ft_strchr(env[i], '='))
-			printf("%s\n", env[i]);
+		if (ft_strchr(cmds->env[i], '='))
+			printf("%s\n", cmds->env[i]);
 		i++;
 	}
 	return (0);

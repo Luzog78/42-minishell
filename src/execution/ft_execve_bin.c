@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve_bin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:30:02 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 08:43:20 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 09:14:21 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@ static t_bool	ft_get_path(char **argv, char **env)
 	i = 0;
 	if (argv[0][0] == '.' || argv[0][0] == '/' || argv[0][0] == '~')
 		return (TRUE);
-	tmp = ft_getenv("PATH", env);
-	if (!tmp)
-		return (FALSE);
-	path = ft_split(tmp, ':');
-	while (path[i])
+	path = ft_split(ft_getenv("PATH", env), ':');
+	while (path && path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");
 		free(path[i]);
@@ -95,12 +92,9 @@ int	ft_execve_bin(char **argv, t_subshell *cmds)
 	}
 	if (!pid)
 		ft_child_execve_bin(argv, cmds);
-	else
-	{
-		waitpid(pid, &status, 0);
-		cmds->pid = pid;
-		ft_sig_exit(status);
-		cmds->exit_status = g_exit;
-	}
+	waitpid(pid, &status, 0);
+	cmds->pid = pid;
+	ft_sig_exit(status);
+	cmds->exit_status = g_exit;
 	return (g_exit);
 }

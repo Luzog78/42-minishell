@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:52:01 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/11 20:56:54 by bcarolle         ###   ########.fr       */
+/*   Updated: 2024/02/17 08:53:13 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static t_bool	has_n_flag(char **argv, int *idx)
 	return (n_flag);
 }
 
-int	ft_echo(char **argv, char **env)
+int	ft_echo(char **argv, t_subshell *cmds)
 {
 	int		i;
 	t_bool	n_flag;
 	char	*var;
 
-	(void)env;
+	(void)cmds;
 	n_flag = has_n_flag(argv, &i);
 	while (argv[i])
 	{
