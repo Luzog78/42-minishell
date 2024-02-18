@@ -6,7 +6,7 @@
 /*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:00:04 by bcarolle          #+#    #+#             */
-/*   Updated: 2024/02/17 08:54:04 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/17 14:25:16 by ysabik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,14 @@ int	ft_exit(char **argv, t_subshell *cmds)
 {
 	int	exit_code;
 
+	if (argv[1] && argv[2])
+	{
+		ft_print_err("exit: too many arguments\n");
+		return (1);
+	}
 	exit_code = 0;
 	if (argv[1])
-	{
 		exit_code = get_exit_code(argv, cmds);
-		if (argv[1] && argv[2])
-		{
-			ft_print_err("exit: too many arguments\n");
-			return (1);
-		}
-	}
 	printf("exit\n");
 	ft_free_char_array(argv);
 	ft_free_cmds(ft_get_parent(cmds));
