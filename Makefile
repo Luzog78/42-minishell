@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/01 00:00:00 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 12:14:49 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/17 14:27:50 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -165,8 +165,8 @@ $(NAME) : $(BUILD_FILES)
 m_line_break :
 	@echo ""
 
-bonus:
-	@echo "$(C_RED)$(C_BOLD)There is no bonus for this project.$(C_RESET)"
+bonus: all
+#	@echo "$(C_RED)$(C_BOLD)There is no bonus for this project.$(C_RESET)"
 
 $(BUILD_DIR)/%.o : %.c
 	@if [ $(TO_COMPILE) -eq 0 ] ; then \
