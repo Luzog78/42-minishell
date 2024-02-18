@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    minishell.souffrance                               :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/07 16:39:32 by ysabik            #+#    #+#              #
-#    Updated: 2024/02/17 12:21:30 by bcarolle         ###   ########.fr        #
+#    Updated: 2024/02/17 14:18:49 by ysabik           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -1649,20 +1649,6 @@ $ (echo abc && bliblebloblubla) || echo $?
 $ (blableblibloblu || echo abc) || echo $?
 
 ###
-@ abc
-
----
-
-$ (echo abc || bliblebloblubla) || echo $?
-
-@ abc
-
-
----
-
-$ (cat | echo abc)
-$ sadfasfsadfsafsafsafsafd
-
 @ abc
 
 ---
