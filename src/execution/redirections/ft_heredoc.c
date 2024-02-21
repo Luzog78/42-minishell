@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ysabik <ysabik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bcarolle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 06:38:30 by ysabik            #+#    #+#             */
-/*   Updated: 2024/02/16 15:19:29 by ysabik           ###   ########.fr       */
+/*   Updated: 2024/02/21 13:41:12 by bcarolle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	ft_here_child(t_heredoc hd)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !ft_strcmp(line, hd.stdin->value) || g_exit)
+		if (!line || !ft_strcmp(line, hd.stdin->value))
 		{
 			free(line);
 			break ;
